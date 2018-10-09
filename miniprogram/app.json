@@ -1,0 +1,41 @@
+{
+  "cloud": true,
+  "pages": [
+    "pages/index/index",
+    "pages/userConsole/userConsole",
+    "pages/storageConsole/storageConsole",
+    "pages/databaseGuide/databaseGuide",
+    "pages/addFunction/addFunction",
+    "pages/deployFunctions/deployFunctions",
+    "pages/chooseLib/chooseLib"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "枣庄便民平台",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh":true
+  },
+  "tabBar":{
+    "list":[{
+      "pagePath": "pages/index/index",
+      "text":"同城",
+      "iconPath":"images/tongcheng.png",
+      "selectedIconPath":"images/tongcheng_selected.png"
+    },{
+      "pagePath":"pages/userConsole/userConsole",
+      "text":"发布",
+      "iconPath":"images/fabu.png",
+      "selectedIconPath":"images/fabu_selected.png"
+    },{
+      "pagePath":"pages/storageConsole/storageConsole",
+      "text":"我的",
+      "iconPath":"images/wode.png",
+      "selectedIconPath":"images/wode_selected.png"
+    }
+    ],
+    "selectedColor":"#056545",
+    "color":"#000000"
+  }
+}
