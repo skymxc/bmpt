@@ -135,3 +135,56 @@ page {
   line-height: 36rpx;
   word-break: break-all;
 }
+
+/* custom style*/
+
+/*搜索框没有点击时的样式*/
+.search_label{
+  display: flex;
+  background-color: white;
+  margin-bottom: 10rpx;
+  border-radius: 5%;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  height: 80rpx;
+}
+
+/*搜索框没有获取到焦点时的 搜索 文字*/
+.search_label_text{
+  font-size: 35rpx;
+  margin-left: 5rpx;
+}
+
+/* 搜索框获取到焦点时 */
+.search{
+  display: flex;
+  flex-direction: row;
+  height: 80rpx;
+  align-items: center;
+}
+/* 输入框及左右两边 icon 的 容器*/
+.search_form{
+  display: flex;
+  background-color: white;
+  width: 80%;
+  height: 100%;
+  border-radius: 5%;
+  align-items: center;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+}
+/* 输入框左边的 搜索 icon  */
+.search_icon_search{
+  margin-right: 10rpx;
+}
+/* 搜索输入框 */
+.search_input{
+  width: 85%;
+}
+/* 搜索那两个字 */
+.search_btn_search{
+  margin-left: 20rpx;
+  font-size: 35rpx;
+  color:aqua;
+}

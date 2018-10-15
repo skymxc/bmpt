@@ -1,6 +1,11 @@
 //index.js
 const app = getApp()
 
+/**
+ * Page(object) 是一个函数 用来注册一个页面 ；接受一个 object 类型参数，其指定页面的初始数据、生命周期、事件处理函数等。
+ *  object 属性：
+ * data: 类型 Object 页面的初始数据
+ */
 Page({
   data: {
     avatarUrl: './user-unlogin.png',
