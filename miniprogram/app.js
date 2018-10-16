@@ -7,7 +7,7 @@ App({
   onLaunch: function (options) {
     console.info('onLaunch  sence - >'+options.scene);
     if (!wx.cloud) {
-      console.error('请使用 2.2.3 或以上的基础库以使用云能力')
+      console.log('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
       wx.cloud.init({
         traceUser: true,
@@ -17,16 +17,16 @@ App({
     this.globalData = {}
   },
   onShow: function (options) {
-    console.error('into foreground .');
+    console.log('into foreground .');
   },
   onHide: function (options){
-    console.error('into background ');
+    console.log('into background ');
   },
   onError: function (error){
-    console.error(' occur error :'+error);
+    console.log(' occur error :'+error);
   },
   onPageNotFound: function (options){
-    console.error('page not found !!!');
-    console.error('page path->'+options.page);
+    console.log('page not found !!!');
+    console.log('page path->'+options.page);
   }
 })
