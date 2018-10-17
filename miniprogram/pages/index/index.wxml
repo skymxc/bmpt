@@ -1,29 +1,71 @@
 <!--index.wxml-->
 <scroll-view class="container">
 
-<!--搜索框-->
-<view class="container_search">
+  <!--搜索框-->
+  <view class="container_search">
 
 
-  <!-- 获取到焦点后 -->
-
-  <view class='{{ class_search }} search'>
-    <view class='search_form'>
-      <icon class='search_icon_search' type='search' size='15'></icon>
-      <input class='search_input' placeholder='请输入关键词' focus='{{queryFocus}}' bindinput='inputQuery' bindblur='queryBlur'  value='{{queryInput}}'></input>
-      <icon class='search_icon_cancel' type='cancel' size='15' color='black' bindtap='hideSearch'></icon>
+    <!-- 获取到焦点后 -->
+    <view class='{{ class_search }} search'>
+      <view class='search_form'>
+        <icon class='search_icon_search' type='search' size='15'></icon>
+        <input class='search_input' placeholder='请输入关键词' focus='{{queryFocus}}' bindinput='inputQuery' bindblur='queryBlur' value='{{queryInput}}'></input>
+        <icon class='search_icon_cancel' type='cancel' size='15' color='black' bindtap='hideSearch'></icon>
+      </view>
+      <text class='search_btn_search' bindtap='query'>搜索</text>
     </view>
-    <text class='search_btn_search' bindtap='query'>搜索</text>
+
+
+    <!-- 没有获取到焦点时 -->
+    <view class='{{ class_search_label }}search_label' bindtap='showSearch'>
+      <icon type="search" size="15"></icon>
+      <text class='search_label_text'>搜索</text>
+    </view>
   </view>
- 
 
- <!-- 没有获取到焦点时 -->
-  <view class='{{ class_search_label }}search_label' bindtap='showSearch'>
-     <icon type="search" size="15"></icon>
-  <text class='search_label_text'>搜索</text>
+  <!--广告位 -->
+  <view id='container-ad'>
+    <swiper id='swiper-ad' autoplay='true' indicator-dots='true' interval='2000' circular='true' bindchange='bindADChange'>
+      <block wx:for="{{adList}}">
+        <swiper-item>
+          <image class='image-ad' src='{{item.image}}' data-obj="{{item.obj}}" bindtap='bindADTap'></image>
+        </swiper-item>
+      </block>
+    </swiper>
+
+    <text id='text-ad'>广告</text>
   </view>
-</view>
 
-<!--广告位 -->
+  <view id='container-channel'>
+    <swiper id='swiper-channel' indicator-dots='true' >
+      <!-- 几页 -->
+      <block wx:for="{{channelList}}" wx:for-item="channelPage">
+        <swiper-item>
+          <view class='container-swiper-page page-{{channelPage.order}}'>
 
+            <!-- 几行 -->
+            <block wx:for="{{channelPage.row}}" wx:for-item="pageRow">
+              <view class='container-channel-row row-{{pageRow.rowID}}'>
+
+                <!-- 几个 -->
+                <block wx:for="{{pageRow.channel}}" wx:for-item="channel">
+                  <view class='container-channel-real channel-{{channel.id}}'>
+                    <image  class= 'image-channel' src='{{channel.image}}'></image>
+                    <text class='text-channel'>{{channel.name}}</text>
+                  </view>
+                </block>
+               
+              </view>
+            </block>
+
+          
+          </view>
+
+        </swiper-item>
+      </block>
+
+    </swiper>
+  </view>
+
+  <!-- 计数 -->
 </scroll-view>
