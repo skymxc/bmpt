@@ -36,7 +36,7 @@
     <text id='text-ad'>广告</text>
   </view>
 
-  <view id='container-channel'>
+  <view id='container-channel' class='class-background-white'>
     <swiper id='swiper-channel' indicator-dots='true' >
       <!-- 几页 -->
       <block wx:for="{{channelList}}" wx:for-item="channelPage">
@@ -50,7 +50,7 @@
                 <!-- 几个 -->
                 <block wx:for="{{pageRow.channel}}" wx:for-item="channel">
                   <view class='container-channel-real channel-{{channel.id}}'>
-                    <image  class= 'image-channel' src='{{channel.image}}'></image>
+                    <image  class= 'image-channel' src='{{channel.image}}' bindtap='bindChannelTap' data-channel='{{channel}}'></image>
                     <text class='text-channel'>{{channel.name}}</text>
                   </view>
                 </block>
@@ -67,5 +67,36 @@
     </swiper>
   </view>
 
+<!-- 线条 -->
+<view id='interval-line'></view>
   <!-- 计数 -->
+  <view id='container-num' class='class-background-white'>
+    <text id='text-num'>浏览：{{browseNum}}  发布：{{publishNum}}  分享：{{shareNum}}</text>
+  </view>
+
+<!-- 内容类型 -->
+
+<view id='container-type' class='class-background-white'>
+
+  <view class='box-type'>
+    <text class='text-type'>最新发布</text>
+  </view>
+
+
+  <view class='box-type'>
+    <text class='text-type'>最新回复</text>
+  </view>
+
+
+  <view class='box-type'>
+    <text class='text-type'>最多点赞</text>
+  </view>
+
+
+  <view class='box-type'>
+    <text class='text-type'>最多分享</text>
+  </view>
+
+</view>
+
 </scroll-view>

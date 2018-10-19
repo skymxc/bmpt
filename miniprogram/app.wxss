@@ -4,6 +4,6 @@
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  padding: 10rpx;
+ 
   background-color: #F2F2F2;
 } 

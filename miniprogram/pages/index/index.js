@@ -338,6 +338,13 @@ Page({
     wx.showToast({
       title: obj.name,
     })
+  },
+  bindChannelTap(event){
+    var channel = event.currentTarget.dataset.channel;
+    wx.showToast({
+      title: channel.name,
+    })
+
   }
 
 })
