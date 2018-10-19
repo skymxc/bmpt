@@ -15,7 +15,7 @@
     "navigationBarBackgroundColor": "#F6F6F6",
     "navigationBarTitleText": "枣庄便民平台",
     "navigationBarTextStyle": "black",
-    "enablePullDownRefresh":true
+    "enablePullDownRefresh":false
   },
   "tabBar":{
     "list":[{

@@ -72,6 +72,10 @@ Page({
     class_search_label: '',
     queryInput: '',
     queryFoucs: false,
+    contenTypeNewestPublish: 'selected-text',
+    contentTypeNewestReply: '',
+    contentTypeMostZan: '',
+    contentTypeMostShare: '',
     adList: [{
       image: "http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg",
       obj: {
@@ -94,90 +98,61 @@ Page({
         rowID: 1,
         channel: [{
           id: 1,
-          name: "招聘求职",
+          name: "招聘",
           image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
           child: ['兼职', '全职']
         }, {
           id: 2,
-            name: "顺风拼车",
+            name: "二手",
           image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
           child: ['汽车', '电脑']
           }, {
             id: 2,
-            name: "房屋租售",
-            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
+            name: "房屋",
+            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/fangwu.png",
             child: ['汽车', '电脑']
           }, {
             id: 2,
-            name: "二手闲置",
-            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
+            name: "教育",
+            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/jiaoyu.png",
             child: ['汽车', '电脑']
           },{
             id: 2,
-            name: "招商加盟",
-            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
+            name: "美食",
+            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/meishi.png",
             child: ['汽车', '电脑']
           }]
       }, {
         rowID: 2,
         channel: [{
           id: 1,
-          name: "综合服务",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
+          name: "装修",
+          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhuangxiu.png",
           child: ['兼职', '全职']
         }, {
           id: 2,
-          name: "休闲娱乐",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
+          name: "娱乐",
+          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/yule.png",
           child: ['汽车', '电脑']
           },{
             id: 2,
-            name: "特色美食",
-            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
+            name: "综合",
+            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zonghe.png",
             child: ['汽车', '电脑']
           }, {
             id: 2,
-            name: "教育培训",
-            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
+            name: "家政",
+            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/jiazheng.png",
             child: ['汽车', '电脑']
           }, {
             id: 2,
-            name: "花鸟鱼虫",
-            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
+            name: "招商",
+            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaoshang.png",
             child: ['汽车', '电脑']
           }]
       }]
 
 
-    }, {
-      order: 2,
-      row: [{
-        rowID: 1,
-        channel: [{
-          id: 1,
-          name: "招聘",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-          child: ['兼职', '全职']
-        }, {
-          id: 2,
-          name: "二手",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
-          child: ['汽车', '电脑']
-        }]
-      }, {
-        rowID: 2,
-        channel: [{
-          id: 1,
-          name: "招聘",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-          child: ['兼职', '全职']
-        }, {
-          id: 2,
-          name: "二手",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
-          child: ['汽车', '电脑']
-        }]
-      }]
     }]
   },
 
@@ -345,6 +320,59 @@ Page({
       title: channel.name,
     })
 
+  },
+  bindTypeTap: function(event){
+    var tap = event.currentTarget.dataset.type;
+    var name = "最新发布"
+    switch(tap){
+      case 'publish':
+        name = "最新发布";
+      this.setData({
+        contenTypeNewestPublish: 'selected-text',
+        contentTypeNewestReply: '',
+        contentTypeMostZan: '',
+        contentTypeMostShare: '',
+      });
+      break;
+      case 'reply':
+      name = '最新回复';
+        this.setData({
+          contenTypeNewestPublish: '',
+          contentTypeNewestReply: 'selected-text',
+          contentTypeMostZan: '',
+          contentTypeMostShare: '',
+        });
+      break;
+      case 'zan':
+      name = '最多点赞';
+        this.setData({
+          contenTypeNewestPublish: '',
+          contentTypeNewestReply: '',
+          contentTypeMostZan: 'selected-text',
+          contentTypeMostShare: '',
+        });
+      break;
+      case 'share':
+      name = '最多分享';
+        this.setData({
+          contenTypeNewestPublish: '',
+          contentTypeNewestReply: '',
+          contentTypeMostZan: '',
+          contentTypeMostShare: 'selected-text',
+        });
+      break;
+    }
+    wx.showToast({
+      title: name,
+    })
+  },
+  scroll: function(event){
+    console.log(event);
+  },
+  bindscrolltoupper: function(event){
+    console.log(event);
+  },
+  bindscrolltolower: function(e){
+    console.log(e);
   }
-
 })
