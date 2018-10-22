@@ -4,147 +4,27 @@ page {
   background: #f6f6f6;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   color: #707070;
-}
-
-.userinfo, .uploader, .tunnel {
-  margin-top: 40rpx;
-  height: 140rpx;
-  width: 100%;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-left: none;
-  border-right: none;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  transition: all 300ms ease;
-}
-
-.userinfo-avatar {
-  width: 100rpx;
-  height: 100rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-  background-size: cover;
-  background-color: white;
-}
-
-.userinfo-avatar:after {
-  border: none;
-}
-
-.userinfo-nickname {
-  font-size: 32rpx;
-  color: #007aff;
-  background-color: white;
-  background-size: cover;
-}
-
-.userinfo-nickname::after {
-  border: none;
-}
-
-.uploader, .tunnel {
-  height: auto;
-  padding: 0 0 0 40rpx;
-  flex-direction: column;
-  align-items: flex-start;
-  box-sizing: border-box;
-}
-
-.uploader-text, .tunnel-text {
-  width: 100%;
-  line-height: 52px;
-  font-size: 34rpx;
-  color: #007aff;
-}
-
-.uploader-container {
-  width: 100%;
-  height: 400rpx;
-  padding: 20rpx 20rpx 20rpx 0;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  box-sizing: border-box;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.uploader-image {
-  width: 100%;
-  height: 360rpx;
-}
-
-.tunnel {
-  padding: 0 0 0 40rpx;
-}
-
-.tunnel-text {
+  height: 100%;
   position: relative;
-  color: #222;
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
-
-.tunnel-text:first-child {
-  border-top: none;
-}
-
-.tunnel-switch {
-  position: absolute;
-  right: 20rpx;
-  top: -2rpx;
-}
-
-.disable {
-  color: #888;
-}
-
-.service {
+/* 顶部悬浮的 内容类型导航 */
+.container-type-top{
+  width: 100%;
   position: fixed;
-  right: 40rpx;
-  bottom: 40rpx;
-  width: 140rpx;
-  height: 140rpx;
-  border-radius: 50%;
-  background: linear-gradient(#007aff, #0063ce);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  transition: all 300ms ease;
-}
+  z-index: 99;
+} 
 
-.service-button {
-  position: absolute;
-  top: 40rpx;
-}
-
-.service:active {
-  box-shadow: none;
-}
-
-.request-text {
-  padding: 20rpx 0;
-  font-size: 24rpx;
-  line-height: 36rpx;
-  word-break: break-all;
-}
-
-/* custom style*/
-
+  #scroll{
+    flex :1;
+    height: 100%;
+    width: 100%;
+  }
 /* 顶部输入 模块 */
 .container_search{
   position: relative;
-  
-   height: 60rpx;
-   margin: 15rpx;
+   height: 40px;
+   margin: 8px;
 }
 
 /*搜索框没有点击时的样式*/
@@ -240,7 +120,7 @@ page {
 
 #container-channel{
   width: 100%;
-  height: 400rpx;
+  height: 200px;
 }
 
 /* 频道 swapper */
@@ -298,12 +178,12 @@ page {
 /* 频道下面的 各个计数 */
 #container-num{
   display: flex;
-  padding: 10rpx;
+  padding: 8px;
   justify-content: flex-end;
   
 }
 #text-num{
-  font-size: 30rpx;
+  font-size: 15px;
 }
 
 /* 内容类型 */
@@ -311,19 +191,23 @@ page {
 .container-type{
   display: flex;
   flex-direction: row;
-  margin-bottom: 20rpx;
-  margin-top: 20rpx;
+  
   padding: 15rpx;
   font-size: 30rpx;
+  width: 100%;
   justify-content: space-around;
 }
-
+.container-type-include{
+  margin-top:10px;
+  margin-bottom: 10px;
+}
 .selected-text{
   color: #06d8b5ad;
 
 }
 
+
 /* 内容 */
 .container-content{
-  height: 300rpx;
+  height: 1000px;
 }

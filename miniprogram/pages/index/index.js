@@ -1,6 +1,5 @@
 //index.js
 const app = getApp()
-const query = wx.createSelectorQuery();
 
 /**
  * queryFoucs：搜索输入框 是否获取焦点
@@ -76,6 +75,7 @@ Page({
     contentTypeNewestReply: '',
     contentTypeMostZan: '',
     contentTypeMostShare: '',
+    contentTypeTopClass: 'search-blur',
     adList: [{
       image: "http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg",
       obj: {
@@ -262,6 +262,21 @@ Page({
     //   }
     // })
   },
+  onReachBottom:function(obj){  //拉到底部了，触发了 加载更多事件
+    console.log('to load more something ');
+  },
+  onPageScroll:function(obj){   //页面滑动事件
+   
+    var temp = this.data.contentTypeTopClass;
+    if(obj.scrollTop>= 460){
+      temp = '';
+    }else{
+      temp = 'search-blur';
+    }
+    this.setData({
+      contentTypeTopClass:temp
+    });
+  },
   inputQuery: function(event) { // 搜索输入框 输入事件 被动调用
     this.setData({
       queryInput: event.detail.value
@@ -365,14 +380,5 @@ Page({
     wx.showToast({
       title: name,
     })
-  },
-  scroll: function(event){
-    console.log(event);
-  },
-  bindscrolltoupper: function(event){
-    console.log(event);
-  },
-  bindscrolltolower: function(e){
-    console.log(e);
   }
 })

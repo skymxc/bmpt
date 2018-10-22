@@ -1,105 +1,97 @@
 <!--index.wxml-->
-<scroll-view class="container" scroll-y bindscroll='scroll' bindscrolltoupper='bindscrolltoupper' bindscrolltolower='bindscrolltolower'>
+<view class='container'>
 
-  <!--搜索框-->
-  <view class="container_search">
+  <!-- 内容类型 -->
+  <view class='container-type-top {{contentTypeTopClass}}'>
+    <include src='contentType.wxml'></include>
+  </view>
+
+  <view id='scroll'>
+
+    <!--搜索框-->
+    <view class="container_search">
 
 
-    <!-- 获取到焦点后 -->
-    <view class='{{ class_search }} search'>
-      <view class='search_form'>
-        <icon class='search_icon_search' type='search' size='15'></icon>
-        <input class='search_input' placeholder='请输入关键词' focus='{{queryFocus}}' bindinput='inputQuery' bindblur='queryBlur' value='{{queryInput}}'></input>
-        <icon class='search_icon_cancel' type='cancel' size='15' color='black' bindtap='hideSearch'></icon>
+      <!-- 获取到焦点后 -->
+      <view class='{{ class_search }} search'>
+        <view class='search_form'>
+          <icon class='search_icon_search' type='search' size='15'></icon>
+          <input class='search_input' placeholder='请输入关键词' focus='{{queryFocus}}' bindinput='inputQuery' bindblur='queryBlur' value='{{queryInput}}'></input>
+          <icon class='search_icon_cancel' type='cancel' size='15' color='black' bindtap='hideSearch'></icon>
+        </view>
+        <text class='search_btn_search' bindtap='query'>搜索</text>
       </view>
-      <text class='search_btn_search' bindtap='query'>搜索</text>
+
+
+      <!-- 没有获取到焦点时 -->
+      <view class='{{ class_search_label }}search_label' bindtap='showSearch'>
+        <icon type="search" size="15"></icon>
+        <text class='search_label_text'>搜索</text>
+      </view>
+    </view>
+
+    <!--广告位 -->
+    <view id='container-ad'>
+      <swiper id='swiper-ad' autoplay='true' indicator-dots='true' interval='2000' circular='true' bindchange='bindADChange'>
+        <block wx:for="{{adList}}">
+          <swiper-item>
+            <image class='image-ad' src='{{item.image}}' data-obj="{{item.obj}}" bindtap='bindADTap'></image>
+          </swiper-item>
+        </block>
+      </swiper>
+
+      <text id='text-ad'>广告</text>
+    </view>
+
+    <!-- 频道 -->
+    <view id='container-channel' class='class-background-white'>
+      <swiper id='swiper-channel' indicator-dots='true'>
+        <!-- 几页 -->
+        <block wx:for="{{channelList}}" wx:for-item="channelPage">
+          <swiper-item>
+            <view class='container-swiper-page page-{{channelPage.order}}'>
+
+              <!-- 几行 -->
+              <block wx:for="{{channelPage.row}}" wx:for-item="pageRow">
+                <view class='container-channel-row row-{{pageRow.rowID}}'>
+
+                  <!-- 几个 -->
+                  <block wx:for="{{pageRow.channel}}" wx:for-item="channel">
+                    <view class='container-channel-real channel-{{channel.id}}'>
+                      <image class='image-channel' src='{{channel.image}}' bindtap='bindChannelTap' data-channel='{{channel}}'></image>
+                      <text class='text-channel'>{{channel.name}}</text>
+                    </view>
+                  </block>
+
+                </view>
+              </block>
+
+
+            </view>
+
+          </swiper-item>
+        </block>
+
+      </swiper>
+    </view>
+
+    <!-- 线条 -->
+    <view id='interval-line'></view>
+    <!-- 计数 -->
+    <view id='container-num' class='class-background-white'>
+      <text id='text-num'>浏览：{{browseNum}}  发布：{{publishNum}}  分享：{{shareNum}}</text>
+    </view>
+
+    <!-- 内容类型 -->
+    <view class='container-type-include'>
+      <include src='contentType.wxml'></include>
     </view>
 
 
-    <!-- 没有获取到焦点时 -->
-    <view class='{{ class_search_label }}search_label' bindtap='showSearch'>
-      <icon type="search" size="15"></icon>
-      <text class='search_label_text'>搜索</text>
+    <view class='class-background-white container-content'>
+
     </view>
   </view>
 
-  <!--广告位 -->
-  <view id='container-ad'>
-    <swiper id='swiper-ad' autoplay='true' indicator-dots='true' interval='2000' circular='true' bindchange='bindADChange'>
-      <block wx:for="{{adList}}">
-        <swiper-item>
-          <image class='image-ad' src='{{item.image}}' data-obj="{{item.obj}}" bindtap='bindADTap'></image>
-        </swiper-item>
-      </block>
-    </swiper>
-
-    <text id='text-ad'>广告</text>
-  </view>
-
-  <view id='container-channel' class='class-background-white'>
-    <swiper id='swiper-channel' indicator-dots='true' >
-      <!-- 几页 -->
-      <block wx:for="{{channelList}}" wx:for-item="channelPage">
-        <swiper-item>
-          <view class='container-swiper-page page-{{channelPage.order}}'>
-
-            <!-- 几行 -->
-            <block wx:for="{{channelPage.row}}" wx:for-item="pageRow">
-              <view class='container-channel-row row-{{pageRow.rowID}}'>
-
-                <!-- 几个 -->
-                <block wx:for="{{pageRow.channel}}" wx:for-item="channel">
-                  <view class='container-channel-real channel-{{channel.id}}'>
-                    <image  class= 'image-channel' src='{{channel.image}}' bindtap='bindChannelTap' data-channel='{{channel}}'></image>
-                    <text class='text-channel'>{{channel.name}}</text>
-                  </view>
-                </block>
-               
-              </view>
-            </block>
-
-          
-          </view>
-
-        </swiper-item>
-      </block>
-
-    </swiper>
-  </view>
-
-<!-- 线条 -->
-<view id='interval-line'></view>
-  <!-- 计数 -->
-  <view id='container-num' class='class-background-white'>
-    <text id='text-num'>浏览：{{browseNum}}  发布：{{publishNum}}  分享：{{shareNum}}</text>
-  </view>
-
-<!-- 内容类型 -->
-<view class='container-type class-background-white'>
-
-  <view class='box-type' data-type='publish' bindtap='bindTypeTap' >
-    <text class='text-type {{contenTypeNewestPublish}}'>最新发布</text>
-  </view>
-
-
-  <view class='box-type' data-type='reply' bindtap='bindTypeTap'>
-    <text class='text-type {{contentTypeNewestReply}}'>最新回复</text>
-  </view>
-
-
-  <view class='box-type' data-type='zan' bindtap='bindTypeTap'>
-    <text class='text-type {{contentTypeMostZan}}'>最多点赞</text>
-  </view>
-
-
-  <view class='box-type' data-type='share' bindtap='bindTypeTap'>
-    <text class='text-type {{contentTypeMostShare}}'>最多分享</text>
-  </view>
 
 </view>
-
-<view class='class-background-white container-content'>
-
-</view>
-
-</scroll-view>
