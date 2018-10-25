@@ -209,5 +209,63 @@ page {
 
 /* 内容 */
 .container-content{
-  height: 1000px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
 }
+
+/* 内容-上部-人 */
+.container-content-person{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  
+}
+/* 头像 */
+.content-person-image{
+  width: 40px;
+  height: 40px;
+}
+
+/* 用户名 容器*/
+.container-profile{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+/* 用户名 */
+/* 文本溢出显示省略号 （要指定宽度或高度）
+  overflow: hidden;
+  text-overflow: ellipsis;
+white-space: nowrap;
+ */
+.text-person-name{
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  width: 60%;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+white-space: nowrap;
+}
+/* 发布日期 */
+.text-time{
+  font-size: 12px;
+}
+/* 联系 按钮 */
+.text-person-contact{
+  border: 1px red solid;
+  border-radius: 2px;
+  padding: 3px 10px 3px 10px;
+  font-size: 10px;
+  display: inline-block;
+  margin: 5px;
+  height: 80%;
+  color: red;
+}
+

@@ -262,6 +262,10 @@ Page({
     //   }
     // })
   },
+  onPullDownRefresh:function(){  //触发 刷新事件
+    console.log('pull down refresh !');
+    
+  },
   onReachBottom:function(obj){  //拉到底部了，触发了 加载更多事件
     console.log('to load more something ');
   },
@@ -379,6 +383,24 @@ Page({
     }
     wx.showToast({
       title: name,
+    })
+  },
+  bindTapPerson :function(event){   // 发布人被点击
+   var person= event.currentTarget.dataset.person;
+   wx.showToast({
+     title: person,
+   })
+  },
+  tapContact: function(event){  //联系Ta
+    var phone = event.currentTarget.dataset.phone;
+    wx.showToast({
+      title: phone,
+    })
+  },
+  tapContent :function(event){
+    var conetnt = event.currentTarget.dataset.content;
+    wx.showToast({
+      title: conetnt,
     })
   }
 })

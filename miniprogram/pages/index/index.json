@@ -1,6 +1,6 @@
 {
 
-    "navigationBarTitleText": "同城"
-    
+    "navigationBarTitleText": "同城",
+    "enablePullDownRefresh": true
 
 }

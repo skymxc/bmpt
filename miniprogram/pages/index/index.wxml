@@ -87,9 +87,21 @@
       <include src='contentType.wxml'></include>
     </view>
 
-
+    <!-- 内容 -->
     <view class='class-background-white container-content'>
-
+      <!-- 头像部分 -->
+      <view class='container-content-person' >
+          <image src='../../images/zhaopin.png' class='content-person-image' bindtap='bindTapPerson' data-person='person'></image>
+          <view class='container-profile' bindtap='tapContent' data-content='content-top'>
+            <text class='text-person-name'>it is person nickName.</text>
+            <text class='text-time'> 2018/10/12 10:23</text>
+          </view>
+          <text class='text-person-contact' bindtap='tapContact' data-phone='13800012011'>联系Ta</text>
+      </view>
+      <!-- 文本部分 -->
+      <!-- 图片部分 -->
+      <!-- 地址部分 -->
+      <!-- 功能部分 -->
     </view>
   </view>
 
