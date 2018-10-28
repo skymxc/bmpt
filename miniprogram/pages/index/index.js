@@ -53,6 +53,39 @@ const app = getApp()
  *  id :1
  *  child:[]
  * }
+ * 
+ * //内容记录 结构
+ * 
+  record{
+   recordID:1,
+   person:{
+
+   },
+   images:[
+      'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+      'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
+      'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jp'
+   ],
+   content:'从广义上讲：
+数据结构是指一组数据的存储结构。
+算法就是操作数据的一组方法。
+
+数据结构和算法是相辅相成的，数据结构是为算法服务的，算法要作用在特定的数据结构上。
+
+数据结构是静态的，它只是组织数据的一种方式。',
+   channel:{
+      name: '二级分类',
+      id: 1
+   },
+   function:{
+     name: '所属功能',
+     id : 2
+   }，
+   sawNumber: 90,
+   commentNumber: 200,
+   zanNumber: 20,
+   shareNumber: 30 
+ }
  */
 
 /**
@@ -103,25 +136,25 @@ Page({
           child: ['兼职', '全职']
         }, {
           id: 2,
-            name: "二手",
+          name: "二手",
           image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
           child: ['汽车', '电脑']
-          }, {
-            id: 2,
-            name: "房屋",
-            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/fangwu.png",
-            child: ['汽车', '电脑']
-          }, {
-            id: 2,
-            name: "教育",
-            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/jiaoyu.png",
-            child: ['汽车', '电脑']
-          },{
-            id: 2,
-            name: "美食",
-            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/meishi.png",
-            child: ['汽车', '电脑']
-          }]
+        }, {
+          id: 2,
+          name: "房屋",
+          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/fangwu.png",
+          child: ['汽车', '电脑']
+        }, {
+          id: 2,
+          name: "教育",
+          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/jiaoyu.png",
+          child: ['汽车', '电脑']
+        }, {
+          id: 2,
+          name: "美食",
+          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/meishi.png",
+          child: ['汽车', '电脑']
+        }]
       }, {
         rowID: 2,
         channel: [{
@@ -134,26 +167,106 @@ Page({
           name: "娱乐",
           image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/yule.png",
           child: ['汽车', '电脑']
-          },{
-            id: 2,
-            name: "综合",
-            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zonghe.png",
-            child: ['汽车', '电脑']
-          }, {
-            id: 2,
-            name: "家政",
-            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/jiazheng.png",
-            child: ['汽车', '电脑']
-          }, {
-            id: 2,
-            name: "招商",
-            image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaoshang.png",
-            child: ['汽车', '电脑']
-          }]
+        }, {
+          id: 2,
+          name: "综合",
+          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zonghe.png",
+          child: ['汽车', '电脑']
+        }, {
+          id: 2,
+          name: "家政",
+          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/jiazheng.png",
+          child: ['汽车', '电脑']
+        }, {
+          id: 2,
+          name: "招商",
+          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaoshang.png",
+          child: ['汽车', '电脑']
+        }]
       }]
 
 
-    }]
+    }],
+    recordList: [{
+        recordID: 1,
+        person: {
+          image: 'cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaoshang.png',
+          name: 'mxc',
+          phone: '13029248923'
+        },
+        images: [
+          'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+          'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
+          'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg',
+          'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg'
+        ],
+        content: '从广义上讲 数据结构是指一组数据的存储结构。算法就是操作数据的一组方法。数据结构和算法是相辅相成的，数据结构是为算法服务的，算法要作用在特定的数据结构上。数据结构是静态的，它只是组织数据的一种方式',
+        channel: {
+          name: '二级分类',
+          id: 1
+        },
+        function: {
+          name: '所属功能',
+          id: 2
+        },
+        sawNumber: 90,
+        commentNumber: 200,
+        zanNumber: 20,
+        shareNumber: 30,
+        publishTime: '2018/09/12 12:09'
+    }, {
+        recordID: 2,
+        person: {
+          image: 'cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaoshang.png',
+          name: 'mxc',
+          phone:'13813801380'
+        },
+        images: [
+          'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+          'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
+          'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
+        ],
+        content: '从狭义上讲 数据结构是指一组数据的存储结构。算法就是操作数据的一组方法。数据结构和算法是相辅相成的，数据结构是为算法服务的，算法要作用在特定的数据结构上。数据结构是静态的，它只是组织数据的一种方式。',
+        channel: {
+          name: '二级分类',
+          id: 1
+        },
+        function: {
+          name: '所属功能',
+          id: 2
+        },
+        sawNumber: 90,
+        commentNumber: 200,
+        zanNumber: 20,
+        shareNumber: 30,
+        publishTime: '2018/09/12 12:09'
+      }, {
+        recordID: 3,
+        person: {
+          image: 'cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaoshang.png',
+          name: 'mxc',
+          phone: '13813801380'
+        },
+        images: [
+          'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+          'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg'
+        ],
+        content: '数据结构和算法是相辅相成的，数据结构是为算法服务的，算法要作用在特定的数据结构上。数据结构是静态的，它只是组织数据的一种方式。',
+        channel: {
+          name: '二级分类',
+          id: -1
+        },
+        function: {
+          name: '所属功能',
+          id: 2
+        },
+        sawNumber: 90,
+        commentNumber: 200,
+        zanNumber: 20,
+        shareNumber: 30,
+        publishTime: '2018/09/12 12:09'
+      }
+    ]
   },
 
   onLoad: function() {
@@ -262,23 +375,23 @@ Page({
     //   }
     // })
   },
-  onPullDownRefresh:function(){  //触发 刷新事件
+  onPullDownRefresh: function() { //触发 刷新事件
     console.log('pull down refresh !');
-    
+
   },
-  onReachBottom:function(obj){  //拉到底部了，触发了 加载更多事件
+  onReachBottom: function(obj) { //拉到底部了，触发了 加载更多事件
     console.log('to load more something ');
   },
-  onPageScroll:function(obj){   //页面滑动事件
-   
+  onPageScroll: function(obj) { //页面滑动事件
+
     var temp = this.data.contentTypeTopClass;
-    if(obj.scrollTop>= 460){
+    if (obj.scrollTop >= 460) {
       temp = '';
-    }else{
+    } else {
       temp = 'search-blur';
     }
     this.setData({
-      contentTypeTopClass:temp
+      contentTypeTopClass: temp
     });
   },
   inputQuery: function(event) { // 搜索输入框 输入事件 被动调用
@@ -333,74 +446,84 @@ Page({
       title: obj.name,
     })
   },
-  bindChannelTap(event){
+  bindChannelTap(event) {
     var channel = event.currentTarget.dataset.channel;
     wx.showToast({
       title: channel.name,
     })
 
   },
-  bindTypeTap: function(event){
+  bindTypeTap: function(event) {
     var tap = event.currentTarget.dataset.type;
     var name = "最新发布"
-    switch(tap){
+    switch (tap) {
       case 'publish':
         name = "最新发布";
-      this.setData({
-        contenTypeNewestPublish: 'selected-text',
-        contentTypeNewestReply: '',
-        contentTypeMostZan: '',
-        contentTypeMostShare: '',
-      });
-      break;
+        this.setData({
+          contenTypeNewestPublish: 'selected-text',
+          contentTypeNewestReply: '',
+          contentTypeMostZan: '',
+          contentTypeMostShare: '',
+        });
+        break;
       case 'reply':
-      name = '最新回复';
+        name = '最新回复';
         this.setData({
           contenTypeNewestPublish: '',
           contentTypeNewestReply: 'selected-text',
           contentTypeMostZan: '',
           contentTypeMostShare: '',
         });
-      break;
+        break;
       case 'zan':
-      name = '最多点赞';
+        name = '最多点赞';
         this.setData({
           contenTypeNewestPublish: '',
           contentTypeNewestReply: '',
           contentTypeMostZan: 'selected-text',
           contentTypeMostShare: '',
         });
-      break;
+        break;
       case 'share':
-      name = '最多分享';
+        name = '最多分享';
         this.setData({
           contenTypeNewestPublish: '',
           contentTypeNewestReply: '',
           contentTypeMostZan: '',
           contentTypeMostShare: 'selected-text',
         });
-      break;
+        break;
     }
     wx.showToast({
       title: name,
     })
   },
-  bindTapPerson :function(event){   // 发布人被点击
-   var person= event.currentTarget.dataset.person;
-   wx.showToast({
-     title: person,
-   })
+  bindTapPerson: function(event) { // 发布人被点击
+    var person = event.currentTarget.dataset.person;
+    console.log(person);
   },
-  tapContact: function(event){  //联系Ta
+  tapContact: function(event) { //联系Ta
     var phone = event.currentTarget.dataset.phone;
-    wx.showToast({
-      title: phone,
-    })
+    console.log(phone);
   },
-  tapContent :function(event){
-    var conetnt = event.currentTarget.dataset.content;
-    wx.showToast({
-      title: conetnt,
-    })
+  tapContent: function(event) { //内容记录被点击
+    var record = event.currentTarget.dataset.record;
+   console.log(record);
+  },
+  tapZan: function(event){ // 赞被点击
+    var record = event.currentTarget.dataset.record;
+    console.log('zan');
+  },
+  tapContentShare:function(event){  //分享被点击
+    var record = event.currentTarget.dataset.record;
+    console.log('share');
+  },
+  tapChannel:function(event){ //频道被点击
+    var record = event.currentTarget.dataset.record;
+    console.log(record.channel);
+  },
+  tapRecordFunction: function(event){ //功能被点击
+    var fun = event.currentTarget.dataset.fun;
+    console.log(fun);
   }
 })
