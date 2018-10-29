@@ -1,0 +1,23 @@
+<view id='container'>
+
+
+  <view id='container-fun'>
+    <block wx:for='{{funList}}' wx:for-item='row'>
+      <view class='container-fun-row'>
+        <block wx:for='{{row}}' wx:for-item='fun'>
+          <view class='container-fun-single'>
+            <image class='image-fun' src='{{fun.image}}' bindtap='tapFun' data-fun='{{fun}}'></image>
+            <text class='text-fun' bindtap='tapFun' data-fun='{{fun}}'>{{fun.name}}</text>
+          </view>
+        </block>
+      </view>
+    </block>
+  </view>
+  
+  <view class='shade {{classShade}}'></view>
+
+  <view class='container-channels {{classChannelMenu}}' animation="{{animation}}">
+      <button bindtap='tapCancelChannel'>取消</button>
+  </view>
+
+</view>

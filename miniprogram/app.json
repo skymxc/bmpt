@@ -7,7 +7,9 @@
     "pages/databaseGuide/databaseGuide",
     "pages/addFunction/addFunction",
     "pages/deployFunctions/deployFunctions",
-    "pages/chooseLib/chooseLib"
+    "pages/chooseLib/chooseLib",
+    "pages/publish",
+    "pages/publish/publish"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -15,27 +17,30 @@
     "navigationBarBackgroundColor": "#F6F6F6",
     "navigationBarTitleText": "枣庄便民平台",
     "navigationBarTextStyle": "black",
-    "enablePullDownRefresh":false
+    "enablePullDownRefresh": false
   },
-  "tabBar":{
-    "list":[{
-      "pagePath": "pages/index/index",
-      "text":"同城",
-      "iconPath":"images/tongcheng.png",
-      "selectedIconPath":"images/tongcheng_selected.png"
-    },{
-      "pagePath":"pages/userConsole/userConsole",
-      "text":"发布",
-      "iconPath":"images/fabu.png",
-      "selectedIconPath":"images/fabu_selected.png"
-    },{
-      "pagePath":"pages/storageConsole/storageConsole",
-      "text":"我的",
-      "iconPath":"images/wode.png",
-      "selectedIconPath":"images/wode_selected.png"
-    }
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "同城",
+        "iconPath": "images/tongcheng.png",
+        "selectedIconPath": "images/tongcheng_selected.png"
+      },
+      {
+        "pagePath": "pages/publish/publish",
+        "text": "发布",
+        "iconPath": "images/fabu.png",
+        "selectedIconPath": "images/fabu_selected.png"
+      },
+      {
+        "pagePath": "pages/storageConsole/storageConsole",
+        "text": "我的",
+        "iconPath": "images/wode.png",
+        "selectedIconPath": "images/wode_selected.png"
+      }
     ],
-    "selectedColor":"#056545",
-    "color":"#000000"
+    "selectedColor": "#056545",
+    "color": "#000000"
   }
 }
