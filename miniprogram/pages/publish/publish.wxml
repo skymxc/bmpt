@@ -1,6 +1,6 @@
 <view id='container'>
 
-
+<!-- 功能列表 -->
   <view id='container-fun'>
     <block wx:for='{{funList}}' wx:for-item='row'>
       <view class='container-fun-row'>
@@ -13,11 +13,18 @@
       </view>
     </block>
   </view>
-  
-  <view class='shade {{classShade}}'></view>
 
-  <view class='container-channels {{classChannelMenu}}' animation="{{animation}}">
-      <button bindtap='tapCancelChannel'>取消</button>
+<!-- 遮罩 频道菜单 -->
+  <view class='container-menu {{classShade}}'>
+
+    <view class='shade '></view>
+
+    <view class='container-channels {{classChannelMenu}}' animation="{{animation}}">
+
+      <block wx:for='{{channelList}}' wx:for-item='channel' wx:for-key="channel.id">
+        <view class='container-channel' data-channel='{{channel}}' bindtap='tapChannel'>{{channel.name}}</view>
+      </block>
+      <view class='container-channel bottom-cancel' bindtap='tapCancelChannel'>取消</view>
+    </view>
   </view>
-
 </view>

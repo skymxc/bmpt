@@ -6,7 +6,9 @@ Page({
    */
   data: {
     classShade: 'hide',
-    classChannelMenu: '',
+    classChannelMenu: 'hide',
+    channelList: [],
+    tapFun:{},
     funList: [[{
       name: "招聘",
       id:1,
@@ -23,10 +25,10 @@ Page({
         id: 1,
         image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
         channel: [{
-          name: "全职招聘",
+          name: "全职",
           id: 1
         }, {
-          name: "兼职招聘",
+          name: "兼职",
           id: 2
         }]
     }, {
@@ -34,23 +36,14 @@ Page({
         id: 1,
         image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
         channel: [{
-          name: "全职招聘",
+          name: "全职",
           id: 1
-        }, {
-          name: "兼职招聘",
-          id: 2
         }]
     }, {
         name: "招聘",
         id: 1,
         image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-        channel: [{
-          name: "全职招聘",
-          id: 1
-        }, {
-          name: "兼职招聘",
-          id: 2
-        }]
+        channel: []
     }, {
         name: "招聘",
         id: 1,
@@ -177,23 +170,36 @@ Page({
   onShareAppMessage: function () {
 
   },
-  tapFun: function(event){
+  tapFun: function(event){  //功能被点击
     var fun = event.currentTarget.dataset.fun;
     console.log(fun);
-   
-    this.animation.translateY(-200).step();
+    var length = fun.channel.length;
+    console.log(length);
+    if(length==0){
+      // 直接去 编辑界面
+      return;
+    }
     this.setData({
+      channelList: fun.channel,
+      classChannelMenu:'',
       classShade: '',
-      animation: this.animation.export()
-    })
+      tapFun: fun
+    });
+
+   
 
   },
-  tapCancelChannel:function(event){
-    console.log(event);
-    this.animation.translateY(200).step();
+  tapCancelChannel:function(event){ //取消按钮被点击
     this.setData({
       classShade:'hide',
-      animation: this.animation.export()
+      classChannelMenu:'hide',
+      tapFun:{}
     })
+  },
+  tapChannel: function(event){  //频道 被点击了
+    var channel = event.currentTarget.dataset.channel;
+    var fun = this.data.tapFun;
+    console.log(fun);
+    console.log(channel);
   }
 })
