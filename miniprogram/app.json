@@ -9,7 +9,8 @@
     "pages/deployFunctions/deployFunctions",
     "pages/chooseLib/chooseLib",
     "pages/publish",
-    "pages/publish/publish"
+    "pages/publish/publish",
+    "pages/editPublish/editPublish"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

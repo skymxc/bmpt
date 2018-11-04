@@ -176,7 +176,13 @@ Page({
     var length = fun.channel.length;
     console.log(length);
     if(length==0){
-      // 直接去 编辑界面
+      var param = 'fun_id=' + fun.id + '&fun_name=' + fun.name;
+      wx.navigateTo({
+        url: '../editPublish/editPublish?' + param,
+        fail: function (event) {
+          console.log(event);
+        }
+      })
       return;
     }
     this.setData({
@@ -199,7 +205,11 @@ Page({
   tapChannel: function(event){  //频道 被点击了
     var channel = event.currentTarget.dataset.channel;
     var fun = this.data.tapFun;
-    console.log(fun);
-    console.log(channel);
+    var param = 'fun_id='+fun.id+'&fun_name='+fun.name+'&channel_id='+channel.id+'&channel_name='+channel.name;
+    var url = '../editPublish/editPublish?'+param;
+    console.log(url);
+    wx.navigateTo({
+      url: url
+    })
   }
 })

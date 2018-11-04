@@ -1,0 +1,41 @@
+<!-- <view > -->
+<form id='container' bindsubmit='submit' bindreset='reset'>
+
+  <!-- 输入内容 -->
+  <textarea class="rich-text-content" name="content" focus="true" placeholder="请输入要发布的内容"></textarea>
+  <!-- 图片 -->
+  <view class='container-image'>
+    <block wx:for='{{imageList}}' wx:for-item='image' wx:for-index='index'>
+      <view class='container-image-single '>
+        <image class='image-content' src='{{image.src}}' data-image='{{image}}' bindtap='tapImage'></image>
+        <text class='text-image-uploaded'>{{image.msg}}</text>
+        <image class='image-reduce' src='../../images/quxiao.png' data-image='{{image}}' bindtap='tapImageReduce' data-index='{{index}}'></image>
+      </view>
+    </block>
+
+    <view class='container-image-add {{classAddImage}}'>
+      <image class='image-add' src='../../images/add.png' bindtap='tapAddImage' ></image>
+    </view>
+  </view>
+
+  <!-- 地址 -->
+  <view class='container-address'>
+    <image class='image-address' src='../../images/address.png'></image>
+    <text class='text-address'>{{address.detail}}</text>
+    <image class='image-address-more' src='../../images/more.png' bindtap='tapChooseLocation'></image>
+  </view>
+  
+  <!-- 免责声明 -->
+  <view class='container-clause'>
+    <checkbox-group bindchange='changeCheckboxClause'>
+      <checkbox value='clause'></checkbox>发布信息前请先查看
+      <text class='text-clause' bindtap='tapClause'>免责声明</text>
+    </checkbox-group>
+  </view>
+  <!-- 发布按钮 -->
+  <view class='container-button-publish'>
+    <button class='button-publish' bindtap='tapPublish' form-type='submit'>立即发布</button>
+    <view class='cover-button {{classPublishCover}}'></view>
+  </view>
+</form>
+<!-- </view> -->
