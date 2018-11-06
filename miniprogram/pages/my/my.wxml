@@ -1,0 +1,31 @@
+<view class='container'>
+  <!-- 名称，头像 -->
+  <view class='container-user'>
+    <view class='container-user-wrap'>
+      <image class='image-user' src='{{avatarUrl}}'></image>
+
+      <text class='text-user-name'>{{userInfo.nickName}}</text>
+    </view>
+  </view>
+  <!-- 便民信息 -->
+  <view class='container-bm'>
+    <view class='container-bmmy container-my'>
+      <image class='image-icon-more image-my-icon' src='../../images/fabu.png'></image>
+      <text class='text-bmxx'>枣庄便民信息</text>
+    </view>
+    <view class='container-bmmy' bindtap='tapPublish'>
+      <image class='image-icon-more' src='../../images/more.png'> </image>
+      <text>我的发布</text>
+    </view>
+    <view class='container-bmmy' bindtap='tapComment'>
+      <image class='image-icon-more' src='../../images/more.png'> </image>
+      <text>我的评论</text>
+    </view>
+  </view>
+  <!-- 管理员设置 -->
+
+  <!-- 获取用户信息 -->
+  <view class='container-getuser {{classGetUser}}'>
+    <button  open-type='getUserInfo' bindgetuserinfo='onGetUserInfo'>使用微信登陆</button>
+  </view>
+</view>
