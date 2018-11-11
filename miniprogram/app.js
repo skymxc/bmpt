@@ -6,27 +6,30 @@
 App({
   onLaunch: function (options) {
     console.log('onLaunch  sence - >'+options.scene);
-    // if (!wx.cloud) {
-    //   console.log('请使用 2.2.3 或以上的基础库以使用云能力')
-    // } else {
-    //   wx.cloud.init({
-    //     traceUser: true,
-    //   })
-    // }
+    // 初始化云能力 traceUser:true 记录用户
+    if (!wx.cloud) {
+      console.log('请使用 2.2.3 或以上的基础库以使用云能力')
+    } else {
+      wx.cloud.init({
+        traceUser: true,
+        env:'test-1e9ad8'
+      })
+    }
 
     this.globalData = {}
   },
   onShow: function (options) {
-    console.log('onShow into foreground .');
+    // console.log('onShow into foreground .');
   },
   onHide: function (options){
-    console.log('onHide into background ');
+    // console.log('onHide into background ');
   },
   onError: function (error){
-    console.log('onError occur error :'+error);
+    // console.log('onError occur error :'+error);
   },
   onPageNotFound: function (options){
-    console.log('page not found !!!');
-    console.log('page path->'+options.page);
+    wx.showToast({
+      title: '页面去旅游了，还没有回来',
+    })
   }
 })

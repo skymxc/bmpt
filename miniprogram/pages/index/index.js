@@ -95,7 +95,7 @@ const app = getApp()
  */
 Page({
   data: {
-    avatarUrl: './user-unlogin.png',
+    classAuthorize: 'hide',
     userInfo: {},
     logged: false,
     takeSession: false,
@@ -109,255 +109,191 @@ Page({
     contentTypeMostZan: '',
     contentTypeMostShare: '',
     contentTypeTopClass: 'search-blur',
-    adList: [{
-      image: "http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg",
-      obj: {
-        name: "143912755726"
-      }
-    }, {
-      image: "http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg",
-      obj: {
-        name: "175866434296"
-      }
-    }, {
-      image: "http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg",
-      obj: {
-        name: "175833047715"
-      }
-    }],
-    channelList: [{
-      order: 1,
-      row: [{
-        rowID: 1,
-        channel: [{
-          id: 1,
-          name: "招聘",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-          child: ['兼职', '全职']
-        }, {
-          id: 2,
-          name: "二手",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
-          child: ['汽车', '电脑']
-        }, {
-          id: 2,
-          name: "房屋",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/fangwu.png",
-          child: ['汽车', '电脑']
-        }, {
-          id: 2,
-          name: "教育",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/jiaoyu.png",
-          child: ['汽车', '电脑']
-        }, {
-          id: 2,
-          name: "美食",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/meishi.png",
-          child: ['汽车', '电脑']
-        }]
-      }, {
-        rowID: 2,
-        channel: [{
-          id: 1,
-          name: "装修",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhuangxiu.png",
-          child: ['兼职', '全职']
-        }, {
-          id: 2,
-          name: "娱乐",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/yule.png",
-          child: ['汽车', '电脑']
-        }, {
-          id: 2,
-          name: "综合",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zonghe.png",
-          child: ['汽车', '电脑']
-        }, {
-          id: 2,
-          name: "家政",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/jiazheng.png",
-          child: ['汽车', '电脑']
-        }, {
-          id: 2,
-          name: "招商",
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaoshang.png",
-          child: ['汽车', '电脑']
-        }]
-      }]
-
-
-    }],
-    recordList: [{
-        recordID: 1,
-        person: {
-          image: 'cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaoshang.png',
-          name: 'mxc',
-          phone: '13029248923'
-        },
-        images: [
-          'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-          'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
-          'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg',
-          'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg'
-        ],
-        content: '从广义上讲 数据结构是指一组数据的存储结构。算法就是操作数据的一组方法。数据结构和算法是相辅相成的，数据结构是为算法服务的，算法要作用在特定的数据结构上。数据结构是静态的，它只是组织数据的一种方式',
-        channel: {
-          name: '二级分类',
-          id: 1
-        },
-        function: {
-          name: '所属功能',
-          id: 2
-        },
-        sawNumber: 90,
-        commentNumber: 200,
-        zanNumber: 20,
-        shareNumber: 30,
-        publishTime: '2018/09/12 12:09'
-    }, {
-        recordID: 2,
-        person: {
-          image: 'cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaoshang.png',
-          name: 'mxc',
-          phone:'13813801380'
-        },
-        images: [
-          'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-          'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
-          'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
-        ],
-        content: '从狭义上讲 数据结构是指一组数据的存储结构。算法就是操作数据的一组方法。数据结构和算法是相辅相成的，数据结构是为算法服务的，算法要作用在特定的数据结构上。数据结构是静态的，它只是组织数据的一种方式。',
-        channel: {
-          name: '二级分类',
-          id: 1
-        },
-        function: {
-          name: '所属功能',
-          id: 2
-        },
-        sawNumber: 90,
-        commentNumber: 200,
-        zanNumber: 20,
-        shareNumber: 30,
-        publishTime: '2018/09/12 12:09'
-      }, {
-        recordID: 3,
-        person: {
-          image: 'cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaoshang.png',
-          name: 'mxc',
-          phone: '13813801380'
-        },
-        images: [
-          'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-          'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg'
-        ],
-        content: '数据结构和算法是相辅相成的，数据结构是为算法服务的，算法要作用在特定的数据结构上。数据结构是静态的，它只是组织数据的一种方式。',
-        channel: {
-          name: '二级分类',
-          id: -1
-        },
-        function: {
-          name: '所属功能',
-          id: 2
-        },
-        sawNumber: 90,
-        commentNumber: 200,
-        zanNumber: 20,
-        shareNumber: 30,
-        publishTime: '2018/09/12 12:09'
-      }
-    ]
+    adList: [],
+    funList: [],
+    contentList: [],
+    pageIndex: 0,
+    pageSize: 20
+     
   },
 
   onLoad: function() {
-      console.log(getCurrentPages());
-      console.log('------')
-    
+    var that = this;
+    wx.showLoading({
+      title: '拉取授权信息',
+    })
+    wx.getSetting({
+      success: res => {
+        wx.hideLoading()
+        var pass = res.authSetting['scope.userInfo']
+        if (pass) { //已经授权过了
+          that.setData({
+            classAuthorize: 'hide'
+          })
+          wx.showLoading({
+            title: '正在登陆',
+            mask: true
+          })
+          wx.getUserInfo({ //获取用户信
+            success: res => {
+              that.setData({
+                userInfo: res.userInfo
+              })
+              app.globalData.userInfo = res.userInfo
+              // console.log(app.globalData.userInfo);
+              app.globalData.logged = true;
+              wx.hideLoading()
+              that.login()
+            },
+            fail: err => {
+              wx.hideLoading()
+              wx.showModal({
+                title: '用户信息获取失败！',
+                content: err,
+                showCancel: false
+              })
+            }
 
-    // 获取用户信息
-    
+          })
+
+        } else { //没有授权
+          that.setData({
+            classAuthorize: ''
+          })
+        }
+      }
+    })
+    //调用云函数 login 获取当前用户的 openid
+    // wx.showLoading({
+    //   title: '正在登录',
+    //   mask: true
+    // })
+
+
   },
+  /**
+   * 在拿到授权之后 去 登陆获取 open ID 再去 获取数据
+   */
+  login: function() {
+    // 登陆 获取 openID
+    var that = this;
+    wx.showLoading({
+      title: '正在登录',
+      mask: true
+    })
+    wx.cloud.callFunction({
+      name: 'login'
+    }).then(res => {
+      app.globalData.openid = res.openid
+      wx.hideLoading()
+      // 获取数据
+      that.getData();
+    }).catch(err => {
+      wx.hideLoading()
+      wx.showModal({
+        title: '登陆失败！',
+        content: err,
+      })
+    })
+  },
+  /**
+   * 登陆成功之后去 获取数据
+   */
+  getData: function() {
+    const db = wx.cloud.database();
+    var that = this;
+    //获取广告
+    db.collection('advertising').get().then(res => {
+      that.setData({
+        adList: res.data
+      })
+    })
+    // 获取 功能区信息
+    db.collection('function').get().then(res => {
+      var funList = that.funConvert(res.data);
+      that.setData({
+        funList: funList
+      })
 
+    })
+    // 获取 所有的 信息 按照 发布时间排序
+    db.collection('content').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
+
+      that.setData({
+        contentList: res.data,
+        pageIndex: that.data.pageIndex+1
+      })
+
+    }).catch(err => {
+      wx.showModal({
+        title: '内容加载失败！',
+        content: err,
+        showCancel: false
+      })
+    })
+  },
+  onReady: function() {
+
+
+
+  },
+  /**
+   * 将在服务器获取的功能列表 转换为 页面渲染所需的 数组
+   */
+  funConvert: function(data) {
+    var funList = []
+    if (data.length <= 10) {
+      var fun = {
+        index: 0,
+        data: data
+      }
+      funList[0] = fun
+      return funList;
+    }
+    //渲染数组需要几个
+    var num = Math.floor(data.length / 10); //下舍入 取整
+
+
+    if (Math.floor(data.length / 10) != (data.length / 10)) { //如果 不是整数 那么 就需要再加一个
+      num++
+    }
+
+    var index = 0;
+    for (var i = 0; i < num; i++) {
+      var tempData = []
+      for (var k = 0; k < 10; k++) {
+        if (index < data.length) {
+          tempData[k] = data[index]
+        } else {
+          break
+        }
+        index++
+
+      }
+      var fun = {
+        index: i,
+        data: tempData
+      }
+      funList[i] = fun;
+    }
+    return funList
+  },
+  /**
+   * 在用户授权之后 会自动回掉 此方法
+   */
   onGetUserInfo: function(e) {
-    // if (!this.logged && e.detail.userInfo) {
-    //   this.setData({
-    //     logged: true,
-    //     avatarUrl: e.detail.userInfo.avatarUrl,
-    //     userInfo: e.detail.userInfo
-    //   })
-    // }
+
+    this.setData({
+      logged: true,
+      avatarUrl: e.detail.userInfo.avatarUrl,
+      userInfo: e.detail.userInfo
+    })
+    app.globalData.userInfo = e.detail.userInfo;
+    app.globalData.logged = true;
+    this.login();
+
   },
 
-  onGetOpenid: function() {
-    // 调用云函数
-    // wx.cloud.callFunction({
-    //   name: 'login',
-    //   data: {},
-    //   success: res => {
-    //     console.log('[云函数] [login] user openid: ', res.result.openid)
-    //     app.globalData.openid = res.result.openid
-    //     wx.navigateTo({
-    //       url: '../userConsole/userConsole',
-    //     })
-    //   },
-    //   fail: err => {
-    //     console.error('[云函数] [login] 调用失败', err)
-    //     wx.navigateTo({
-    //       url: '../deployFunctions/deployFunctions',
-    //     })
-    //   }
-    // })
-  },
-
-  // 上传图片
-  doUpload: function() {
-    // 选择图片
-    // wx.chooseImage({
-    //   count: 1,
-    //   sizeType: ['compressed'],
-    //   sourceType: ['album', 'camera'],
-    //   success: function (res) {
-
-    //     wx.showLoading({
-    //       title: '上传中',
-    //     })
-
-    //     const filePath = res.tempFilePaths[0]
-
-    //     // 上传图片
-    //     const cloudPath = 'my-image' + filePath.match(/\.[^.]+?$/)[0]
-    //     wx.cloud.uploadFile({
-    //       cloudPath,
-    //       filePath,
-    //       success: res => {
-    //         console.log('[上传文件] 成功：', res)
-
-    //         app.globalData.fileID = res.fileID
-    //         app.globalData.cloudPath = cloudPath
-    //         app.globalData.imagePath = filePath
-
-    //         wx.navigateTo({
-    //           url: '../storageConsole/storageConsole'
-    //         })
-    //       },
-    //       fail: e => {
-    //         console.error('[上传文件] 失败：', e)
-    //         wx.showToast({
-    //           icon: 'none',
-    //           title: '上传失败',
-    //         })
-    //       },
-    //       complete: () => {
-    //         wx.hideLoading()
-    //       }
-    //     })
-
-    //   },
-    //   fail: e => {
-    //     console.error(e)
-    //   }
-    // })
-  },
   onPullDownRefresh: function() { //触发 刷新事件
     console.log('pull down refresh !');
 
@@ -366,9 +302,16 @@ Page({
     console.log('to load more something ');
   },
   onPageScroll: function(obj) { //页面滑动事件
-
+    var distance = 460
+    if (this.data.adList.length == 0) { //广告模块
+      distance -= 150
+    }
+    if (this.data.funList.length == 0) { //功能模块
+      distance -= 200
+    }
+    console.log(distance)
     var temp = this.data.contentTypeTopClass;
-    if (obj.scrollTop >= 460) {
+    if (obj.scrollTop >= distance) {
       temp = '';
     } else {
       temp = 'search-blur';
@@ -430,9 +373,10 @@ Page({
     })
   },
   bindChannelTap(event) {
-    var channel = event.currentTarget.dataset.channel;
+    var channel = event.currentTarget.dataset.fun;
+    //  navigation to fun detial list
     wx.showToast({
-      title: channel.name,
+      title: channel.fun_name,
     })
 
   },
@@ -484,29 +428,52 @@ Page({
   bindTapPerson: function(event) { // 发布人被点击
     var person = event.currentTarget.dataset.person;
     console.log(person);
+    // todo 去 个人主页
   },
   tapContact: function(event) { //联系Ta
     var phone = event.currentTarget.dataset.phone;
-    console.log(phone);
+    wx.showModal({
+      title: '温馨提示',
+      content: '你将要拨打电话：'+phone,
+      success:function(res){
+        if(res.confirm){
+          wx.makePhoneCall({
+            phoneNumber: phone //仅为示例，并非真实的电话号码
+          })
+        }
+      }
+    })
+   
   },
   tapContent: function(event) { //内容记录被点击
     var record = event.currentTarget.dataset.record;
-   console.log(record);
+    console.log(record);
   },
-  tapZan: function(event){ // 赞被点击
+  tapZan: function(event) { // 赞被点击
     var record = event.currentTarget.dataset.record;
     console.log('zan');
   },
-  tapContentShare:function(event){  //分享被点击
+  tapContentShare: function(event) { //分享被点击
     var record = event.currentTarget.dataset.record;
     console.log('share');
   },
-  tapChannel:function(event){ //频道被点击
+  tapChannel: function(event) { //频道被点击
     var record = event.currentTarget.dataset.record;
-    console.log(record.channel);
+    console.log(record.channel_name);
   },
-  tapRecordFunction: function(event){ //功能被点击
+  tapRecordFunction: function(event) { //功能被点击
     var fun = event.currentTarget.dataset.fun;
     console.log(fun);
+  },
+  /**
+   * 图片被 点击 预览图片
+   */
+  tapImage: function(event){
+    var images = event.currentTarget.dataset.images;
+    var url = event.currentTarget.dataset.url;
+    wx.previewImage({
+      urls: images,
+      current:url
+    })
   }
 })

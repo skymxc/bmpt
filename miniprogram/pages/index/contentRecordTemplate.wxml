@@ -1,34 +1,35 @@
 <template name='recordTemplate' data="{{record}}">
+
   <view class='class-background-white container-content'>
     <!-- 头像部分 -->
     <view class='container-content-person'>
-      <image src='{{record.person.image}}' class='content-person-image' bindtap='bindTapPerson' data-person='{{record.person}}'></image>
-      <view class='container-profile' bindtap='bindTapPerson' data-person='{{record.person}}'>
-        <text class='text-person-name'>{{record.person.name}}</text>
-        <text class='text-time'> {{record.publishTime}}</text>
+      <image src='' style='background-image:url({{record.user.avatar_url}})' class='content-person-image' bindtap='bindTapPerson' data-person='{{record.user}}'></image>
+      <view class='container-profile' bindtap='bindTapPerson' data-person='{{record.user}}'>
+        <text class='text-person-name'>{{record.user.nick_name}}</text>
+        <text class='text-time'> {{record.create_date_str}}</text>
       </view>
-      <text  class='text-person-contact' bindtap='tapContact' data-phone='{{record.person.phone}}'>联系Ta</text>
+      <text class='text-person-contact' bindtap='tapContact' data-phone='{{record.phone}}'>联系Ta</text>
     </view>
     <!-- 文本部分 -->
     <view class='container-text'>
-      <text class='text-type-bracket' bindtap='tapRecordFunction' data-fun='{{record.function}}'>#{{record.function.name}}</text>
+      <text class='text-type-bracket' bindtap='tapRecordFunction' data-fun='{{record.fun_id}}'>#{{record.fun_name}}</text>
       <!-- 没有类型则不显示 -->
-      <text  wx:if='{{record.channel.id > 0}}' class='text-type-interval {{classTypeInterval}}' data-record='{{record}}' bindtap='tapChannel'>@{{record.channel.name}}</text>
+      <text wx:if='{{record.channel_name }}' class='text-type-interval {{classTypeInterval}}' data-record='{{record}}' bindtap='tapChannel'>@{{record.channel_name}}</text>
       <text class='text-type-bracket'>#</text>
       <text class='text-content' bindtap='tapContent' data-record='{{record}}'>{{record.content}}</text>
     </view>
     <!-- 图片部分 -->
-    
+
     <view class='container-image' wx:if='{{record.images.length >0 }}'>
       <view class='container-image-single'>
-        <image class='image-content' src='{{record.images[0]}}'></image>
+        <image class='image-content' src='{{record.images[0]}}' data-images='{{record.images}}' bindtap='tapImage' data-url='{{record.images[0]}}'></image>
       </view>
       <view class='container-image-single' wx:if='{{record.images.length > 1 }}'>
-        <image class='image-content' src='{{record.images[1]}}'></image>
+        <image class='image-content' src='{{record.images[1]}}'  data-images='{{record.images}}' bindtap='tapImage' data-url='{{record.images[1]}}'></image>
       </view>
       <view class='container-image-single container-image-more'>
-        <image class='image-content' src='{{record.images[2]}}' wx:if='{{record.images.length > 2 }}'></image>
-        <view class='container-more ' wx:if='{{record.images.length >3}}'>
+        <image class='image-content' src='{{record.images[2]}}' wx:if='{{record.images.length > 2 }}'  data-images='{{record.images}}' bindtap='tapImage' data-url='{{record.images[2]}}'></image>
+        <view class='container-more ' wx:if='{{record.images.length >3}}'  data-images='{{record.images}}' bindtap='tapImage' data-url='{{record.images[2]}}'>
           <text class='text-image-more-number'>+ {{record.images.length -3}}</text>
         </view>
       </view>
@@ -38,21 +39,21 @@
     <!-- 地址部分 -->
     <view class='container-address'>
       <image class='image-address' src='../../images/address.png'></image>
-      <text class='text-address'>{{record.address}} </text>
+      <text class='text-address'>{{record.address.address }}{{record.address.name}} </text>
     </view>
     <!-- 功能部分 -->
     <view class='container-tool'>
       <view class='container-tool-single'>
         <image class='image-tool' src='../../images/saw.png'></image>
-        <text class='text-tool'>{{record.sawNumber}}</text>
+        <text class='text-tool'>{{record.view_num}}</text>
       </view>
       <view class='container-tool-single' bindtap='tapContent' data-record='{{record}}'>
         <image class='image-tool' src='../../images/comment.png'></image>
-        <text class='text-tool'>{{record.commentNumber}}</text>
+        <text class='text-tool'>{{record.comment_num}}</text>
       </view>
       <view class='container-tool-single' bindtap='tapZan' data-record='{{record}}'>
         <image class='image-tool' src='../../images/zan.png'></image>
-        <text class='text-tool'>{{record.zanNumber}}</text>
+        <text class='text-tool'>{{record.agree_num}}</text>
       </view>
       <view class='container-tool-single' bindtap='tapContentShare' data-record='{{record}}'>
         <image class='image-tool' src='../../images/share.png'></image>

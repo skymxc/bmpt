@@ -1,4 +1,7 @@
 /**index.wxss**/
+@import '../../app.wxss';
+
+
 
 page {
   background: #f6f6f6;
@@ -154,43 +157,37 @@ page {
   width: 100%;
   height: 90%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* 频道行 */
-
-.container-channel-row {
-  width: 90%;
-  height: 95%;
-  flex: 1;
-  display: flex;
   flex-direction: row;
+  flex-wrap:wrap;
 }
+
 
 /* 频道块 */
 
 .container-channel-real {
-  flex: 1;
-  padding: 10rpx;
+  width: 20%;
+  height: 45%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 /* 频道图标 */
 
 .image-channel {
-  flex: 1;
-  width: 90%;
-  padding: 10rpx;
+  height: 80%;
+  width: 80%;
+  
 }
 
 /* 频道文字 */
 
 .text-channel {
-  color: #0063ce;
+  
   font-size: 25rpx;
+  height: 20%;
+  display: inline-block;
 }
 
 .class-background-white {
@@ -244,4 +241,46 @@ page {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+/* 授权 遮罩 */
+.container-authorize{
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height:100%;
+  background-color: rgba(0, 0, 0, 0.404);
+ 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrap-authorize{
+  height: 300rpx;
+  width: 500rpx; 
+  background-color: white;
+  border: 1rpx white white;
+  border-radius: 15rpx;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-text-authorize{
+  padding: 10rpx;
+  color: #000;
+  flex: 1;
+  text-align: center;
+  font-size: 30rpx;
+}
+
+.button-authorize{
+  margin: 5%;
+  width: 90%;
+}
+
+.hide{
+  display: none;
 }

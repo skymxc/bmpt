@@ -21,6 +21,9 @@
 .content-person-image {
   width: 40px;
   height: 40px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  border-radius: 40rpx;
 }
 
 /* 用户名 容器*/
@@ -159,7 +162,7 @@ white-space: nowrap;
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: bottom;
-  font-size: 20px;
+  font-size: 15px;
   margin-left: 10px;
 }
 

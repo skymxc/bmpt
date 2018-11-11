@@ -24,18 +24,18 @@
 
 
       <!-- 没有获取到焦点时 -->
-      <view class='{{ class_search_label }}search_label' bindtap='showSearch'>
+      <view class='{{ class_search_label }} search_label' bindtap='showSearch'>
         <icon type="search" size="15"></icon>
         <text class='search_label_text'>搜索</text>
       </view>
     </view>
 
     <!--广告位 -->
-    <view id='container-ad'>
+    <view id='container-ad' wx:if='{{adList.length > 0}}'>
       <swiper id='swiper-ad' autoplay='true' indicator-dots='true' interval='2000' circular='true' bindchange='bindADChange'>
-        <block wx:for="{{adList}}">
+        <block wx:for="{{adList}}" wx:key='_id'>
           <swiper-item>
-            <image class='image-ad' src='{{item.image}}' data-obj="{{item.obj}}" bindtap='bindADTap'></image>
+            <image class='image-ad' src='{{item.image}}' data-obj="{{item._id}}" bindtap='bindADTap'></image>
           </swiper-item>
         </block>
       </swiper>
@@ -44,27 +44,23 @@
     </view>
 
     <!-- 频道 -->
-    <view id='container-channel' class='class-background-white'>
+    <view id='container-channel' class='class-background-white' wx:if='{{funList.length > 0 }}'>
       <swiper id='swiper-channel' indicator-dots='true'>
         <!-- 几页 -->
-        <block wx:for="{{channelList}}" wx:for-item="channelPage">
+        <block wx:for="{{funList}}" wx:for-item="page" wx:key='index'>
           <swiper-item>
-            <view class='container-swiper-page page-{{channelPage.order}}'>
+            <view class='container-swiper-page page-{{page.index}}'>
 
-              <!-- 几行 -->
-              <block wx:for="{{channelPage.row}}" wx:for-item="pageRow">
-                <view class='container-channel-row row-{{pageRow.rowID}}'>
 
-                  <!-- 几个 -->
-                  <block wx:for="{{pageRow.channel}}" wx:for-item="channel">
-                    <view class='container-channel-real channel-{{channel.id}}'>
-                      <image class='image-channel' src='{{channel.image}}' bindtap='bindChannelTap' data-channel='{{channel}}'></image>
-                      <text class='text-channel'>{{channel.name}}</text>
-                    </view>
-                  </block>
-
+              <!-- 几个 -->
+              <block wx:for="{{page.data}}" wx:for-item="fun" wx:key='_id'>
+                <view class='container-channel-real'>
+                  <image class='image-channel' src='{{fun.fun_icon}}' bindtap='bindChannelTap' data-fun='{{fun}}' mode='aspectFit'></image>
+                  <text class='text-channel'>{{fun.fun_name}}</text>
                 </view>
               </block>
+
+
 
 
             </view>
@@ -76,7 +72,7 @@
     </view>
 
     <!-- 线条 -->
-    <view id='interval-line'></view>
+    <view id='interval-line' wx:if='{{funList.length > 0 }}'></view>
     <!-- 计数 -->
     <view id='container-num' class='class-background-white'>
       <text id='text-num'>浏览：{{browseNum}}  发布：{{publishNum}}  分享：{{shareNum}}</text>
@@ -88,13 +84,24 @@
     </view>
     <!-- 内容 -->
     <view id='container-record'>
-    
+
       <import src='contentRecordTemplate.wxml' />
-      <block wx:for='{{recordList}}' wx:for-item="record" wx:key='record.recordID'>
-        <template is = 'recordTemplate' data='{{record}}'/>
+      <block wx:for='{{contentList}}' wx:for-item="record" wx:key='_id'>
+        <template is='recordTemplate' data='{{record}}' />
       </block>
     </view>
 
+
+  </view>
+
+  <view class='container-authorize {{classAuthorize}}'>
+    <view class='wrap-authorize'>
+      <view class='container-text-authorize'>
+      <text >便民平台需要获取您的用户信息以方便您的使用,务必在稍后授权</text>
+      </view>
+      
+      <button class='button-authorize' open-type='getUserInfo' bindgetuserinfo='onGetUserInfo' type='primary' >确定</button>
+    </view>
 
   </view>
 </view>
