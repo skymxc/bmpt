@@ -1,0 +1,13 @@
+/* miniprogram/pages/disclaimer/disclaimer.wxss */
+page{
+  background-color:gainsboro;
+}
+.container-content{
+  background-color: white;
+  text-align: center;
+  min-height: 200rpx;
+  width: 100%;
+}
+.button-read{
+  margin: 20rpx;
+}

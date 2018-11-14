@@ -5,7 +5,7 @@
 // 我们还可以自己添加 属性； 
 App({
   onLaunch: function (options) {
-    console.log('onLaunch  sence - >'+options.scene);
+    console.log('onLaunch  sence - >');
     // 初始化云能力 traceUser:true 记录用户
     if (!wx.cloud) {
       console.log('请使用 2.2.3 或以上的基础库以使用云能力')
@@ -15,7 +15,7 @@ App({
         env:'test-1e9ad8'
       })
     }
-
+ 
     this.globalData = {}
   },
   onShow: function (options) {

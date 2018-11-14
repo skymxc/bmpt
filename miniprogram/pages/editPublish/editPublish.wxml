@@ -2,7 +2,7 @@
 <form id='container' bindsubmit='submit' bindreset='reset'>
 
   <!-- 输入内容 -->
-  <textarea class="rich-text-content" name="content" focus="true" placeholder="请输入要发布的内容"></textarea>
+  <textarea class="rich-text-content" name="content" focus="true" placeholder="请输入要发布的内容" ></textarea>
   <!-- 图片 -->
   <view class='container-image'>
     <block wx:for='{{imageList}}' wx:for-item='image' wx:for-index='index'>
@@ -14,17 +14,24 @@
     </block>
 
     <view class='container-image-add {{classAddImage}}'>
-      <image class='image-add' src='../../images/add.png' bindtap='tapAddImage' ></image>
+      <image class='image-add' src='../../images/add.png' bindtap='tapAddImage'></image>
     </view>
   </view>
 
   <!-- 地址 -->
-  <view class='container-address'>
+  <view class='container-address' bindtap='tapChooseLocation'>
     <image class='image-address' src='../../images/address.png'></image>
-    <text class='text-address'>{{address.detail}}</text>
+    <text class='text-address'>{{address.address }} {{address.name}}</text>
     <image class='image-address-more' src='../../images/more.png' bindtap='tapChooseLocation'></image>
   </view>
-  
+
+  <!-- 电话-->
+  <view class='container-address'>
+    <image class='image-address' src='../../images/address.png'></image>
+    <input class='input-phone' placeholder='这里输入联系电话' name='phone' maxlength='11' type='number'></input>
+    <button class='button-phone-default' open-type='getPhoneNumber' bindgetphonenumber="getPhoneNumber">使用默认</button>
+  </view>
+
   <!-- 免责声明 -->
   <view class='container-clause'>
     <checkbox-group bindchange='changeCheckboxClause'>

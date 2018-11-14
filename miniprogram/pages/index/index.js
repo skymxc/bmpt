@@ -135,11 +135,13 @@ Page({
             mask: true
           })
           wx.getUserInfo({ //获取用户信
-            success: res => {
+            success: response => {
+              
               that.setData({
-                userInfo: res.userInfo
+                userInfo: response.userInfo
               })
-              app.globalData.userInfo = res.userInfo
+              
+              app.globalData.userInfo = response.userInfo;
               // console.log(app.globalData.userInfo);
               app.globalData.logged = true;
               wx.hideLoading()
@@ -184,7 +186,9 @@ Page({
     wx.cloud.callFunction({
       name: 'login'
     }).then(res => {
-      app.globalData.openid = res.openid
+      console.log(res)
+      app.globalData.openid = res.result.openid
+      console.log(app.globalData)
       wx.hideLoading()
       // 获取数据
       that.getData();
@@ -282,12 +286,13 @@ Page({
    * 在用户授权之后 会自动回掉 此方法
    */
   onGetUserInfo: function(e) {
-
+    console.log(e);
     this.setData({
       logged: true,
       avatarUrl: e.detail.userInfo.avatarUrl,
-      userInfo: e.detail.userInfo
-    })
+      userInfo: e.detail.userInfo,
+      classAuthorize:'hide'
+    });
     app.globalData.userInfo = e.detail.userInfo;
     app.globalData.logged = true;
     this.login();

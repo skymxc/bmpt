@@ -78,7 +78,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  height: 400rpx;
+  height: 450rpx;
   background-color: white;
   overflow: hidden;
 }
@@ -172,4 +172,14 @@
   height: 50rpx;
   margin-left: 10rpx;
   margin-right: 10rpx;
+}
+
+/* 电话 */
+.input-phone{
+  flex: 1;
+}
+.button-phone-default{
+  color: gray;
+  width: 150rpx;
+  display: none;
 }

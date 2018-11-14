@@ -1,0 +1,5 @@
+
+  <view class='container-content'>
+  <text>{{content}}</text>
+  </view>
+  <button class='button-read' type='primary' bindtap='tapRead'>我已阅读</button>

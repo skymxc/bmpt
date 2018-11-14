@@ -1,4 +1,5 @@
 // miniprogram/pages/publish/publish.js
+const app = getApp()
 Page({
 
   /**
@@ -8,205 +9,124 @@ Page({
     classShade: 'hide',
     classChannelMenu: 'hide',
     channelList: [],
-    tapFun:{},
-    funList: [[{
-      name: "招聘",
-      id:1,
-      image:"cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-      channel:[{
-        name:"全职招聘",
-        id:1
-        },{
-          name:"兼职招聘",
-          id:2
-        }]
-    }, {
-        name: "招聘",
-        id: 1,
-        image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-        channel: [{
-          name: "全职",
-          id: 1
-        }, {
-          name: "兼职",
-          id: 2
-        }]
-    }, {
-        name: "招聘",
-        id: 1,
-        image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-        channel: [{
-          name: "全职",
-          id: 1
-        }]
-    }, {
-        name: "招聘",
-        id: 1,
-        image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-        channel: []
-    }, {
-        name: "招聘",
-        id: 1,
-        image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-        channel: [{
-          name: "全职招聘",
-          id: 1
-        }, {
-          name: "兼职招聘",
-          id: 2
-        }]
-    }], [{
-        name: "招聘",
-        id: 1,
-        image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-        channel: [{
-          name: "全职招聘",
-          id: 1
-        }, {
-          name: "兼职招聘",
-          id: 2
-        }]
-    }, {
-          name: "招聘",
-          id: 1,
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-          channel: [{
-            name: "全职招聘",
-            id: 1
-          }, {
-            name: "兼职招聘",
-            id: 2
-          }]
-    }, {
-          name: "招聘",
-          id: 1,
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-          channel: [{
-            name: "全职招聘",
-            id: 1
-          }, {
-            name: "兼职招聘",
-            id: 2
-          }]
-    }, {
-          name: "招聘",
-          id: 1,
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-          channel: [{
-            name: "全职招聘",
-            id: 1
-          }, {
-            name: "兼职招聘",
-            id: 2
-          }]
-    }, {
-          name: "招聘",
-          id: 1,
-          image: "cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
-          channel: [{
-            name: "全职招聘",
-            id: 1
-          }, {
-            name: "兼职招聘",
-            id: 2
-          }]
-    }]]
+    tapFun: {},
+    funList: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
 
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
     this.animation = wx.createAnimation({
       duration: 500
+    })
+
+    //获取 功能信息
+    wx.showLoading({
+      title: '加载中',
+      mask :true
+    })
+   const db =  wx.cloud.database();
+   var that =this;
+    db.collection('function').get().then(res=>{
+      that.setData({
+        funList:res.data
+      })
+      wx.hideLoading()
+    }).catch(err=>{
+      wx.showModal({
+        title: '加载异常',
+        content: err
+      })
     })
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   },
-  tapFun: function(event){  //功能被点击
+  tapFun: function(event) { //功能被点击
     var fun = event.currentTarget.dataset.fun;
-    console.log(fun);
-    var length = fun.channel.length;
-    console.log(length);
-    if(length==0){
-      var param = 'fun_id=' + fun.id + '&fun_name=' + fun.name;
-      wx.navigateTo({
-        url: '../editPublish/editPublish?' + param,
-        fail: function (event) {
-          console.log(event);
-        }
-      })
+    
+    if (fun.channel) {
+      this.setData({
+        channelList: fun.channel,
+        classChannelMenu: '',
+        classShade: '',
+        tapFun: fun
+      });
       return;
     }
-    this.setData({
-      channelList: fun.channel,
-      classChannelMenu:'',
-      classShade: '',
-      tapFun: fun
-    });
 
-   
+    var param = 'fun_id=' + fun._id + '&fun_name=' + fun.fun_name;
+    wx.navigateTo({
+      url: '../editPublish/editPublish?' + param,
+      fail: function (event) {
+        console.log(event);
+      }
+    })
+
+    
+
+
 
   },
-  tapCancelChannel:function(event){ //取消按钮被点击
+  tapCancelChannel: function(event) { //取消按钮被点击
     this.setData({
-      classShade:'hide',
-      classChannelMenu:'hide',
-      tapFun:{}
+      classShade: 'hide',
+      classChannelMenu: 'hide',
+      tapFun: {}
     })
   },
-  tapChannel: function(event){  //频道 被点击了
+  tapChannel: function(event) { //频道 被点击了
     var channel = event.currentTarget.dataset.channel;
     var fun = this.data.tapFun;
-    var param = 'fun_id='+fun.id+'&fun_name='+fun.name+'&channel_id='+channel.id+'&channel_name='+channel.name;
-    var url = '../editPublish/editPublish?'+param;
+    var param = 'fun_id=' + fun._id + '&fun_name=' + fun.fun_name + '&channel=' + channel;
+    var url = '../editPublish/editPublish?' + param;
     console.log(url);
     wx.navigateTo({
       url: url

@@ -11,7 +11,8 @@
     "pages/publish",
     "pages/publish/publish",
     "pages/editPublish/editPublish",
-    "pages/my/my"
+    "pages/my/my",
+    "pages/disclaimer/disclaimer"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

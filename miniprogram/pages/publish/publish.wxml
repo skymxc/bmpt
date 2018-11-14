@@ -1,28 +1,26 @@
 <view id='container'>
 
-<!-- 功能列表 -->
-  <view id='container-fun'>
-    <block wx:for='{{funList}}' wx:for-item='row'>
-      <view class='container-fun-row'>
-        <block wx:for='{{row}}' wx:for-item='fun'>
-          <view class='container-fun-single'>
-            <image class='image-fun' src='{{fun.image}}' bindtap='tapFun' data-fun='{{fun}}'></image>
-            <text class='text-fun' bindtap='tapFun' data-fun='{{fun}}'>{{fun.name}}</text>
-          </view>
-        </block>
+  <!-- 功能列表 -->
+  <view id='container-fun' wx:if='{{funList.length>0}}'>
+    <block wx:for='{{funList}}' wx:for-item='fun' wx:key='_id'>
+
+      <view class='container-fun-single'>
+        <image class='image-fun' src='{{fun.fun_icon}}' bindtap='tapFun' data-fun='{{fun}}'></image>
+        <text class='text-fun' bindtap='tapFun' data-fun='{{fun}}'>{{fun.fun_name}}</text>
       </view>
+
     </block>
   </view>
 
-<!-- 遮罩 频道菜单 -->
+  <!-- 遮罩 频道菜单 -->
   <view class='container-menu {{classShade}}'>
 
     <view class='shade '></view>
 
     <view class='container-channels {{classChannelMenu}}' animation="{{animation}}">
 
-      <block wx:for='{{channelList}}' wx:for-item='channel' wx:for-key="channel.id">
-        <view class='container-channel' data-channel='{{channel}}' bindtap='tapChannel'>{{channel.name}}</view>
+      <block wx:for='{{channelList}}' wx:for-item='channel' wx:key="channel">
+        <view class='container-channel' data-channel='{{channel}}' bindtap='tapChannel'>{{channel}}</view>
       </block>
       <view class='container-channel bottom-cancel' bindtap='tapCancelChannel'>取消</view>
     </view>
