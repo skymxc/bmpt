@@ -8,7 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    classPublishCover: '',
+    classPublishCover: 'hide',
     classAddImage: '',
     imageList: [],
     imageCount: 6,
@@ -16,7 +16,7 @@ Page({
     fun_id: '',
     fun_name: '',
     channel: '',
-    phone:''
+    phone: ''
   },
   /**
    * 生命周期函数--监听页面加载
@@ -155,23 +155,20 @@ Page({
         console.log(res)
         var files = res.tempFilePaths;
         var length = files.length;
-        var data = [];
+
         for (var i = 0; i < length; i++) {
           var file = files[i];
           var index = oldLength + i;
           var image = {
             src: file,
             msg: '上传中',
-            upload: false
+            upload: false,
+            fileid: ''
           };
-          data[i] = image;
+
           images[index] = image;
-
-
-
+          target.uploadFile(image, index);
         }
-        target.uploadFile(data, oldLength)
-
 
         target.setData({
           imageList: images
@@ -189,59 +186,52 @@ Page({
   /**
    * 将文件上传
    */
-  uploadFile: function(data, oldLength) {
-    console.log(data)
-    var length = data.length;
+  uploadFile: function(image, index) {
     var that = this;
     var images = this.data.imageList;
+    var file = image.src;
+    var split = file.split('.');
+    //时间戳
+    var time = new Date().getTime();
+    var cloudName = app.globalData.openid + '_' + time + '.' + split[split.length - 1];
 
-    for (var i = 0; i < length; i++) {
-      var file = data[i].src;
-      var split = file.split('.');
-      //时间戳
-      var time = new Date().getTime();
-      var index = oldLength + i;
-      var cloudName = app.globalData.openid + '_' + time + '.' + split[split.length - 1];
-
-      wx.cloud.uploadFile({
-        cloudPath: 'image/content/' + cloudName,
-        filePath: file,
-        success: res => {
-          if (res.statusCode == 200) {
-            var fileid = res.fileID;
-            var image = {
-              src: file,
-              msg: '已上传',
-              fileid: fileid,
-              upload: true
-            };
-            images[index] = image;
-            that.setData({
-              imageList: images
-            });
-            
-          }
-
-        },
-        fail: err => {
-          var image = {
-            src: data[i].src,
-            msg: '上传失败',
-            upload: false
-          }
+    var uploadTask = wx.cloud.uploadFile({
+      cloudPath: 'image/content/' + cloudName,
+      filePath: file,
+      success: res => {
+        console.log(res);
+        if (res.statusCode == 200) {
+          console.log(image);
+          var fileid = res.fileID;
+          image.fileid = fileid;
+          image.msg='已上传'
+          image.upload = true;
+          console.log(image);
           images[index] = image;
           that.setData({
             imageList: images
-          })
-          wx.showToast({
-            title: err.message,
-          })
-
+          });
+          console.log(that.data.imageList);
         }
-      })
-    }
-    
-   
+      },
+      fail: err => {
+        console.log(err);
+        image.fileid = fileid;
+        image.upload = true;
+        image.msg = '上传失败';
+        images[index] = image;
+        that.setData({
+          imageList: images
+        })
+        wx.showToast({
+          title: err.errMsg,
+        })
+
+      }
+    });
+    console.log(uploadTask);
+
+
 
   },
 
@@ -281,15 +271,16 @@ Page({
     images.splice(index, 1);
     this.setData({
       imageList: images
-    })
+    });
+    this.controlAddImageVisible();
     //删除图片
-    if(image.upload){
+    if (image.upload) {
       wx.cloud.deleteFile({
-        fileList:[image.fileid],
-        success:res=>{
+        fileList: [image.fileid],
+        success: res => {
           console.log(res);
         },
-        fail:err=>{
+        fail: err => {
           console.log(err)
         }
       })
@@ -310,61 +301,66 @@ Page({
       })
       return;
     }
-    var that =this;
+    var that = this;
     const db = wx.cloud.database();
     var date = new Date();
-    var str =date.toDateString();
-    var images= [];
+    var str = date.toDateString();
+    var images = [];
     var length = this.data.imageList.length;
-    for(var i=0;i<length;i++){
-     
+    for (var i = 0; i < length; i++) {
+
       var image = this.data.imageList[i];
-      if(image.upload){
+      if (image.upload) {
         var size = images.length;
 
-          images[size] = image.fileid;
-        
-        
-      
+        images[size] = image.fileid;
+
+
+
       }
     }
     wx.showLoading({
       title: '正在发布',
-      mask:false
+      mask: false
     });
     db.collection('content').add({
-      data:{
-        address:that.data.address,
-        agree_num:0,
-        channel_name:that.data.channel,
-        comment_num:0,
-        conceal:false,
-        content:content,
+      data: {
+        address: that.data.address,
+        agree_num: 0,
+        channel_name: that.data.channel,
+        comment_num: 0,
+        conceal: false,
+        content: content,
         create_date: date,
-        create_date_str:date.toLocaleString(),
-        fun_id:that.data.fun_id,
-        fun_name:that.data.fun_name,
+        create_date_str: date.toLocaleString(),
+        fun_id: that.data.fun_id,
+        fun_name: that.data.fun_name,
         images: images,
-        phone:phone,
-        report_num:0,
-        share_num:0,
-        stick:false,
-        view_num:0,
+        phone: phone,
+        report_num: 0,
+        share_num: 0,
+        stick: false,
+        view_num: 0,
         user: app.globalData.userInfo
       }
-    }).then(res=>{
+    }).then(res => {
       console.log(res)
       wx.hideLoading();
-      
-    }).catch(err=>{
+      wx.switchTab({
+        url: '../index/index',
+        fail: err=>{
+          console.log(err);
+        }
+      })
+    }).catch(err => {
       console.log(err);
       wx.hideLoading();
       wx.showModal({
         title: '发布失败',
         content: err.message,
-        showCancel:false,
-        success:function(res){
-          if(res.confirm){
+        showCancel: false,
+        success: function(res) {
+          if (res.confirm) {
             console.log('confirm')
           }
         }
@@ -390,23 +386,23 @@ Page({
         })
       },
       fail: function(error) {
-        
+
       }
     })
   },
   /**
    * 免责声明
    */
-  tapClause:function(){
-      wx.navigateTo({
-        url: '../disclaimer/disclaimer',
-      })
+  tapClause: function() {
+    wx.navigateTo({
+      url: '../disclaimer/disclaimer',
+    })
   },
   /**
    * 使用 默认微信电话
    */
-  getPhoneNumber:function(){
+  getPhoneNumber: function() {
     //未开放给个人开发者
   }
-  
+
 })

@@ -27,7 +27,7 @@
 
   <!-- 电话-->
   <view class='container-address'>
-    <image class='image-address' src='../../images/address.png'></image>
+    <image class='image-address' src='../../images/phone.png'></image>
     <input class='input-phone' placeholder='这里输入联系电话' name='phone' maxlength='11' type='number'></input>
     <button class='button-phone-default' open-type='getPhoneNumber' bindgetphonenumber="getPhoneNumber">使用默认</button>
   </view>
@@ -35,7 +35,7 @@
   <!-- 免责声明 -->
   <view class='container-clause'>
     <checkbox-group bindchange='changeCheckboxClause'>
-      <checkbox value='clause'></checkbox>发布信息前请先查看
+      <checkbox value='clause' checked='true'></checkbox>发布信息前请先查看
       <text class='text-clause' bindtap='tapClause'>免责声明</text>
     </checkbox-group>
   </view>

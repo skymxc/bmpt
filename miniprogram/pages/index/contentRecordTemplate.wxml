@@ -3,9 +3,9 @@
   <view class='class-background-white container-content'>
     <!-- 头像部分 -->
     <view class='container-content-person'>
-      <image src='' style='background-image:url({{record.user.avatar_url}})' class='content-person-image' bindtap='bindTapPerson' data-person='{{record.user}}'></image>
+      <image src='' style='background-image:url({{record.user.avatarUrl}})' class='content-person-image' bindtap='bindTapPerson' data-person='{{record.user}}'></image>
       <view class='container-profile' bindtap='bindTapPerson' data-person='{{record.user}}'>
-        <text class='text-person-name'>{{record.user.nick_name}}</text>
+        <text class='text-person-name'>{{record.user.nickName}}</text>
         <text class='text-time'> {{record.create_date_str}}</text>
       </view>
       <text class='text-person-contact' bindtap='tapContact' data-phone='{{record.phone}}'>联系Ta</text>

@@ -1,5 +1,12 @@
 
   <view class='container-content'>
-  <text>{{content}}</text>
+
+
+  <text class='text'>免责声明</text>
+   <text class='text'>淮北便民信息以提供信息发布和查询为主,诣在更好的服务广大网民</text>
+   <text class='text'> 本平台信息来自网络,本平台不声明或保证其内容的真实性和可靠性,</text>
+     <text class='text'> 请自己认真辨明和核实由本平台信息导致的任何损失本平台概不负责 </text>
+  
+  <text class='text'>  客服电话(微信):18201130953  </text>
   </view>
   <button class='button-read' type='primary' bindtap='tapRead'>我已阅读</button>

@@ -6,86 +6,10 @@ const app = getApp()
  * class_search：搜索输入框的 类名
  * class_search_label：搜索输入框没有获取到焦点时的 类名
  * queryInput：搜索输入框输入的文本
- * 
- * 广告实体 
- * adList:[{
- * image:"",
- * obj:{}
- * },{
- * image:"",
- * obj:{}
- * }
- * ]
- * 
- * 频道结构
- * channelList:[{
- *  order:1,
- *  row:[{
- *    id:1,
- *    name:"招聘",
- *    image:"cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
- *    child:['兼职','全职']
- *    },{
- *     id:2,
- *    name:"二手",
- *    image:"cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
- *    child:['汽车','电脑']
- *    }]
- *  },{
- *  order:1,
- *  row:[{
- *    id:1,
- *    name:"招聘",
- *    image:"cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/zhaopin.png",
- *    child:['兼职','全职']
- *    },{
- *     id:2,
- *    name:"二手",
- *    image:"cloud://test-1e9ad8.7465-test-1e9ad8/image/system/channel/ershou.png",
- *    child:['汽车','电脑']
- *    }]
- *  }
- * ]
- * 
- * channel:{
- *  image:"",
- *  name:"",
- *  id :1
- *  child:[]
- * }
- * 
- * //内容记录 结构
- * 
-  record{
-   recordID:1,
-   person:{
 
-   },
-   images:[
-      'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-      'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
-      'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jp'
-   ],
-   content:'从广义上讲：
-数据结构是指一组数据的存储结构。
-算法就是操作数据的一组方法。
 
-数据结构和算法是相辅相成的，数据结构是为算法服务的，算法要作用在特定的数据结构上。
-
-数据结构是静态的，它只是组织数据的一种方式。',
-   channel:{
-      name: '二级分类',
-      id: 1
-   },
-   function:{
-     name: '所属功能',
-     id : 2
-   }，
-   sawNumber: 90,
-   commentNumber: 200,
-   zanNumber: 20,
-   shareNumber: 30 
- }
+ * 
+ * 
  */
 
 /**
@@ -117,7 +41,8 @@ Page({
      
   },
 
-  onLoad: function() {
+  onLoad: function (query) {
+    console.log(query);
     var that = this;
     wx.showLoading({
       title: '拉取授权信息',
@@ -204,6 +129,10 @@ Page({
    * 登陆成功之后去 获取数据
    */
   getData: function() {
+    wx.showLoading({
+      title: '加载数据',
+      mask:false
+    })
     const db = wx.cloud.database();
     var that = this;
     //获取广告
@@ -220,15 +149,18 @@ Page({
       })
 
     })
-    // 获取 所有的 信息 按照 发布时间排序
-    db.collection('content').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
 
+    // 获取 所有的 信息 按照 发布时间排序
+    db.collection('content').orderBy('create_date','desc').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
+        wx.hideLoading();
+        wx.stopPullDownRefresh();
       that.setData({
         contentList: res.data,
         pageIndex: that.data.pageIndex+1
       })
 
     }).catch(err => {
+      wx.hideLoading();
       wx.showModal({
         title: '内容加载失败！',
         content: err,
@@ -300,7 +232,7 @@ Page({
   },
 
   onPullDownRefresh: function() { //触发 刷新事件
-    console.log('pull down refresh !');
+    
 
   },
   onReachBottom: function(obj) { //拉到底部了，触发了 加载更多事件

@@ -6,7 +6,11 @@ page{
   background-color: white;
   text-align: center;
   min-height: 200rpx;
-  width: 100%;
+  font-size: 30rpx;
+  padding: 10rpx;
+}
+.text{
+  display: block;
 }
 .button-read{
   margin: 20rpx;
