@@ -37,11 +37,12 @@ Page({
     funList: [],
     contentList: [],
     pageIndex: 0,
-    pageSize: 20
-     
+    pageSize: 20,
+    orderBy: 'create_date'
+
   },
 
-  onLoad: function (query) {
+  onLoad: function(query) {
     console.log(query);
     var that = this;
     wx.showLoading({
@@ -61,11 +62,11 @@ Page({
           })
           wx.getUserInfo({ //获取用户信
             success: response => {
-              
+
               that.setData({
                 userInfo: response.userInfo
               })
-              
+
               app.globalData.userInfo = response.userInfo;
               // console.log(app.globalData.userInfo);
               app.globalData.logged = true;
@@ -129,10 +130,7 @@ Page({
    * 登陆成功之后去 获取数据
    */
   getData: function() {
-    wx.showLoading({
-      title: '加载数据',
-      mask:false
-    })
+
     const db = wx.cloud.database();
     var that = this;
     //获取广告
@@ -150,28 +148,51 @@ Page({
 
     })
 
-    // 获取 所有的 信息 按照 发布时间排序
-    db.collection('content').orderBy('create_date','desc').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
-        wx.hideLoading();
-        wx.stopPullDownRefresh();
+    this.loadContent();
+
+
+  },
+  loadContent: function() {
+    const db = wx.cloud.database();
+    var that = this;
+    wx.showLoading({
+      title: '加载数据',
+      mask: false
+    });
+    console.log(this.data.orderBy + '--' + this.data.pageIndex);
+    // 获取 所有的 信息 按照 orderBy 排序
+    db.collection('content').orderBy(this.data.orderBy, 'desc').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
+      wx.hideLoading();
+      wx.stopPullDownRefresh();
       that.setData({
         contentList: res.data,
-        pageIndex: that.data.pageIndex+1
+        pageIndex: that.data.pageIndex + that.data.pageSize
       })
 
     }).catch(err => {
       wx.hideLoading();
+      wx.stopPullDownRefresh();
       wx.showModal({
         title: '内容加载失败！',
         content: err,
         showCancel: false
       })
     })
+
+
   },
-  onReady: function() {
+  onShow: function() {
+    console.log(app.globalData.refresh);
+    if (app.globalData.refresh) {
+      app.globalData.refresh = false;
+      this.setData({
+        pageIndex: 0,
+        orderBy: 'create_date'
+      });
+      console.log('refresh ')
 
-
-
+      this.loadContent();
+    }
   },
   /**
    * 将在服务器获取的功能列表 转换为 页面渲染所需的 数组
@@ -223,7 +244,7 @@ Page({
       logged: true,
       avatarUrl: e.detail.userInfo.avatarUrl,
       userInfo: e.detail.userInfo,
-      classAuthorize:'hide'
+      classAuthorize: 'hide'
     });
     app.globalData.userInfo = e.detail.userInfo;
     app.globalData.logged = true;
@@ -232,11 +253,36 @@ Page({
   },
 
   onPullDownRefresh: function() { //触发 刷新事件
-    
+    this.setData({
+      pageIndex: 0
+    });
+    this.loadContent();
 
   },
   onReachBottom: function(obj) { //拉到底部了，触发了 加载更多事件
-    console.log('to load more something ');
+    const db = wx.cloud.database();
+    var that = this;
+    wx.showLoading({
+      title: '加载数据',
+      mask: false
+    });
+    // 获取 所有的 信息 按照 orderBy 排序
+    db.collection('content').orderBy(this.data.orderBy, 'desc').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
+      wx.hideLoading();
+      that.setData({
+        contentList: that.data.contentList.concat(res.data),
+        pageIndex: that.data.pageIndex + that.data.pageSize
+      })
+
+    }).catch(err => {
+      wx.hideLoading();
+      wx.stopPullDownRefresh();
+      wx.showModal({
+        title: '内容加载失败！',
+        content: err,
+        showCancel: false
+      })
+    })
   },
   onPageScroll: function(obj) { //页面滑动事件
     var distance = 460
@@ -246,7 +292,6 @@ Page({
     if (this.data.funList.length == 0) { //功能模块
       distance -= 200
     }
-    console.log(distance)
     var temp = this.data.contentTypeTopClass;
     if (obj.scrollTop >= distance) {
       temp = '';
@@ -319,9 +364,15 @@ Page({
   },
   bindTypeTap: function(event) {
     var tap = event.currentTarget.dataset.type;
+    this.setData({
+      orderBy: tap
+    });
+    wx.startPullDownRefresh({
+
+    });
     var name = "最新发布"
     switch (tap) {
-      case 'publish':
+      case 'create_date':
         name = "最新发布";
         this.setData({
           contenTypeNewestPublish: 'selected-text',
@@ -330,7 +381,7 @@ Page({
           contentTypeMostShare: '',
         });
         break;
-      case 'reply':
+      case 'view_num':
         name = '最新回复';
         this.setData({
           contenTypeNewestPublish: '',
@@ -339,7 +390,7 @@ Page({
           contentTypeMostShare: '',
         });
         break;
-      case 'zan':
+      case 'agree_num':
         name = '最多点赞';
         this.setData({
           contenTypeNewestPublish: '',
@@ -348,7 +399,7 @@ Page({
           contentTypeMostShare: '',
         });
         break;
-      case 'share':
+      case 'share_num':
         name = '最多分享';
         this.setData({
           contenTypeNewestPublish: '',
@@ -358,9 +409,7 @@ Page({
         });
         break;
     }
-    wx.showToast({
-      title: name,
-    })
+    console.log(name);
   },
   bindTapPerson: function(event) { // 发布人被点击
     var person = event.currentTarget.dataset.person;
@@ -371,16 +420,16 @@ Page({
     var phone = event.currentTarget.dataset.phone;
     wx.showModal({
       title: '温馨提示',
-      content: '你将要拨打电话：'+phone,
-      success:function(res){
-        if(res.confirm){
+      content: '你将要拨打电话：' + phone,
+      success: function(res) {
+        if (res.confirm) {
           wx.makePhoneCall({
             phoneNumber: phone //仅为示例，并非真实的电话号码
           })
         }
       }
     })
-   
+
   },
   tapContent: function(event) { //内容记录被点击
     var record = event.currentTarget.dataset.record;
@@ -388,7 +437,29 @@ Page({
   },
   tapZan: function(event) { // 赞被点击
     var record = event.currentTarget.dataset.record;
-    console.log('zan');
+    var index = event.currentTarget.dataset.index;
+    this.data.contentList[index].agree_num = record.agree_num + 1;
+    //更改数据库
+    var that = this;
+    wx.showLoading({
+      title: '请稍后',
+      mask:false
+    });
+    
+    var db = wx.cloud.database();
+    const _ = db.command;
+    db.collection('content').doc(record._id).update({
+      data: {
+        agree_num: _.inc(1)
+      }
+    }).then(res => {
+        wx.hideLoading();
+      that.setData({
+        contentList: that.data.contentList
+      });
+    }).catch(err=>{
+      wx.hideLoading();
+    });
   },
   tapContentShare: function(event) { //分享被点击
     var record = event.currentTarget.dataset.record;
@@ -405,12 +476,18 @@ Page({
   /**
    * 图片被 点击 预览图片
    */
-  tapImage: function(event){
+  tapImage: function(event) {
     var images = event.currentTarget.dataset.images;
     var url = event.currentTarget.dataset.url;
     wx.previewImage({
       urls: images,
-      current:url
+      current: url
     })
+  },
+  onShareAppMessage: function(event){
+    if(event.from=='button'){
+      console.log(event.target);
+    }
+    
   }
 })

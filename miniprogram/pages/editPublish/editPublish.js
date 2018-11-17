@@ -346,6 +346,7 @@ Page({
     }).then(res => {
       console.log(res)
       wx.hideLoading();
+      app.globalData.refresh = true;
       wx.switchTab({
         url: '../index/index',
         fail: err=>{

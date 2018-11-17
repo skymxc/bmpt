@@ -1,21 +1,21 @@
 <view class='container-type class-background-white'>
 
-  <view class='box-type' data-type='publish' bindtap='bindTypeTap' >
+  <view class='box-type' data-type='create_date' bindtap='bindTypeTap' >
     <text class='text-type {{contenTypeNewestPublish}}'>最新发布</text>
   </view>
 
 
-  <view class='box-type' data-type='reply' bindtap='bindTypeTap'>
-    <text class='text-type {{contentTypeNewestReply}}'>最新回复</text>
+  <view class='box-type' data-type='view_num' bindtap='bindTypeTap'>
+    <text class='text-type {{contentTypeNewestReply}}'>最多浏览</text>
   </view>
 
 
-  <view class='box-type' data-type='zan' bindtap='bindTypeTap'>
+  <view class='box-type' data-type='agree_num' bindtap='bindTypeTap'>
     <text class='text-type {{contentTypeMostZan}}'>最多点赞</text>
   </view>
 
 
-  <view class='box-type' data-type='share' bindtap='bindTypeTap'>
+  <view class='box-type' data-type='share_num' bindtap='bindTypeTap'>
     <text class='text-type {{contentTypeMostShare}}'>最多分享</text>
   </view>
 

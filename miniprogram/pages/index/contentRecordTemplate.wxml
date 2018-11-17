@@ -1,4 +1,4 @@
-<template name='recordTemplate' data="{{record}}">
+<template name='recordTemplate' data="{{record,index}}">
 
   <view class='class-background-white container-content'>
     <!-- 头像部分 -->
@@ -51,14 +51,16 @@
         <image class='image-tool' src='../../images/comment.png'></image>
         <text class='text-tool'>{{record.comment_num}}</text>
       </view>
-      <view class='container-tool-single' bindtap='tapZan' data-record='{{record}}'>
+      <view class='container-tool-single' bindtap='tapZan' data-record='{{record}}'    data-index='{{index}}'>
         <image class='image-tool' src='../../images/zan.png'></image>
         <text class='text-tool'>{{record.agree_num}}</text>
       </view>
-      <view class='container-tool-single' bindtap='tapContentShare' data-record='{{record}}'>
+      <!-- <view class='container-tool-single' bindtap='tapContentShare' data-record='{{record}}'> -->
+      <button class='button-share container-tool-single' open-type='share' >
         <image class='image-tool' src='../../images/share.png'></image>
         <text class='text-tool'>分享</text>
-      </view>
+        </button>
+      <!-- </view> -->
     </view>
 
 
