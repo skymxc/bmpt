@@ -1,2 +1,83 @@
-<!--miniprogram/pages/contentDetail/contentDetail.wxml-->
-<text>miniprogram/pages/contentDetail/contentDetail.wxml</text>
+<view id='container-page'>
+  <view class='container-fun'>
+    <!-- <view class='wrap-text-fun'> -->
+    #
+    <text wx:if='{{content.fun_name}}'>{{content.fun_name}}</text>
+    <text wx:if='{{content.channel_name}}'>@{{content.channel_name}}</text>#
+    <!-- </view> -->
+    <button class='button-report' bindtap='tapReport' size='mini'>举报</button>
+  </view>
+
+  <view class='container-user' bindtap='tapUser' data-user='{{content.user}}'>
+    <image src='' style='background-image:url({{content.user.avatarUrl}})' class='image-user-avatar'></image>
+    <view class='container-user-profile'>
+      <view style='display:flex;flex-direction:row;align-items: center;'>
+        <text class='text-user-name text'>{{content.user.nickName}} </text>
+
+        <text class='text'> {{content.create_date_str}}</text>
+
+      </view>
+      <view class='container-location'>
+        <image class='image-location' src='../../images/address.png'></image>
+        <text class='text-location'>{{content.address.address}} {{content.address.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class='container-content'>
+    <text>{{content.content}}</text>
+  </view>
+  <view class='container-images' wx:if='{{content.images.length>0}}'>
+    <block wx:for='{{content.images}}' wx:for-item='image'>
+      <image data-image='{{image}}' bindtap='tapImage' class='image-content' src='{{image}}'></image>
+
+    </block>
+  </view>
+
+  <view class='container-comment'>
+    <view class='container-comment-length'>
+      <text>全部评论({{content.comment_num}})</text>
+    </view>
+
+    <view wx:if='{{commentList.length>0}}' class='container-comment-list'>
+
+    </view>
+  </view>
+
+    <view class='container-tool'>
+      <view class='container-tool-single'>
+          <image class='image-tool' src='../../images/home.png' bindtap='tapHome'></image>
+          <text class='text-tool'>首页</text>
+      </view>
+            <button class='container-tool-single button-share'   open-type='share' >
+          <image class='image-tool' src='../../images/share.png'></image>
+          <text class='text-tool text-share'>分享</text>
+      </button>
+      <view class='container-tool-single' bindtap='tapComment'>
+          <image class='image-tool' src='../../images/comment.png'></image>
+          <text class='text-tool'>评论</text>
+      </view>
+      <view class='container-tool-single' bindtap='tapAgree'>
+          <image class='image-tool' src='../../images/zan.png'></image>
+          <text class='text-tool'>{{content.agree_num}}</text>
+      </view>
+      <view class='container-tool-single container-tool-concat' bindtap='tapConcat'>
+         联系Ta
+      </view>
+
+    </view>
+
+    <!-- 遮罩层 -->
+
+    <view class='container-cover'>
+
+    </view>
+
+    <view class='container-report'>
+
+    </view>
+
+    <view class='container-comment'>
+      
+    </view>
+</view>

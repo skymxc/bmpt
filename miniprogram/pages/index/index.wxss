@@ -176,8 +176,8 @@ page {
 /* 频道图标 */
 
 .image-channel {
-  height: 80%;
-  width: 80%;
+  height: 60%;
+  width: 60%;
   
 }
 
@@ -283,4 +283,5 @@ page {
 
 .hide{
   display: none;
+  
 }

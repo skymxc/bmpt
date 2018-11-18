@@ -433,12 +433,20 @@ Page({
   },
   tapContent: function(event) { //内容记录被点击
     var record = event.currentTarget.dataset.record;
-    console.log(record);
+    this.toContentDetail(record._id);
+  },
+  /**
+   * 去详情
+   */
+  toContentDetail:function(_id){
+    wx.navigateTo({
+      url: '../contentDetail/contentDetail?_id=' + _id,
+    })
   },
   tapZan: function(event) { // 赞被点击
     var record = event.currentTarget.dataset.record;
     var index = event.currentTarget.dataset.index;
-    this.data.contentList[index].agree_num = record.agree_num + 1;
+    
     //更改数据库
     var that = this;
     wx.showLoading({
@@ -454,11 +462,25 @@ Page({
       }
     }).then(res => {
         wx.hideLoading();
-      that.setData({
-        contentList: that.data.contentList
-      });
+      that.data.contentList[index].agree_num = record.agree_num + 1;
+        if(res.stats.updated!=0){
+          that.setData({
+            contentList: that.data.contentList
+          });
+        }else{
+          wx.showToast({
+            title: '操作超时',
+            icon:'none'
+          });
+        }
+      
     }).catch(err=>{
+
       wx.hideLoading();
+      wx.showToast({
+        title: err.errMsg,
+        icon:'none'
+      })
     });
   },
   tapContentShare: function(event) { //分享被点击
@@ -482,7 +504,7 @@ Page({
     wx.previewImage({
       urls: images,
       current: url
-    })
+    });
   },
   onShareAppMessage: function(event){
     if(event.from=='button'){

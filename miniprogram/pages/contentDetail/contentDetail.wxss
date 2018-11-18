@@ -1,1 +1,176 @@
-/* miniprogram/pages/contentDetail/contentDetail.wxss */
+#container-page {
+  display: flex;
+  flex-direction: column;
+  background-color: gainsboro;
+}
+
+.container-fun {
+  color: red;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 50rpx;
+  position: relative;
+  padding-left: 10rpx;
+  background-color: white;
+}
+
+.button-report {
+  position: absolute;
+  height: 100%;
+  right: 10rpx;
+  top: 0rpx;
+}
+
+.container-user {
+  display: flex;
+  flex-direction: row;
+  height: 120rpx;
+  padding-top: 10rpx;
+  align-items: center;
+  background-color: white;
+
+}
+
+.image-user-avatar {
+  width: 100rpx;
+  height: 90%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  border-radius: 50%;
+  margin-left: 10rpx;
+
+}
+
+.container-user-profile {
+  flex: 1;
+  height: 100%;
+  margin-left: 10rpx;
+  font-size: 25rpx;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10rpx;
+}
+
+.text-user-name {
+  font-weight: bold;
+  font-size: 28rpx;
+  color: black;
+  margin-right: 20rpx;
+}
+
+.container-location {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.image-location {
+  height: 30rpx;
+  width: 30rpx;
+  margin-right: 10rpx;
+}
+
+.text-location {
+  flex: 1;
+  height: 90%;
+  overflow: hidden;
+  margin-left: 10rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.container-content {
+  padding: 10rpx;
+
+  background-color: white;
+}
+
+.container-images {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.image-content {
+  width: 100%;
+  background-color: white;
+}
+
+.container-comment {
+  margin-top: 20rpx;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.container-comment-length {
+  height: 80rpx;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-left: 10rpx;
+}
+
+.container-tool {
+  display: flex;
+  flex-direction: row;
+  height: 80rpx;
+  width: 100%;
+  justify-content: center;
+  background-color: white;
+  margin-top: 20rpx;
+}
+
+.container-tool-single {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 25rpx;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+}
+
+.container-tool-concat {
+  flex: 3;
+  height: 100%;
+  background-color: rgba(4, 153, 54, 0.815);
+  color: white;
+  font-size: 30rpx;
+}
+
+.image-tool{
+  width: 30%;
+  height: 30%;
+}
+
+.button-share{
+  background-color: white;
+  padding: 0rpx;
+  text-align: none !important;
+  line-height: none !important;
+}
+.button-share::after{
+  border: none !important;
+}
+.text-share{
+  display: inline;
+  line-height: 35rpx;
+}
+
+.container-cover{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0rpx;
+  background-color: rgba(0, 0, 0, 0.486);
+}
