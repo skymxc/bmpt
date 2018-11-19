@@ -3,13 +3,19 @@ Page({
 
   /**
    * 页面的初始数据
+   * 
    */
   data: {
     content: {},
-    _id: 'W-L_o9x_Lia3NQWg',
+    _id: 'W-w5xnhEiJmgp4Zm',
     commentList: [],
     pageIndex: 0,
-    pageSize: 20
+    pageSize: 20,
+    report:'',
+    classReport:'hide',
+    classComment: 'hide',
+    classCover: 'hide',
+    commentPlaceHolder:''
   },
 
   /**
@@ -96,7 +102,8 @@ Page({
     db.collection('content').doc(this.data._id)
       .get().then(res => {
         that.setData({
-          content: res.data
+          content: res.data,
+          commentPlaceHolder:'评论 '+res.data.user.nickName
         });
         wx.hideLoading();
         if (that.data.content.comment_num > 0) {
@@ -142,7 +149,7 @@ Page({
    * 举报
    */
   tapReport: function() {
-      
+
   },
   /**
    * 用户
@@ -250,5 +257,19 @@ Page({
         }
       }
     })
+  },
+  /**
+   * 输入 举报内容
+   */
+  inputReport:function(event){
+   var value= event.detail.value;
+   console.log(value);
+  },
+  /**
+   * 提交评论表单
+   */
+  submitComment:function(event){
+    var comment = event.detail.value.comment;
+    
   }
 })

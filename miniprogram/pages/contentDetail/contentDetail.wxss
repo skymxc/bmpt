@@ -1,3 +1,4 @@
+
 #container-page {
   display: flex;
   flex-direction: column;
@@ -127,6 +128,8 @@
   justify-content: center;
   background-color: white;
   margin-top: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
 }
 
 .container-tool-single {
@@ -174,3 +177,88 @@
   top: 0rpx;
   background-color: rgba(0, 0, 0, 0.486);
 }
+
+.container-report{
+  height: 420rpx;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0rpx;
+  color: gray;
+  align-items: center;
+}
+.container-report-label{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.text-report{
+  margin: 10rpx;
+  
+}
+.icon-report-cancel{
+  margin: 10rpx;
+}
+
+.textarea-report{
+  width: 90%;
+  height: 200rpx;
+  padding: 10rpx;
+  border: 1rpx gainsboro solid;
+  background-color: white;
+}
+
+.container-report-button{
+  display: flex;
+  flex-direction: row;
+  text-align: right;
+  width :90%;
+  margin-top: 10rpx;
+  height: 80rpx;
+  position: relative;
+}
+
+.button-report-1{
+  position: absolute;
+  right: 0rpx;
+  top: 0rpx;
+}
+.container-comment{
+  position: absolute;
+  bottom: 0rpx;
+  background-color: whitesmoke;
+  width: 100%;
+  height: 430rpx;
+}
+
+.container-comment-label{
+  margin-top: 20rpx;
+  margin-left: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.icon-comment-cancel{
+  position: absolute;
+  right: 20rpx;
+  top:20rpx;
+  
+}
+
+.textarea-comment{
+  width: 90%;
+  height: 200rpx;
+  border: 1rpx silver solid;
+  margin: auto;
+  background-color: white;
+  padding: 10rpx;
+}
+.button-comment{
+  float: right;
+  margin-right: 20rpx;
+  margin-top: 20rpx;
+}
+@import "../../app.wxss";
