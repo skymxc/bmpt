@@ -40,13 +40,23 @@
     </view>
 
     <view wx:if='{{commentList.length>0}}' class='container-comment-list'>
-
+      <block wx:for='{{commentList}}' wx:for-item='comment' wx:key='_id'>
+        <view class='container-comment-single'>
+            <image style='background-image:url({{comment.user.avatarUrl}});' class='image-comment-user'></image>
+            <view class='container-comment-content'>
+              <view class='text-commnet-user-name text-comment'>{{comment.user.nickName}}</view>
+              <view class='text-comment-text text-comment'>{{comment.text}}</view>
+              <view class='text-comment-create-date text-comment'>{{comment.create_date_str}}</view>
+              
+            </view>
+        </view>
+      </block>
     </view>
   </view>
 
   <view class='container-tool'>
-    <view class='container-tool-single'>
-      <image class='image-tool' src='../../images/home.png' bindtap='tapHome'></image>
+    <view class='container-tool-single'  bindtap='tapHome'>
+      <image class='image-tool' src='../../images/home.png'></image>
       <text class='text-tool'>首页</text>
     </view>
     <button class='container-tool-single button-share' open-type='share'>
@@ -77,21 +87,21 @@
   
     <view class='container-report-label'>
       <text class='text-report'> 举报</text>
-      <icon class='icon-report-cancel'  color='black' type='cancel'></icon>
+      <icon class='icon-report-cancel'  color='black' type='cancel' bindtap='tapReportCancel'></icon>
     </view>
     <textarea name='{{report}}' bindinput='inputReport' class='textarea-report' focus cursor-spacing="260rpx" placeholder='这里输入举报的原因'>
 
     </textarea>
     <view class='container-report-button'>
-      <button class='button-report-1'>举报</button>
+      <button class='button-report-1' bindtap='submitReport'>举报</button>
     </view>
 
   </view>
 
-  <form class='container-comment {{classComment}}' bindsubmit='submitComment'>
+  <form class='container-comment-write {{classComment}}' bindsubmit='submitComment'>
 <view class='container-comment-label'>
       <text class='text-comment'> 评论</text>
-      <icon class='icon-comment-cancel'  color='black' type='cancel'></icon>
+      <icon class='icon-comment-cancel'  color='black' bindtap='tapCommentCancel' type='cancel'></icon>
     </view>
 
      <textarea name='comment' class='textarea-comment' focus cursor-spacing="260rpx" placeholder='{{commentPlaceHolder}}'>

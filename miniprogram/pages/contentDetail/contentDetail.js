@@ -1,4 +1,5 @@
 // miniprogram/pages/contentDetail/contentDetail.js
+const app = getApp();
 Page({
 
   /**
@@ -7,25 +8,25 @@ Page({
    */
   data: {
     content: {},
-    _id: 'W-w5xnhEiJmgp4Zm',
+    _id: '',
     commentList: [],
     pageIndex: 0,
     pageSize: 20,
-    report:'',
-    classReport:'hide',
+    report: '',
+    classReport: 'hide',
     classComment: 'hide',
     classCover: 'hide',
-    commentPlaceHolder:''
+    commentPlaceHolder: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    if (this.data._id) {
-      // this.setData({
-      //   _id:options._id
-      // });
+    if (options._id) {
+      this.setData({
+        _id: options._id
+      });
       this.loadContent();
     } else {
       wx.showModal({
@@ -75,7 +76,10 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
-
+    this.setData({
+      pageIndex: 0
+    })
+    this.loadContent();
   },
 
   /**
@@ -89,6 +93,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
+
     return {};
   },
   loadContent: function() {
@@ -101,16 +106,19 @@ Page({
     var that = this;
     db.collection('content').doc(this.data._id)
       .get().then(res => {
+        wx.stopPullDownRefresh();
         that.setData({
           content: res.data,
-          commentPlaceHolder:'评论 '+res.data.user.nickName
+          commentPlaceHolder: '评论 ' + res.data.user.nickName
         });
+        console.log(that.data.content);
         wx.hideLoading();
         if (that.data.content.comment_num > 0) {
           that.loadComment();
         }
 
       }).catch(err => {
+        wx.stopPullDownRefresh();
         console.log(err);
         wx.showModal({
           title: '网路超时',
@@ -128,12 +136,13 @@ Page({
    * 加载评论
    */
   loadComment: function() {
+    console.log('load comment--' + this.data._id);
     var that = this;
     var db = wx.cloud.database();
-    db.collection('comment').orderBy('create_date', 'desc').skip(this.data.pageIndex).limit(this.data.pageSize).get({
-      content_Id: that.data._id
-    }).then(res => {
-
+    db.collection('comment').where({
+      content_id: that.data._id
+    }).orderBy('create_date', 'desc').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
+      console.log(res);
       that.setData({
         commentList: res.data,
         pageIndex: that.data.pageIndex + res.data.length
@@ -149,7 +158,11 @@ Page({
    * 举报
    */
   tapReport: function() {
-
+    //显示遮罩层 和 举报原因输入框
+    this.setData({
+      classReport: '',
+      classCover: ''
+    });
   },
   /**
    * 用户
@@ -180,7 +193,10 @@ Page({
    * 评论
    */
   tapComment: function() {
-
+    this.setData({
+      classCover: '',
+      classComment: ''
+    })
   },
   /**
    * 点赞
@@ -195,52 +211,52 @@ Page({
     var db = wx.cloud.database();
     const _ = db.command;
     console.log(this.data._id);
-    db.collection('content').doc(this.data._id).get().then(res=>{
-        console.log(res);
-    }).catch(err=>{
-        console.log(err);
+    db.collection('content').doc(this.data._id).get().then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
     });
     db.collection('content').doc(this.data._id).update({
       data: {
-        agree_num : _.inc(1)
+        agree_num: _.inc(1)
       },
       success: function(res) {
-          console.log(res);
+        console.log(res);
         wx.hideLoading();
         if (res.stats.updated != 0) {
           that.data.content.agree_num = that.data.content.agree_num + 1;
           that.setData({
             content: that.data.content
           });
-        }else{
+        } else {
           wx.showToast({
             title: '操作超时',
-            icon:'none'
+            icon: 'none'
           });
         }
 
       },
       fail: function(err) {
         wx.hideLoading();
-       wx.showToast({
-         title: err.errMsg,
-         icon:'none'
-       })
+        wx.showToast({
+          title: err.errMsg,
+          icon: 'none'
+        })
       }
     });
   },
   /**
    * 联系他
    */
-  tapConcat:function(){
+  tapConcat: function() {
     var phone = this.data.content.phone;
-    if(phone==''){
+    if (phone == '') {
       wx.showModal({
         title: '提示',
         content: '没有留联系方式',
-        showCancel:false,
-        success:function(res){
-          
+        showCancel: false,
+        success: function(res) {
+
         }
       });
       return;
@@ -249,7 +265,7 @@ Page({
     wx.showModal({
       title: '温馨提示',
       content: '你将要拨打电话：' + phone,
-      success: function (res) {
+      success: function(res) {
         if (res.confirm) {
           wx.makePhoneCall({
             phoneNumber: phone //仅为示例，并非真实的电话号码
@@ -261,15 +277,173 @@ Page({
   /**
    * 输入 举报内容
    */
-  inputReport:function(event){
-   var value= event.detail.value;
-   console.log(value);
+  inputReport: function(event) {
+    var value = event.detail.value;
+    this.setData({
+      report: value
+    });
   },
   /**
    * 提交评论表单
    */
-  submitComment:function(event){
+  submitComment: function(event) {
     var comment = event.detail.value.comment;
-    
+    if (comment.trim().length == 0) {
+      wx.showToast({
+        title: '请输入评论',
+        icon: 'none'
+      });
+      return;
+    }
+    wx.showLoading({
+      title: '请稍后',
+      mask: false
+    });
+
+    var that = this;
+    var db = wx.cloud.database();
+    const _ = db.command;
+    var date = new Date();
+
+    var record = {
+      user: app.globalData.userInfo,
+      content_id: that.data._id,
+      create_date: date,
+      create_date_str: date.toLocaleString(),
+      text: comment
+    };
+    db.collection('comment').add({
+      data: record
+    }).then(res => {
+      db.collection("content").doc(that.data._id).update({
+        data: {
+          comment_num: _.inc(1)
+        }
+      }).then(response => {
+        wx.hideLoading();
+
+        if (response.stats.updated > 0) {
+          wx.showToast({
+            title: '评论成功',
+          });
+
+          record._id=res._id;
+        
+          that.data.content.comment_num = that.data.commentList.unshift(record);
+          that.setData({
+            classCover: 'hide',
+            classComment: 'hide',
+            content: that.data.content,
+            commentList: that.data.commentList
+          });
+
+        } else {
+          wx.showModal({
+            title: '评论失败',
+            content: '评论内容不存在，可能已经被删除',
+            showCancel: false
+          });
+        }
+      }).catch(error => {
+
+      });
+    }).catch(err => {
+      wx.hideLoading();
+      wx.showModal({
+        title: '评论失败',
+        content: err.errMsg,
+        showCancel: false
+      });
+    });
+  },
+  /**
+   * 提交举报表单
+   */
+  submitReport: function(event) {
+    if (this.data.report == '') {
+      wx.showToast({
+        title: '请输入举报原因',
+        icon: 'none'
+      });
+      return;
+    }
+    wx.showLoading({
+      title: '请稍后',
+      mask: false
+    });
+    var record = {
+      user: app.globalData.userInfo,
+      contnet_id: this.data._id,
+      deal: false,
+      result: '未处理',
+      content_user: this.data.content.user
+    };
+    var that = this;
+    var db = wx.cloud.database();
+    const _ = db.command;
+    db.collection('report').add({
+      data: record
+    }).then(res => {
+      //更改记录
+      db.collection('content').doc(that.data._id).update({
+        data: {
+          report_num: _.inc(1)
+        }
+      }).then(response => {
+        wx.hideLoading();
+        wx.showToast({
+          title: '举报成功',
+        });
+        that.setData({
+          classReport: 'hide',
+          classCover: 'hide'
+        });
+      }).catch(err => {
+        wx.hideLoading()
+        wx.showModal({
+          title: '举报失败！',
+          content: err.errMsg,
+          success: function(res) {
+            if (res.confirm) {
+
+            } else if (res.cancel) {
+              that.setData({
+                classReport: 'hide',
+                classCover: 'hide'
+              });
+            }
+          }
+        })
+      });
+
+    }).catch(err => {
+      wx.hideLoading()
+      wx.showModal({
+        title: '举报失败！',
+        content: err.errMsg,
+        success: function(res) {
+          if (res.confirm) {
+
+          } else if (res.cancel) {
+            that.setData({
+              classReport: 'hide',
+              classCover: 'hide'
+            });
+          }
+        }
+      })
+    });
+  },
+  tapReportCancel: function() {
+    this.setData({
+      classReport: 'hide',
+      classCover: 'hide'
+    })
+  },
+  tapCommentCancel: function() {
+    this.setData({
+      classComment: 'hide',
+      classCover: 'hide'
+    })
   }
 })

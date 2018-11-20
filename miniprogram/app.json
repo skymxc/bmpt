@@ -2,8 +2,9 @@
   "cloud": true,
   "pages": [
     
-    "pages/contentDetail/contentDetail",
+    
     "pages/index/index",
+    "pages/contentDetail/contentDetail",
     "pages/userConsole/userConsole",
     "pages/storageConsole/storageConsole",
     "pages/databaseGuide/databaseGuide",

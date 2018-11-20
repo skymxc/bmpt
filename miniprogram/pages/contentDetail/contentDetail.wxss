@@ -86,7 +86,7 @@
 
 .container-content {
   padding: 10rpx;
-
+  min-height: 100rpx;
   background-color: white;
 }
 
@@ -227,7 +227,7 @@
   right: 0rpx;
   top: 0rpx;
 }
-.container-comment{
+.container-comment-write{
   position: absolute;
   bottom: 0rpx;
   background-color: whitesmoke;
@@ -262,3 +262,50 @@
   margin-top: 20rpx;
 }
 @import "../../app.wxss";
+
+.container-comment-list{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-bottom: 80rpx;
+  background-color: white;
+}
+
+.container-comment-single{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  background-color: white;
+  border-top: 1rpx gainsboro solid;
+  margin-bottom: 5rpx;
+}
+
+.image-comment-user{
+  width: 100rpx;
+  height: 100rpx;
+  margin: 10rpx;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 50rpx;
+  
+}
+
+.container-comment-content{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-left: 20rpx;
+  margin-top: 10rpx;
+  margin-right: 10rpx;
+  font-size: 25rpx;
+  color: grey;
+}
+.text-comment{
+  margin-top: 5rpx;
+  margin-bottom: 5rpx;
+}
+
+.text-comment-text{
+  color: black;
+  font-size: 29rpx;
+}
