@@ -43,7 +43,7 @@ Page({
   },
 
   onLoad: function(query) {
-    console.log(query);
+   
     var that = this;
     wx.showLoading({
       title: '拉取授权信息',
@@ -110,22 +110,31 @@ Page({
       mask: true
     })
     wx.cloud.callFunction({
-      name: 'login'
+      name: 'login',
+      data:{
+        user: app.globalData.userInfo
+      }
     }).then(res => {
-      console.log(res)
+     
       app.globalData.openid = res.result.openid
-      console.log(app.globalData)
+     //
       wx.hideLoading()
       // 获取数据
       that.getData();
+
+      that.count();
+
+     
     }).catch(err => {
       wx.hideLoading()
+      console.log(err.errMsg);
       wx.showModal({
         title: '登陆失败！',
-        content: err,
+        content: err.errMsg,
       })
     })
   },
+
   /**
    * 登陆成功之后去 获取数据
    */
@@ -182,7 +191,6 @@ Page({
 
   },
   onShow: function() {
-    console.log(app.globalData.refresh);
     if (app.globalData.refresh) {
       app.globalData.refresh = false;
       this.setData({
@@ -438,7 +446,7 @@ Page({
   /**
    * 去详情
    */
-  toContentDetail:function(_id){
+  toContentDetail: function(_id) {
     wx.navigateTo({
       url: '../contentDetail/contentDetail?_id=' + _id,
     })
@@ -446,14 +454,14 @@ Page({
   tapZan: function(event) { // 赞被点击
     var record = event.currentTarget.dataset.record;
     var index = event.currentTarget.dataset.index;
-    
+
     //更改数据库
     var that = this;
     wx.showLoading({
       title: '请稍后',
-      mask:false
+      mask: false
     });
-    
+
     var db = wx.cloud.database();
     const _ = db.command;
     db.collection('content').doc(record._id).update({
@@ -461,25 +469,25 @@ Page({
         agree_num: _.inc(1)
       }
     }).then(res => {
-        wx.hideLoading();
+      wx.hideLoading();
       that.data.contentList[index].agree_num = record.agree_num + 1;
-        if(res.stats.updated!=0){
-          that.setData({
-            contentList: that.data.contentList
-          });
-        }else{
-          wx.showToast({
-            title: '操作超时',
-            icon:'none'
-          });
-        }
-      
-    }).catch(err=>{
+      if (res.stats.updated != 0) {
+        that.setData({
+          contentList: that.data.contentList
+        });
+      } else {
+        wx.showToast({
+          title: '操作超时',
+          icon: 'none'
+        });
+      }
+
+    }).catch(err => {
 
       wx.hideLoading();
       wx.showToast({
         title: err.errMsg,
-        icon:'none'
+        icon: 'none'
       })
     });
   },
@@ -506,10 +514,51 @@ Page({
       current: url
     });
   },
-  onShareAppMessage: function(event){
-    if(event.from=='button'){
+  onShareAppMessage: function(event) {
+    if (event.from == 'button') {
       console.log(event.target);
     }
-    
+
+  },
+  count:function(){
+    var db = wx.cloud.database();
+    var that = this;
+    db.collection('user').where({
+      _openid:app.globalData.openid
+    }).count().then(res => {
+      console.log('count=' + res.total);
+      if (res.total == 0) {
+        that.addUser();
+      } else {
+        that.updateUser();
+      }
+    }).catch(err => {
+      console.log(err);
+      that.addUser();
+    });
+
+  },
+  /**
+   * 
+   */
+  addUser:function(){
+    var db = wx.cloud.database();
+    var user = {  
+      user: app.globalData.userInfo,
+      publishNum: 0,
+      beReadedNum: 0,
+      beAgreeNum: 0,
+      beReportNum: 0
+    };
+    db.collection('user').add({
+      data:user
+    }).then(res=>{
+      console.log(res);
+    }).catch(err=>{
+      console.log(err);
+    })
+  },
+  updateUser:function(){
+    // 可以更改用户登陆记录等消息
   }
 })

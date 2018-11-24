@@ -1,9 +1,9 @@
 {
   "cloud": true,
   "pages": [
+"pages/index/index",
+    "pages/userProfile/userProfile",
     
-    
-    "pages/index/index",
     "pages/contentDetail/contentDetail",
     "pages/userConsole/userConsole",
     "pages/storageConsole/storageConsole",
