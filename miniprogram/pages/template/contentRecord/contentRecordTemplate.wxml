@@ -1,14 +1,14 @@
-<template name='recordTemplate' data="{{record,index}}">
-
+<template name='recordTemplate' data="{{record,index,manager}}">
+ 
   <view class='class-background-white container-content'>
     <!-- 头像部分 -->
     <view class='container-content-person'>
-      <image src='' style='background-image:url({{record.user.avatarUrl}})' class='content-person-image' bindtap='bindTapPerson' data-person='{{record.user}}'></image>
-      <view class='container-profile' bindtap='bindTapPerson' data-person='{{record.user}}'>
-        <text class='text-person-name'>{{record.user.nickName}}</text>
+      <image src='' style='background-image:url({{record.user.avatarUrl}})' class='content-person-image' bindtap='tapUser' data-record='{{record}}'></image>
+      <view class='container-profile' bindtap='tapUser' data-record='{{record}}'>
+        <text class='text-person-name'>{{record.user.nickName}} </text>
         <text class='text-time'> {{record.create_date_str}}</text>
       </view>
-      <text class='text-person-contact' bindtap='tapContact' data-phone='{{record.phone}}'>联系Ta</text>
+      <text wx:if='{{!manager}}' class='text-person-contact' bindtap='tapContact' data-phone='{{record.phone}}'>联系Ta</text>
     </view>
     <!-- 文本部分 -->
     <view class='container-text'>
@@ -63,6 +63,6 @@
       <!-- </view> -->
     </view>
 
-
+<text  wx:if='{{manager}}' class='text-person-contact' bindtap='tapDelContent' data-record='{{record}}' data-index='{{index}}'>删除</text>
   </view>
 </template>

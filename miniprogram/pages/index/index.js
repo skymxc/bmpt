@@ -1,6 +1,6 @@
 //index.js
-const app = getApp()
-
+const app = getApp();
+const contentTools = require('../template/contentRecord/contentRecordTemplate.js');
 /**
  * queryFoucs：搜索输入框 是否获取焦点
  * class_search：搜索输入框的 类名
@@ -43,6 +43,8 @@ Page({
   },
 
   onLoad: function(query) {
+
+    var date = new Date();
    
     var that = this;
     wx.showLoading({
@@ -168,7 +170,6 @@ Page({
       title: '加载数据',
       mask: false
     });
-    console.log(this.data.orderBy + '--' + this.data.pageIndex);
     // 获取 所有的 信息 按照 orderBy 排序
     db.collection('content').orderBy(this.data.orderBy, 'desc').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
       wx.hideLoading();
@@ -197,7 +198,6 @@ Page({
         pageIndex: 0,
         orderBy: 'create_date'
       });
-      console.log('refresh ')
 
       this.loadContent();
     }
@@ -343,14 +343,50 @@ Page({
   },
 
   query: function(event) { //搜索
+   
+    var input= this.data.queryInput;
+    if(input.length==0){
+      wx.showToast({
+        title: '请输入要搜索的内容',
+        icon:'none'
+      });
+      return;
+    }
     wx.showLoading({
       title: '请稍后',
+      mask:true
     });
-    console.log(this.data.queryInput);
-    setTimeout(function() {
-      wx.hideLoading();
+    var that =this;
+    var db = wx.cloud.database();
+    
+    // input = '/'+input+'/';
 
-    }, 1000);
+    console.log(input);
+    db.collection('content').where({
+      content: input
+    }).skip(0).limit(that.data.pageSize).get().then(res=>{
+      wx.hideLoading();
+      console.log(res.data);
+      if(res.data.length==0){
+        wx.showToast({
+          title: '没有查询到内容',
+          icon:'none'
+        });
+        return;
+      }
+      that.setData({
+        contentList:res.data
+      });
+
+    }).catch(err=>{
+      console.log(err);
+      wx.hideLoading();
+      wx.showModal({
+        title: '没有查询到内容',
+        content: '',
+      })
+    })
+
   },
   bindADChange: function(event) {
 
@@ -419,29 +455,15 @@ Page({
     }
     console.log(name);
   },
-  bindTapPerson: function(event) { // 发布人被点击
-    var person = event.currentTarget.dataset.person;
-    console.log(person);
-    // todo 去 个人主页
+  tapUser: function(event) { // 发布人被点击
+    contentTools.tapUser(event);
   },
   tapContact: function(event) { //联系Ta
-    var phone = event.currentTarget.dataset.phone;
-    wx.showModal({
-      title: '温馨提示',
-      content: '你将要拨打电话：' + phone,
-      success: function(res) {
-        if (res.confirm) {
-          wx.makePhoneCall({
-            phoneNumber: phone //仅为示例，并非真实的电话号码
-          })
-        }
-      }
-    })
+    contentTools.tapContact(event);
 
   },
   tapContent: function(event) { //内容记录被点击
-    var record = event.currentTarget.dataset.record;
-    this.toContentDetail(record._id);
+    contentTools.tapContent(event);
   },
   /**
    * 去详情
@@ -455,64 +477,56 @@ Page({
     var record = event.currentTarget.dataset.record;
     var index = event.currentTarget.dataset.index;
 
-    //更改数据库
     var that = this;
+
     wx.showLoading({
       title: '请稍后',
       mask: false
     });
 
-    var db = wx.cloud.database();
-    const _ = db.command;
-    db.collection('content').doc(record._id).update({
-      data: {
-        agree_num: _.inc(1)
-      }
-    }).then(res => {
-      wx.hideLoading();
-      that.data.contentList[index].agree_num = record.agree_num + 1;
-      if (res.stats.updated != 0) {
-        that.setData({
-          contentList: that.data.contentList
-        });
-      } else {
+    contentTools.tapZan(event)
+      .then(res => {
+        wx.hideLoading();
+        that.data.contentList[index].agree_num = record.agree_num + 1;
+        if (res.result.stats.updated != 0) {
+          that.setData({
+            contentList: that.data.contentList
+          });
+        } else {
+          wx.showToast({
+            title: '操作超时',
+            icon: 'none'
+          });
+        }
+
+      }).catch(err => {
+        console.log(err);
+        wx.hideLoading();
         wx.showToast({
-          title: '操作超时',
+          title: err.message,
           icon: 'none'
-        });
-      }
+        })
+      });
 
-    }).catch(err => {
 
-      wx.hideLoading();
-      wx.showToast({
-        title: err.errMsg,
-        icon: 'none'
-      })
-    });
+
+    
   },
   tapContentShare: function(event) { //分享被点击
     var record = event.currentTarget.dataset.record;
     console.log('share');
   },
   tapChannel: function(event) { //频道被点击
-    var record = event.currentTarget.dataset.record;
-    console.log(record.channel_name);
+    contentTools.tapChannel(event);
   },
   tapRecordFunction: function(event) { //功能被点击
-    var fun = event.currentTarget.dataset.fun;
-    console.log(fun);
+    contentTools.tapRecordFunction(event);
   },
   /**
    * 图片被 点击 预览图片
    */
   tapImage: function(event) {
-    var images = event.currentTarget.dataset.images;
-    var url = event.currentTarget.dataset.url;
-    wx.previewImage({
-      urls: images,
-      current: url
-    });
+    contentTools.tapImage(event);
   },
   onShareAppMessage: function(event) {
     if (event.from == 'button') {
@@ -526,7 +540,6 @@ Page({
     db.collection('user').where({
       _openid:app.globalData.openid
     }).count().then(res => {
-      console.log('count=' + res.total);
       if (res.total == 0) {
         that.addUser();
       } else {
@@ -559,6 +572,6 @@ Page({
     })
   },
   updateUser:function(){
-    // 可以更改用户登陆记录等消息
+    // should be update userInfo;
   }
 })

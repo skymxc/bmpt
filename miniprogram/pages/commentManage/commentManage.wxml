@@ -1,0 +1,16 @@
+<view id='container'>
+  <view class='container-comment' wx:if='{{commentList.length>0}}'>
+    <block wx:for='{{commentList}}' wx:for-item='comment' wx:key='_id' >
+      <view class='container-comment-single' >
+        <image style='background-image:url({{comment.user.avatarUrl}});' class='image-comment-user'></image>
+        <view class='container-comment-content'>
+          <view class='text-commnet-user-name text-comment'>{{comment.user.nickName}}</view>
+          <view class='text-comment-text text-comment' bindtap='tapComment' data-comment='{{comment}}'>{{comment.text}}</view>
+          <view class='text-comment-create-date text-comment'>{{comment.create_date_str}}</view>
+          <view class='button-del' data-comment='{{comment}}' bindtap='tapDel' data-index='{{index}}'>删除 </view>
+        </view>
+      </view>
+    </block>
+
+  </view>
+</view>

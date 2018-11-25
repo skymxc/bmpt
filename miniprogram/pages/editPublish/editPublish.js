@@ -111,13 +111,6 @@ Page({
   onReachBottom: function() {
 
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
-  },
   /**
    * 发布按钮被点击
    */
@@ -304,7 +297,7 @@ Page({
     var that = this;
     const db = wx.cloud.database();
     var date = new Date();
-    var str = date.toDateString();
+    var str = date.toLocaleString();
     var images = [];
     var length = this.data.imageList.length;
     for (var i = 0; i < length; i++) {
@@ -323,6 +316,7 @@ Page({
       title: '正在发布',
       mask: false
     });
+
     db.collection('content').add({
       data: {
         address: that.data.address,
@@ -332,7 +326,7 @@ Page({
         conceal: false,
         content: content,
         create_date: date,
-        create_date_str: date.toLocaleString(),
+        create_date_str: str,
         fun_id: that.data.fun_id,
         fun_name: that.data.fun_name,
         images: images,

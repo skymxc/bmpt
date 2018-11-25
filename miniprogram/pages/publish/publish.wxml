@@ -15,7 +15,7 @@
   <!-- 遮罩 频道菜单 -->
   <view class='container-menu {{classShade}}'>
 
-    <view class='shade '></view>
+    <view class='shade'></view>
 
     <view class='container-channels {{classChannelMenu}}' animation="{{animation}}">
 

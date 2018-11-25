@@ -9,9 +9,9 @@
   background-color: #F2F2F2;
 }  */
 
-/* page{
+page{
   height: 100%;
-} */
+}
 
 .hide{
   display: none;

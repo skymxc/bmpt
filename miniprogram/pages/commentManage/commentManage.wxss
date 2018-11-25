@@ -1,0 +1,66 @@
+/* miniprogram/pages/commentManage/commentManage.wxss */
+
+#container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.container-comment {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.container-comment-single{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  background-color: white;
+  border-top: 1rpx gainsboro solid;
+  margin-bottom: 5rpx;
+}
+
+.image-comment-user{
+  width: 100rpx;
+  height: 100rpx;
+  margin: 10rpx;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 50rpx;
+  
+}
+
+.container-comment-content{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-left: 20rpx;
+  margin-top: 10rpx;
+  margin-right: 10rpx;
+  font-size: 25rpx;
+  color: grey;
+  position: relative;
+}
+.text-comment{
+  margin-top: 5rpx;
+  margin-bottom: 5rpx;
+}
+
+.text-comment-text{
+  color: black;
+  font-size: 29rpx;
+}
+
+.button-del{
+  position: absolute;
+  top: 0rpx;
+  right: 10rpx;
+  border: 1rpx red solid;
+  color:red;
+  font-size: 25rpx;
+  padding: 10rpx;
+  width: 100rpx;
+  height: 30rpx;
+  text-align: center;
+}

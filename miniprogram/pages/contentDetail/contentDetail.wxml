@@ -104,7 +104,7 @@
       <icon class='icon-comment-cancel'  color='black' bindtap='tapCommentCancel' type='cancel'></icon>
     </view>
 
-     <textarea name='comment' class='textarea-comment' focus cursor-spacing="260rpx" placeholder='{{commentPlaceHolder}}'>
+     <textarea name='comment' class='textarea-comment' focus='{{focusWriteComment}}' cursor-spacing="260rpx" placeholder='{{commentPlaceHolder}}'>
 
     </textarea>
     <button class='button-comment' form-type='submit'>评论</button>

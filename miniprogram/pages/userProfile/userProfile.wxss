@@ -1,1 +1,66 @@
-/* miniprogram/pages/userProfile/userProfile.wxss */
+#container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #f3f3f3;
+}
+
+.container-user-profile{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  background-color: white;
+  color: black;
+}
+
+.container-user-image{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 350rpx;
+}
+.image-user-avatar{
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 100rpx;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.container-num{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100rpx;
+  align-items: center;
+}
+
+.container-num-single{
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-num-label{
+  font-weight: bold;
+}
+.interval-line{
+  width: 2rpx;
+  height: 50%;
+  background-color: #DDD;
+}
+#container-content{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20rpx;
+}
+
+/* 内容 */
+@import '../template/contentRecord/contentRecordTemplate.wxss';

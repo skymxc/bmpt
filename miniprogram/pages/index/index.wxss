@@ -235,7 +235,7 @@ page {
 }
 
 /* 内容 */
-@import 'contentRecordTemplate.wxss';
+@import '../template/contentRecord/contentRecordTemplate.wxss';
 
 #container-record{
   display: flex;

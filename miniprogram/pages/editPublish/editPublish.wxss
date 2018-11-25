@@ -15,7 +15,7 @@
 /* 发布容器 */
 
 .container-button-publish {
-  width: 90%;
+  /* width: 90%; */
   height: 100rpx;
   display: flex;
   margin: 10rpx;
@@ -23,6 +23,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
+
 }
 
 /* 发布按钮 */

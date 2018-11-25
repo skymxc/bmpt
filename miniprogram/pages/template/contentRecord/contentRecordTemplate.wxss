@@ -6,6 +6,8 @@
   padding: 5px;
   align-items: center;
   justify-content: center;
+
+  background-color: white;
 }
 
 /* 内容-上部-人 */

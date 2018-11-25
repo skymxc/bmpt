@@ -85,7 +85,7 @@
     <!-- 内容 -->
     <view id='container-record'>
 
-      <import src='contentRecordTemplate.wxml' />
+      <import src='../template/contentRecord/contentRecordTemplate.wxml' />
       <block wx:for='{{contentList}}' wx:for-item="record" wx:key='_id'>
         <template is='recordTemplate' data='{{record,index}}' />
       </block>

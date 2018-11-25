@@ -1,4 +1,5 @@
 // miniprogram/pages/my/my.js
+const app = getApp();
 Page({
 
   /**
@@ -6,7 +7,7 @@ Page({
    */
   data: {
     enable: false,
-    userInfo:{},
+    user:{},
     avatarUrl:'',
     classGetUser:'hide'
   },
@@ -37,7 +38,7 @@ Page({
               wx.hideLoading()
               that.setData({
                 avatarUrl: res.userInfo.avatarUrl,
-                userInfo: res.userInfo,
+                user: res.userInfo,
                 classGetUser:'hide'
               })
               console.log(res)
@@ -109,9 +110,9 @@ Page({
    * 我的评论
    */
   tapComment: function() {
-    if (!this.data.enable) {
-      return;
-    }
+    wx.navigateTo({
+      url: '../commentManage/commentManage?openid=' + app.globalData.openid,
+    })
 
   },
 
@@ -119,9 +120,10 @@ Page({
    * 我的发布
    */
   tapPublish: function() {
-    if (!this.data.enable) {
-      return;
-    }
+    
+    wx.navigateTo({
+      url: '../userProfile/userProfile?openid='+app.globalData.openid,
+    })
   },
   /**
    * 用户信息 获取回掉

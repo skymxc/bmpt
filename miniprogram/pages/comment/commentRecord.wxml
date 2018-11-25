@@ -1,3 +1,0 @@
-<template name='recordTemplate' data="{{comment,manager}}">
-
-</template>

@@ -2,15 +2,15 @@
   <!-- 名称，头像 -->
   <view class='container-user'>
     <view class='container-user-wrap'>
-      <image class='image-user' src='{{avatarUrl}}'></image>
+      <image class='image-user' style='background-image:url({{avatarUrl}});'></image>
 
-      <text class='text-user-name'>{{userInfo.nickName}}</text>
+      <text class='text-user-name'>{{user.nickName}}</text>
     </view>
   </view>
   <!-- 便民信息 -->
   <view class='container-bm'>
     <view class='container-bmmy container-my'>
-      <image class='image-icon-more image-my-icon' src='../../images/fabu.png'></image>
+      <image class='image-icon-more image-my-icon' src='../../images/city.png'></image>
       <text class='text-bmxx'>枣庄便民信息</text>
     </view>
     <view class='container-bmmy' bindtap='tapPublish'>

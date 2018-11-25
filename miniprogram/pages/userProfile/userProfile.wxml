@@ -1,2 +1,35 @@
-<!--miniprogram/pages/userProfile/userProfile.wxml-->
-<text>miniprogram/pages/userProfile/userProfile.wxml</text>
+<view id='container'>
+  <view class='container-user-profile'>
+    <view class='container-user-image'>
+      <image class='image-user-avatar' style='background-image:url({{user.avatarUrl}})'></image>
+      <text class='text-user-name'>{{user.nickName}}</text>
+    </view>
+
+    <view class='container-num'>
+      <view class='container-num-single'>
+        <text class='text-num-label'>发表数</text>
+        <text class='text-num'>{{publishNum}}</text>
+      </view>
+      <view class='interval-line'></view>
+      <view class='container-num-single'>
+        <text class='text-num-label'>总阅读量</text>
+        <text class='text-num'>{{totalBeReadNum}}</text>
+      </view>
+      <view class='interval-line'></view>
+      <view class='container-num-single'>
+        <text class='text-num-label'>总赞数</text>
+        <text class='text-num'>{{totalBeAgreeNum}}</text>
+      </view>
+
+    </view>
+  </view>
+
+  <view id='container-content'>
+    <import src='../template/contentRecord/contentRecordTemplate.wxml' />
+    <block wx:for='{{contentList}}' wx:for-item="record" wx:key='_id'>
+      
+ <template is='recordTemplate' data='{{record,index,manager}}' />
+      
+    </block>
+  </view>
+</view>
