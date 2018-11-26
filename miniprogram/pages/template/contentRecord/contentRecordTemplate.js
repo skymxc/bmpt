@@ -63,7 +63,7 @@ var tapDelContent = function (event, publishNum, totalBeAgreeNum, totalBeReadNum
           }else{
             resolve(true);
 
-            
+            //这里会出现 原子性问题 如果其他端也在删除，那么就会出现 脏数据
             var where = {
               _openid:record._openid
             };
@@ -120,21 +120,63 @@ var tapDelContent = function (event, publishNum, totalBeAgreeNum, totalBeReadNum
 
 var tapZan = function(event){
   var record = event.currentTarget.dataset.record;
-  var index = event.currentTarget.dataset.index;
-  var where ={
-    _id:record._id
-  };
-  var data={
-    agree_num: record.agree_num+1
-  };
+  return incContentNum('agree_num', record._id);
+}
+
+var incContentNum= function(field,_id) {
+  console.log('_id-===>'+_id);
   return wx.cloud.callFunction({
-    name:'update',
-    data:{
-      where:where,
-      data:data,
-      collection:'content'
+    name: 'numInc',
+    data: {
+      collection: 'content',
+      _id: _id,
+      field: field
     }
   });
+}
+
+var updateContentUserAgreeNum= function(_id){
+  console.log('user-->'+_id);
+  wx.cloud.callFunction({
+    name: 'numInc',
+    data: {
+      collection: 'user',
+      _id: _id,
+      field: 'beAgreeNum'
+    }
+  }).then(res=>{
+    console.log(res);
+  }).catch(err=>{
+    console.log(err);
+  })
+}
+var viewContentIncViewNum = function(record){
+  wx.cloud.callFunction({
+    name:'numInc',
+    data:{
+      collection:'content',
+      field:'view_num',
+      _id:record._id
+    }
+  }).then(res=>{
+    console.log(res);
+    if (res.result.stats.updated!=0){
+      wx.cloud.callFunction({
+        name:'numInc',
+        data:{
+          collection:'user',
+          field:'beReadedNum',
+          _id: record.user_id
+        }
+      }).then(res=>{
+          console.log(res);
+      }).catch(err=>{
+          console.log(err);
+      })
+    }
+  }).catch(err=>{
+    console.log(err);
+  })
 }
 module.exports = {
   tapUser: tapUser,
@@ -144,5 +186,7 @@ module.exports = {
   tapContent: tapContent,
   tapImage: tapImage,
   tapDelContent: tapDelContent,
-  tapZan: tapZan
+  tapZan: tapZan,
+  updateContentUserAgreeNum: updateContentUserAgreeNum,
+  viewContentIncViewNum: viewContentIncViewNum
 };

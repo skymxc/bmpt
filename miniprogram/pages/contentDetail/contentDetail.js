@@ -1,5 +1,6 @@
 // miniprogram/pages/contentDetail/contentDetail.js
 const app = getApp();
+const contentTools = require('../template/contentRecord/contentRecordTemplate.js');
 Page({
 
   /**
@@ -17,7 +18,7 @@ Page({
     classComment: 'hide',
     classCover: 'hide',
     commentPlaceHolder: '',
-    focusWriteComment:false
+    focusWriteComment: false
   },
 
   /**
@@ -60,12 +61,12 @@ Page({
    */
   onReachBottom: function() {
     //todo  load more comment
-    if (this.data.content.comment_num > 0){
+    if (this.data.content.comment_num > 0) {
       wx.showLoading({
         title: '加载中',
-        mask:true
+        mask: true
       });
-        this.loadComment();
+      this.loadComment();
     }
   },
 
@@ -91,7 +92,7 @@ Page({
           content: res.data,
           commentPlaceHolder: '评论 ' + res.data.user.nickName
         });
-        console.log(that.data.content);
+        that.addReadNum();
         wx.hideLoading();
         if (that.data.content.comment_num > 0) {
           that.loadComment();
@@ -136,7 +137,7 @@ Page({
       wx.stopPullDownRefresh();
       wx.showToast({
         title: '评论加载超时',
-        icon:'none'
+        icon: 'none'
       });
     });
   },
@@ -182,7 +183,7 @@ Page({
     this.setData({
       classCover: '',
       classComment: '',
-      focusWriteComment:true
+      focusWriteComment: true
     })
   },
   /**
@@ -196,41 +197,28 @@ Page({
     });
     var that = this;
 
-    var  where={
-      _id:that.data.content._id
-    };
-    var data={
-      agree_num:that.data.content.agree_num+1
-    };
-    wx.cloud.callFunction({
-      name:'update',
-      data:{
-        collection:'content',
-        where:where,
-        data:data
+    this.incContentNum('agree_num').then(res => {
+      console.log(res);
+      wx.hideLoading();
+      if (res.result.stats.updated != 0) {
+        that.data.content.agree_num = that.data.content.agree_num + 1;
+        that.setData({
+          content: that.data.content
+        });
+      } else {
+        wx.showToast({
+          title: '操作超时',
+          icon: 'none'
+        });
       }
-    }).then(res=>{
-        console.log(res);
-        wx.hideLoading();
-        if(res.result.stats.updated != 0) {
-      that.data.content.agree_num = that.data.content.agree_num + 1;
-      that.setData({
-        content: that.data.content
-      });
-    } else {
-      wx.showToast({
-        title: '操作超时',
-        icon: 'none'
-      });
-    }
-    }).catch(err=>{
+    }).catch(err => {
       wx.hideLoading();
       wx.showToast({
         title: err.errMsg,
         icon: 'none'
       })
     });
-    
+
   },
   /**
    * 联系他
@@ -303,21 +291,7 @@ Page({
       data: record
     }).then(res => {
       //更改记录
-      var where = {
-        _id: that.data._id
-      };
-      var data = {
-        comment_num: that.data.content.comment_num + 1
-      };
-
-      wx.cloud.callFunction({
-        name: 'update',
-        data: {
-          collection: 'content',
-          where: where,
-          data: data
-        }
-      }).then(response => {
+      that.incContentNum('comment_num').then(response => {
         wx.hideLoading();
 
         if (response.result.stats.updated > 0) {
@@ -325,19 +299,19 @@ Page({
             title: '评论成功',
           });
 
-          record._id=res._id;
-        
+          record._id = res._id;
+
           that.data.content.comment_num = that.data.commentList.unshift(record);
           that.setData({
             classCover: 'hide',
             classComment: 'hide',
             content: that.data.content,
             commentList: that.data.commentList,
-            pageIndex : that.data.pageIndex+1
+            pageIndex: that.data.pageIndex + 1
           });
 
         } else {
-          console.log(that.data._id+'更改失败了')
+          console.log(that.data._id + '更改失败了')
           wx.showModal({
             title: '评论失败',
             content: '评论内容不存在，可能已经被删除',
@@ -389,23 +363,8 @@ Page({
     db.collection('report').add({
       data: record
     }).then(res => {
-      //更改记录
-      var where={
-        _id:that.data._id
-      };
-      var data={
-        report_num:that.data.content.report_num+1
-      };
+      that.incContentNum('report_num').then(res => {
 
-      wx.cloud.callFunction({
-        name:'update',
-        data:{
-          collection:'content',
-          where:where,
-          data:data
-        }
-      }).then(res=>{
-         
         wx.hideLoading();
         wx.showToast({
           title: '举报成功',
@@ -414,13 +373,13 @@ Page({
           classReport: 'hide',
           classCover: 'hide'
         });
-      }).catch(err=>{
-          console.log(err);
+      }).catch(err => {
+        console.log(err);
         wx.hideLoading()
         wx.showModal({
           title: '举报失败！',
           content: err.errMsg,
-          success: function (res) {
+          success: function(res) {
             if (res.confirm) {
 
             } else if (res.cancel) {
@@ -463,5 +422,19 @@ Page({
       classCover: 'hide',
       focusWriteComment: false
     })
+  },
+  incContentNum: function(field) {
+    var that = this;
+    return wx.cloud.callFunction({
+      name: 'numInc',
+      data: {
+        collection: 'content',
+        _id: that.data._id,
+        field: field
+      }
+    });
+  },
+  addReadNum:function(){
+    contentTools.viewContentIncViewNum(this.data.content);
   }
 })

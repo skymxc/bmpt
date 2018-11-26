@@ -335,12 +335,27 @@ Page({
         share_num: 0,
         stick: false,
         view_num: 0,
-        user: app.globalData.userInfo
+        user: app.globalData.userInfo,
+        user_id:app.globalData._id
       }
     }).then(res => {
+      if(app.globalData._id){
+        var _ = db.command;
+        db.collection('user').doc(app.globalData._id)
+        .update({
+          data:{
+            publishNum: _.inc(1)
+          }
+        }).then(res=>{
+          console.log(res);
+        })
+      }
+      
       console.log(res)
       wx.hideLoading();
       app.globalData.refresh = true;
+      //
+
       wx.switchTab({
         url: '../index/index',
         fail: err=>{

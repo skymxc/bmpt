@@ -103,8 +103,8 @@ Page({
         var data = res.data[0];
         that.setData({
           publishNum: data.publishNum,
-          totalBeReadNum: data.beAgreeNum,
-          totalBeAgreeNum: data.beReadedNum,
+          totalBeReadNum: data.beReadedNum,
+          totalBeAgreeNum:  data.beAgreeNum,
           user:data.user
         });
         wx.hideLoading();

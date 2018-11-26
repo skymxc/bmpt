@@ -38,7 +38,8 @@ Page({
     contentList: [],
     pageIndex: 0,
     pageSize: 20,
-    orderBy: 'create_date'
+    orderBy: 'create_date',
+    queryWhere:{}
 
   },
 
@@ -129,7 +130,7 @@ Page({
      
     }).catch(err => {
       wx.hideLoading()
-      console.log(err.errMsg);
+      console.log(err);
       wx.showModal({
         title: '登陆失败！',
         content: err.errMsg,
@@ -170,13 +171,15 @@ Page({
       title: '加载数据',
       mask: false
     });
+    console.log(that.data.queryWhere);
     // 获取 所有的 信息 按照 orderBy 排序
-    db.collection('content').orderBy(this.data.orderBy, 'desc').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
+    db.collection('content').where(that.data.queryWhere).orderBy(this.data.orderBy, 'desc').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
       wx.hideLoading();
       wx.stopPullDownRefresh();
+      console.log(res.data.length);
       that.setData({
-        contentList: res.data,
-        pageIndex: that.data.pageIndex + that.data.pageSize
+        contentList: that.data.contentList.concat(res.data),
+        pageIndex: that.data.pageIndex + res.data.length
       })
 
     }).catch(err => {
@@ -184,7 +187,7 @@ Page({
       wx.stopPullDownRefresh();
       wx.showModal({
         title: '内容加载失败！',
-        content: err,
+        content: err.errMsg,
         showCancel: false
       })
     })
@@ -196,7 +199,9 @@ Page({
       app.globalData.refresh = false;
       this.setData({
         pageIndex: 0,
-        orderBy: 'create_date'
+        orderBy: 'create_date',
+        contentList:[],
+        queryWhere:{}
       });
 
       this.loadContent();
@@ -261,36 +266,17 @@ Page({
   },
 
   onPullDownRefresh: function() { //触发 刷新事件
+  console.log('refresh ');
     this.setData({
-      pageIndex: 0
+      pageIndex: 0,
+      contentList:[]
     });
     this.loadContent();
 
   },
   onReachBottom: function(obj) { //拉到底部了，触发了 加载更多事件
-    const db = wx.cloud.database();
-    var that = this;
-    wx.showLoading({
-      title: '加载数据',
-      mask: false
-    });
-    // 获取 所有的 信息 按照 orderBy 排序
-    db.collection('content').orderBy(this.data.orderBy, 'desc').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
-      wx.hideLoading();
-      that.setData({
-        contentList: that.data.contentList.concat(res.data),
-        pageIndex: that.data.pageIndex + that.data.pageSize
-      })
+  this.loadContent();
 
-    }).catch(err => {
-      wx.hideLoading();
-      wx.stopPullDownRefresh();
-      wx.showModal({
-        title: '内容加载失败！',
-        content: err,
-        showCancel: false
-      })
-    })
   },
   onPageScroll: function(obj) { //页面滑动事件
     var distance = 460
@@ -336,9 +322,12 @@ Page({
       class_search: '',
       class_search_label: '',
       queryFoucs: false,
-      queryInput: ''
+      queryInput: '',
+      queryWhere:{},
+      pageIndex:0,
+      contentList:[]
     })
-
+    this.loadContent();
 
   },
 
@@ -360,32 +349,20 @@ Page({
     var db = wx.cloud.database();
     
     // input = '/'+input+'/';
-
-    console.log(input);
-    db.collection('content').where({
-      content: input
-    }).skip(0).limit(that.data.pageSize).get().then(res=>{
-      wx.hideLoading();
-      console.log(res.data);
-      if(res.data.length==0){
-        wx.showToast({
-          title: '没有查询到内容',
-          icon:'none'
-        });
-        return;
-      }
-      that.setData({
-        contentList:res.data
-      });
-
-    }).catch(err=>{
-      console.log(err);
-      wx.hideLoading();
-      wx.showModal({
-        title: '没有查询到内容',
-        content: '',
-      })
-    })
+      var where={
+        content: input
+      };
+    
+    this.setData({
+      queryWhere:where,
+      contentList:[],
+      pageIndex:0
+    });
+    this.loadContent();
+    // var db = wx.cloud.database();
+    // db.collection('content').where({
+    //   content:input
+    // }).orderBy(this.data.orderBy,"desc").skip()
 
   },
   bindADChange: function(event) {
@@ -486,12 +463,14 @@ Page({
 
     contentTools.tapZan(event)
       .then(res => {
+        console.log(res);
         wx.hideLoading();
         that.data.contentList[index].agree_num = record.agree_num + 1;
         if (res.result.stats.updated != 0) {
           that.setData({
             contentList: that.data.contentList
           });
+          contentTools.updateContentUserAgreeNum(record.user_id);
         } else {
           wx.showToast({
             title: '操作超时',
@@ -539,11 +518,12 @@ Page({
     var that = this;
     db.collection('user').where({
       _openid:app.globalData.openid
-    }).count().then(res => {
-      if (res.total == 0) {
+    }).get().then(res => {
+
+      if (res.data.length == 0) {
         that.addUser();
       } else {
-        that.updateUser();
+        that.updateUser(res.data[0]);
       }
     }).catch(err => {
       console.log(err);
@@ -567,11 +547,23 @@ Page({
       data:user
     }).then(res=>{
       console.log(res);
+      app.globalData._id = res._id;
     }).catch(err=>{
       console.log(err);
     })
   },
-  updateUser:function(){
-    // should be update userInfo;
+  updateUser:function(user){
+    console.log(user);
+    app.globalData._id = user._id;
+    var db = wx.cloud.database();
+    db.collection('user').doc(user._id).update({
+      data:{
+        user: app.globalData.userInfo
+      }
+    }).then(res=>{
+      console.log(res);
+    }).catch(err=>{
+      console.log(err)
+    })
   }
 })
