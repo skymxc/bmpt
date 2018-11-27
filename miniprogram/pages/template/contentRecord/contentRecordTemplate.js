@@ -23,12 +23,12 @@ var tapContact= function(event) { //联系Ta
 
 }
 
-var tapRecordFunction = function(event){
-  console.log(event);
-}
 
-var tapChannel = function(event){
-  console.log(event);
+
+var tapChannel = function(_id,channel){
+  wx.navigateTo({
+    url: '../contentFun/contentFun?_id=' + _id+'&channel='+channel,
+  });
 }
 
 var tapContent = function (event) { //内容记录被点击
@@ -178,15 +178,22 @@ var viewContentIncViewNum = function(record){
     console.log(err);
   })
 }
+
+var tapFun = function(_id){
+  wx.navigateTo({
+    url: '../contentFun/contentFun?_id='+_id,
+  });
+}
 module.exports = {
   tapUser: tapUser,
  tapContact: tapContact,
-  tapRecordFunction: tapRecordFunction,
+ 
   tapChannel: tapChannel,
   tapContent: tapContent,
   tapImage: tapImage,
   tapDelContent: tapDelContent,
   tapZan: tapZan,
   updateContentUserAgreeNum: updateContentUserAgreeNum,
-  viewContentIncViewNum: viewContentIncViewNum
+  viewContentIncViewNum: viewContentIncViewNum,
+  tapFun:tapFun
 };

@@ -168,10 +168,15 @@ Page({
     contentTools.tapContact(event);
   },
   tapRecordFunction:function(event){
-    contentTools.tapRecordFunction(event);
+    var _id = event.currentTarget.dataset.fun;
+    contentTools.tapFun(_id);
   },
   tapChannel:function(event){
-    contentTools.tapChannel(event);
+    var record = event.currentTarget.dataset.record;
+    var fun_id = record.fun_id;
+    var channel = record.channel_name;
+
+    contentTools.tapChannel(fun_id, channel);
   },
   tapContent: function (event){
     contentTools.tapContent(event);

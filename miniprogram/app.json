@@ -1,9 +1,9 @@
 {
   "cloud": true,
   "pages": [
+    "pages/contentFun/contentFun",
     "pages/index/index",
     "pages/commentManage/commentManage",
-
     "pages/userProfile/userProfile",
     "pages/contentDetail/contentDetail",
     "pages/publish",

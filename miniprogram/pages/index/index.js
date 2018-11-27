@@ -378,10 +378,7 @@ Page({
   bindChannelTap(event) {
     var channel = event.currentTarget.dataset.fun;
     //  navigation to fun detial list
-    wx.showToast({
-      title: channel.fun_name,
-    })
-
+   contentTools.tapFun(channel._id);
   },
   bindTypeTap: function(event) {
     var tap = event.currentTarget.dataset.type;
@@ -496,10 +493,15 @@ Page({
     console.log('share');
   },
   tapChannel: function(event) { //频道被点击
-    contentTools.tapChannel(event);
+    var record = event.currentTarget.dataset.record;
+    var fun_id = record.fun_id;
+    var channel = record.channel_name;
+
+    contentTools.tapChannel(fun_id,channel);
   },
   tapRecordFunction: function(event) { //功能被点击
-    contentTools.tapRecordFunction(event);
+   var _id= event.currentTarget.dataset.fun;
+   contentTools.tapFun(_id);
   },
   /**
    * 图片被 点击 预览图片

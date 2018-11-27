@@ -56,7 +56,7 @@
         <text class='text-tool'>{{record.agree_num}}</text>
       </view>
       <!-- <view class='container-tool-single' bindtap='tapContentShare' data-record='{{record}}'> -->
-      <button class='button-share container-tool-single' open-type='share' >
+      <button class='button-share container-tool-single' open-type='share' data-content='{{record}}'>
         <image class='image-tool' src='../../images/share.png'></image>
         <text class='text-tool'>分享</text>
         </button>
