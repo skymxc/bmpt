@@ -67,8 +67,12 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
-
+  onShareAppMessage: function (event) {
+    if (event.from == 'button') {
+      console.log(event.target);
+      var content = event.target.dataset.content;
+      return contentTools.tapShare(content);
+    }
   },
   /**
    * 加载这个人发表情况信息
@@ -151,6 +155,7 @@ Page({
               pageIndex:that.data.pageIndex+res.data.length
             });
           }
+          
       }).catch(err=>{
           wx.showModal({
             title: '数据出去玩了',
@@ -226,6 +231,7 @@ Page({
           that.setData({
             contentList: that.data.contentList
           });
+          contentTools.updateContentUserAgreeNum(record.user_id);
         } else {
           wx.showToast({
             title: '操作超时',

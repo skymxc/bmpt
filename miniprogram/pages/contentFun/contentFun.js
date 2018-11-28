@@ -10,44 +10,38 @@ Page({
   data: {
     fun: {},
     channel: '',
-    fun_id: 'W-cI3tx_Lia3NQfo',
+    fun_id: '',
     pageIndex: 0,
     pageSize: 20,
     where: {},
     channelArray: [],
     contentList: [],
-    selectIndex:0
+    selectIndex:0,
+    emptyMsg:''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    this.setData({
-      fun_id: 'W-cI3tx_Lia3NQfo',
-      
-      
-      where: {
-        fun_id: 'W-cI3tx_Lia3NQfo'
-      }
-    });
-    // if(options.channel){
-    //   this.setData({
-    //     fun_id:options._id,
-    //     channel:options.channel,
-    //     where: {
-    //       fun_id: options._Id,
-    //       channel_name:options.channel
-    //     }
-    //   });
-    // }else{
-    //   this.setData({
-    //     fun_id: options._id,
-    //     where:{
-    //       fun_id:options._Id
-    //     }
-    //   });
-    // }
+    console.log(options);
+    if(options.channel){
+      this.setData({
+        fun_id:options._id,
+        channel:options.channel,
+        where: {
+          fun_id: options._id,
+          channel_name:options.channel
+        }
+      });
+    }else{
+      this.setData({
+        fun_id: options._id,
+        where:{
+          fun_id:options._id
+        }
+      });
+    }
     this.loadFun();
 
   },
@@ -79,14 +73,27 @@ Page({
     db.collection('function').doc(this.data.fun_id).get()
       .then(res => {
         wx.hideLoading();
-        
+        var index = that.data.selectIndex;
         if(res.data.channel){
           that.data.channelArray= that.data.channelArray.concat(res.data.channel);
           that.data.channelArray.unshift('全部');
+          
         }
+        if(that.data.channel.length!=0){
+          var size = that.data.channelArray.length;
+          for (var i = 0; i < size; i++) {
+            if (that.data.channelArray[i] == that.data.channel){
+              index =i;
+              break;
+            }
+          }
+        }
+        
+        
         that.setData({
           fun: res.data,
-          channelArray: that.data.channelArray
+          channelArray: that.data.channelArray,
+          selectIndex:index
         });
         that.loadContent(true);
 
@@ -112,8 +119,8 @@ Page({
         wx.stopPullDownRefresh();
         var pageIndex = that.data.pageIndex + res.data.length;
         that.data.contentList = that.data.contentList.concat(res.data);
-        console.log('refresh=>'+refresh);
-        console.log(res.data);
+        // console.log('refresh=>'+refresh);
+        // console.log(res.data);
         if(refresh){
           that.data.contentList= res.data;
         }
@@ -122,7 +129,15 @@ Page({
           contentList: that.data.contentList,
           pageIndex: pageIndex
         });
-
+        if (that.data.contentList.length == 0) {
+          that.setData({
+            emptyMsg: '当前频道下没有数据哦'
+          })
+        }else{
+          that.setData({
+            emptyMsg: ''
+          })
+        }
       }).catch(error => {
         wx.hideLoading();
         wx.stopPullDownRefresh();
@@ -132,7 +147,7 @@ Page({
         });
       });
   },
-  tapChannel:function(event){
+  tapTopChannel:function(event){
     var index=  event.currentTarget.dataset.index;
     var channel = event.currentTarget.dataset.channel;
     var where={
@@ -237,15 +252,7 @@ Page({
     if (event.from == 'button') {
       console.log(event.target);
       var content = event.target.dataset.content;
-      var custom = {
-        title: content.content,
-        path:'/pages/contentDetail/contentDetail?_id='+content._id
-      };
-      if(content.images.length>0){
-        custom.imageUrl=content.images[0];
-      }
-      console.log(custom);
-      return custom
+     return contentTools.tapShare(content);
     }else{
       return {}
     }

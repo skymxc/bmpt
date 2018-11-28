@@ -18,7 +18,8 @@ Page({
     classComment: 'hide',
     classCover: 'hide',
     commentPlaceHolder: '',
-    focusWriteComment: false
+    focusWriteComment: false,
+    focusWriteReport:false
   },
 
   /**
@@ -51,7 +52,8 @@ Page({
    */
   onPullDownRefresh: function() {
     this.setData({
-      pageIndex: 0
+      pageIndex: 0,
+      commentList:[]
     })
     this.loadContent();
   },
@@ -73,9 +75,8 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
-
-    return {};
+  onShareAppMessage: function(event) {
+    return contentTools.tapShare(this.data.content);
   },
   loadContent: function() {
     wx.showLoading({
@@ -87,6 +88,7 @@ Page({
     var that = this;
     db.collection('content').doc(this.data._id)
       .get().then(res => {
+        console.log(res);
         wx.stopPullDownRefresh();
         that.setData({
           content: res.data,
@@ -148,7 +150,8 @@ Page({
     //显示遮罩层 和 举报原因输入框
     this.setData({
       classReport: '',
-      classCover: ''
+      classCover: '',
+      focusWriteReport:true
     });
   },
   /**
@@ -205,6 +208,7 @@ Page({
         that.setData({
           content: that.data.content
         });
+        contentTools.updateContentUserAgreeNum(record.user_id);
       } else {
         wx.showToast({
           title: '操作超时',
@@ -284,7 +288,7 @@ Page({
       user: app.globalData.userInfo,
       content_id: that.data._id,
       create_date: date,
-      create_date_str: date.toLocaleString(),
+      create_date_str: app.formatDate("yyyy-MM-dd hh:mm", date),
       text: comment
     };
     db.collection('comment').add({
@@ -355,6 +359,8 @@ Page({
       contnet_id: this.data._id,
       deal: false,
       result: '未处理',
+      create_date:new Date(),
+      create_date_str: app.formatDate("yyyy-MM-dd hh:mm",new Date()),
       content_user: this.data.content.user
     };
     var that = this;
@@ -413,7 +419,8 @@ Page({
   tapReportCancel: function() {
     this.setData({
       classReport: 'hide',
-      classCover: 'hide'
+      classCover: 'hide',
+      focusWriteReport:false
     })
   },
   tapCommentCancel: function() {
@@ -434,7 +441,13 @@ Page({
       }
     });
   },
-  addReadNum:function(){
+  addReadNum: function() {
     contentTools.viewContentIncViewNum(this.data.content);
+  },
+  tapFun:function(){
+    contentTools.tapFun(this.data.content.fun_id);
+  },
+  tapChannel:function(){
+    contentTools.tapChannel(this.data.content.fun_id,this.data.content.channel_name);
   }
 })

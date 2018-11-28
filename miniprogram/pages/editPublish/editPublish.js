@@ -326,7 +326,7 @@ Page({
         conceal: false,
         content: content,
         create_date: date,
-        create_date_str: str,
+        create_date_str: app.formatDate('yyyy-MM-dd hh:mm', date),
         fun_id: that.data.fun_id,
         fun_name: that.data.fun_name,
         images: images,

@@ -4,7 +4,7 @@
 // 这个函数的 Object 参数有几个系统规定的生命周期属性：onLaunch , onShow,onHide,onError,onPageNotFound; 这几个属性都是 函数类型的 ；下面是实例代码
 // 我们还可以自己添加 属性； 
 App({
-  onLaunch: function (options) {
+  onLaunch: function(options) {
     console.log('onLaunch  sence - >');
     // 初始化云能力 traceUser:true 记录用户
     if (!wx.cloud) {
@@ -12,24 +12,41 @@ App({
     } else {
       wx.cloud.init({
         traceUser: true,
-        env:'test-1e9ad8'
+        env: 'test-1e9ad8'
       })
     }
- 
+
     this.globalData = {}
   },
-  onShow: function (options) {
+  onShow: function(options) {
     // console.log('onShow into foreground .');
   },
-  onHide: function (options){
+  onHide: function(options) {
     // console.log('onHide into background ');
   },
-  onError: function (error){
+  onError: function(error) {
     // console.log('onError occur error :'+error);
   },
-  onPageNotFound: function (options){
+  onPageNotFound: function(options) {
     wx.showToast({
       title: '页面去旅游了，还没有回来',
     })
+  },
+  formatDate: function (fmt, date) { //author: meizz   
+    var o = {
+      "M+": date.getMonth() + 1, //月份   
+      "d+": date.getDate(), //日   
+      "h+": date.getHours(), //小时   
+      "m+": date.getMinutes(), //分   
+      "s+": date.getSeconds(), //秒   
+      "q+": Math.floor((date.getMonth() + 3) / 3), //季度   
+      "S": date.getMilliseconds() //毫秒   
+    };
+    if (/(y+)/.test(fmt))
+      fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+      if (new RegExp("(" + k + ")").test(fmt))
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
   }
 })

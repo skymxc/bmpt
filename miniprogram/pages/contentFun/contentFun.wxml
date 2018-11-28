@@ -2,19 +2,21 @@
   <scroll-view scroll-x='true'  class='scroll-container' wx:if='{{channelArray.length>0}}'>
   <view class='container-fun'>
       <block wx:for='{{channelArray}}'>
-        <view class="container-channel {{index==selectIndex ? 'selectFun' : 'classfun'}}" data-index='{{index}}' bindtap='tapChannel' data-channel='{{item}}'>
+        <view class="container-channel {{index==selectIndex ? 'selectFun' : 'classfun'}}" data-index='{{index}}' bindtap='tapTopChannel' data-channel='{{item}}'>
           <text>{{item}}</text>
         </view>
        </block>
        </view>
   </scroll-view>
 
-  <view class='container-content' wx:if='{{contentList.length>0}}'>
+  <view id='container-content' wx:if='{{contentList.length>0}}'>
   <import src='../template/contentRecord/contentRecordTemplate.wxml' />
       <block wx:for='{{contentList}}' wx:for-item="record" wx:key='_id'>
         <template is='recordTemplate' data='{{record,index}}' />
       </block>
   </view>
   <view class='container-empty' wx:if='{{contentList.length==0}}'>
+    
+    {{emptyMsg}}
   </view>
 </view>

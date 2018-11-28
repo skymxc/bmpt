@@ -49,7 +49,7 @@
         <!-- 几页 -->
         <block wx:for="{{funList}}" wx:for-item="page" wx:key='index'>
           <swiper-item>
-            <view class='container-swiper-page page-{{page.index}}'>
+            <view class='container-swiper-page'>
 
 
               <!-- 几个 -->

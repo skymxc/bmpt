@@ -1,12 +1,12 @@
 {
   "cloud": true,
   "pages": [
-    "pages/contentFun/contentFun",
     "pages/index/index",
+    "pages/contentFun/contentFun",
+    
     "pages/commentManage/commentManage",
     "pages/userProfile/userProfile",
     "pages/contentDetail/contentDetail",
-    "pages/publish",
     "pages/publish/publish",
     "pages/editPublish/editPublish",
     "pages/my/my",

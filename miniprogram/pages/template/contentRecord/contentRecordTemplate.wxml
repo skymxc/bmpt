@@ -1,6 +1,6 @@
 <template name='recordTemplate' data="{{record,index,manager}}">
  
-  <view class='class-background-white container-content'>
+  <view class='container-content'>
     <!-- 头像部分 -->
     <view class='container-content-person'>
       <image src='' style='background-image:url({{record.user.avatarUrl}})' class='content-person-image' bindtap='tapUser' data-record='{{record}}'></image>

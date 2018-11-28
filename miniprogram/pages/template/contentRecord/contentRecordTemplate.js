@@ -63,33 +63,22 @@ var tapDelContent = function (event, publishNum, totalBeAgreeNum, totalBeReadNum
           }else{
             resolve(true);
 
-            //这里会出现 原子性问题 如果其他端也在删除，那么就会出现 脏数据
-            var where = {
-              _openid:record._openid
-            };
-            //防止出现 负数
-            if(publishNum<1){
-              publishNum =1;
-            }
-            var data={
-              publishNum: publishNum-1,
-              beAgreeNum: totalBeAgreeNum-record.agree_num,
-              beReadedNum: totalBeReadNum - record.view_num
-            };
-            wx.cloud.callFunction({
-              name:'update',
-              data:{
-                collection:'user',
-                where:where,
-                data:data
-              },
-              success:function(response){
+            db.collection('user').doc(getApp().globalData._id).update({
+                data:{
+                  publishNum: publishNum - 1,
+                  beAgreeNum: totalBeAgreeNum - record.agree_num,
+                  beReadedNum: totalBeReadNum - record.view_num
+                },
+              success: function (response) {
                 console.log(response);
+              },
+              fail:function(err){
+                console.log(err);
               }
             })
 
-            where = {
-              content_Id:record._id
+             var where = {
+              content_id:record._id
             };
 
             //删除相关评论 文件 等
@@ -180,9 +169,25 @@ var viewContentIncViewNum = function(record){
 }
 
 var tapFun = function(_id){
+  console.log('fun_id--->'+_id)
   wx.navigateTo({
     url: '../contentFun/contentFun?_id='+_id,
   });
+}
+
+var tapShare = function(content){
+  
+  var custom = {
+    title: content.content,
+    path: '/pages/contentDetail/contentDetail?_id=' + content._id
+    // path:'/pages/index/index'
+  };
+  if (content.images.length > 0) {
+    custom.imageUrl = content.images[0];
+  }
+  console.log(custom);
+  incContentNum('share_num',content._id).then(console.log).catch(console.error);
+  return custom
 }
 module.exports = {
   tapUser: tapUser,
@@ -195,5 +200,6 @@ module.exports = {
   tapZan: tapZan,
   updateContentUserAgreeNum: updateContentUserAgreeNum,
   viewContentIncViewNum: viewContentIncViewNum,
-  tapFun:tapFun
+  tapFun:tapFun,
+  tapShare: tapShare
 };

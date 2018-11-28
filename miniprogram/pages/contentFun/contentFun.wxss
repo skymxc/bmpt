@@ -4,10 +4,12 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  background-color: #f2f2f2
 }
 .scroll-container{
   height: 80rpx;
   width: 100%;
+  background-color: white;
 }
 
 .container-fun{
@@ -33,7 +35,7 @@
   border-bottom: 5rpx greenyellow solid;
 }
 
-.container-content{
+#container-content{
   display: flex;
   flex-direction: column;
   width: 99%;
@@ -42,3 +44,13 @@
 
 /* 内容 */
 @import '../template/contentRecord/contentRecordTemplate.wxss';
+
+.container-empty{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}

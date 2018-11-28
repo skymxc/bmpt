@@ -107,7 +107,7 @@ Page({
             commentList: that.data.commentList
           });
           console.log('commentid--->'+comment.content_id);
-          //更改 这个content 的 comment_num；
+          //无法处理出现并发情况 没有提供原子性操作的东西
           db.collection('content').doc(contentid)
             .get().then(response => {
               console.log('res-->' + response);

@@ -45,8 +45,7 @@ Page({
 
   onLoad: function(query) {
 
-    var date = new Date();
-   
+    
     var that = this;
     wx.showLoading({
       title: '拉取授权信息',
@@ -176,7 +175,7 @@ Page({
     db.collection('content').where(that.data.queryWhere).orderBy(this.data.orderBy, 'desc').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
       wx.hideLoading();
       wx.stopPullDownRefresh();
-      console.log(res.data.length);
+      // console.log(res.data.length);
       that.setData({
         contentList: that.data.contentList.concat(res.data),
         pageIndex: that.data.pageIndex + res.data.length
@@ -512,6 +511,8 @@ Page({
   onShareAppMessage: function(event) {
     if (event.from == 'button') {
       console.log(event.target);
+      var content = event.target.dataset.content;
+      return contentTools.tapShare(content);
     }
 
   },
@@ -555,7 +556,7 @@ Page({
     })
   },
   updateUser:function(user){
-    console.log(user);
+    // console.log(user);
     app.globalData._id = user._id;
     var db = wx.cloud.database();
     db.collection('user').doc(user._id).update({
@@ -563,7 +564,7 @@ Page({
         user: app.globalData.userInfo
       }
     }).then(res=>{
-      console.log(res);
+      // console.log(res);
     }).catch(err=>{
       console.log(err)
     })

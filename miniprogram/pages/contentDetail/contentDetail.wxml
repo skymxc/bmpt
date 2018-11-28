@@ -2,8 +2,8 @@
   <view class='container-fun'>
     <!-- <view class='wrap-text-fun'> -->
     #
-    <text wx:if='{{content.fun_name}}'>{{content.fun_name}}</text>
-    <text wx:if='{{content.channel_name}}'>@{{content.channel_name}}</text>#
+    <text wx:if='{{content.fun_name}}' bindtap='tapFun'>{{content.fun_name}}</text>
+    <text wx:if='{{content.channel_name}}' bindtap='tapChannel'>@{{content.channel_name}}</text>#
     <!-- </view> -->
     <button class='button-report' bindtap='tapReport' size='mini'>举报</button>
   </view>
@@ -29,7 +29,7 @@
   </view>
   <view class='container-images' wx:if='{{content.images.length>0}}'>
     <block wx:for='{{content.images}}' wx:for-item='image'>
-      <image data-image='{{image}}' bindtap='tapImage' class='image-content' src='{{image}}'></image>
+      <image data-image='{{image}}' mode='aspectFill' bindtap='tapImage' class='image-content' src='{{image}}'></image>
 
     </block>
   </view>
@@ -42,7 +42,7 @@
     <view wx:if='{{commentList.length>0}}' class='container-comment-list'>
       <block wx:for='{{commentList}}' wx:for-item='comment' wx:key='_id'>
         <view class='container-comment-single'>
-            <image style='background-image:url({{comment.user.avatarUrl}});' class='image-comment-user'></image>
+            <image mode="center" style='background-image:url({{comment.user.avatarUrl}});' class='image-comment-user'></image>
             <view class='container-comment-content'>
               <view class='text-commnet-user-name text-comment'>{{comment.user.nickName}}</view>
               <view class='text-comment-text text-comment'>{{comment.text}}</view>
@@ -89,7 +89,7 @@
       <text class='text-report'> 举报</text>
       <icon class='icon-report-cancel'  color='black' type='cancel' bindtap='tapReportCancel'></icon>
     </view>
-    <textarea name='{{report}}' bindinput='inputReport' class='textarea-report' focus cursor-spacing="260rpx" placeholder='这里输入举报的原因'>
+    <textarea name='{{report}}' bindinput='inputReport' class='textarea-report' focus='{{focusWriteReport}}' cursor-spacing="260rpx" placeholder='这里输入举报的原因'>
 
     </textarea>
     <view class='container-report-button'>
