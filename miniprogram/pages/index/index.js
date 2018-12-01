@@ -39,13 +39,13 @@ Page({
     pageIndex: 0,
     pageSize: 20,
     orderBy: 'create_date',
-    queryWhere:{}
+    queryWhere: {}
 
   },
 
   onLoad: function(query) {
 
-    
+
     var that = this;
     wx.showLoading({
       title: '拉取授权信息',
@@ -113,20 +113,20 @@ Page({
     })
     wx.cloud.callFunction({
       name: 'login',
-      data:{
+      data: {
         user: app.globalData.userInfo
       }
     }).then(res => {
-     
+
       app.globalData.openid = res.result.openid
-     //
+      //
       wx.hideLoading()
       // 获取数据
       that.getData();
 
       that.count();
 
-     
+
     }).catch(err => {
       wx.hideLoading()
       console.log(err);
@@ -176,10 +176,17 @@ Page({
       wx.hideLoading();
       wx.stopPullDownRefresh();
       // console.log(res.data.length);
+      var length = that.data.contentList.length;
       that.setData({
         contentList: that.data.contentList.concat(res.data),
         pageIndex: that.data.pageIndex + res.data.length
       })
+      if (res.data.length > 0) {
+        for (var i = 0; i < res.data.length; i++) {
+          that.loadAgree(length+i,res.data[i]);
+        }
+      }
+
 
     }).catch(err => {
       wx.hideLoading();
@@ -193,14 +200,34 @@ Page({
 
 
   },
+  /**
+   * 当前登录用户是否给这个记录点了赞
+   */
+  loadAgree:function(index,content){
+    console.log(content);
+    var that = this;
+    var db = wx.cloud.database();
+    db.collection('agree').where({
+      content_id:content._id,
+      _openid:app.globalData.openid
+    }).count().then(res=>{
+      console.log(res);
+      that.data.contentList[index].agree= res.total>0;
+      that.setData({
+        contentList:that.data.contentList
+      })
+    }).catch(error=>{
+      console.error(error);
+    });
+  },
   onShow: function() {
     if (app.globalData.refresh) {
       app.globalData.refresh = false;
       this.setData({
         pageIndex: 0,
         orderBy: 'create_date',
-        contentList:[],
-        queryWhere:{}
+        contentList: [],
+        queryWhere: {}
       });
 
       this.loadContent();
@@ -265,16 +292,16 @@ Page({
   },
 
   onPullDownRefresh: function() { //触发 刷新事件
-  console.log('refresh ');
+    console.log('refresh ');
     this.setData({
       pageIndex: 0,
-      contentList:[]
+      contentList: []
     });
     this.loadContent();
 
   },
   onReachBottom: function(obj) { //拉到底部了，触发了 加载更多事件
-  this.loadContent();
+    this.loadContent();
 
   },
   onPageScroll: function(obj) { //页面滑动事件
@@ -322,40 +349,40 @@ Page({
       class_search_label: '',
       queryFoucs: false,
       queryInput: '',
-      queryWhere:{},
-      pageIndex:0,
-      contentList:[]
+      queryWhere: {},
+      pageIndex: 0,
+      contentList: []
     })
     this.loadContent();
 
   },
 
   query: function(event) { //搜索
-   
-    var input= this.data.queryInput;
-    if(input.length==0){
+
+    var input = this.data.queryInput;
+    if (input.length == 0) {
       wx.showToast({
         title: '请输入要搜索的内容',
-        icon:'none'
+        icon: 'none'
       });
       return;
     }
     wx.showLoading({
       title: '请稍后',
-      mask:true
+      mask: true
     });
-    var that =this;
+    var that = this;
     var db = wx.cloud.database();
-    
+
     // input = '/'+input+'/';
-      var where={
-        content: input
-      };
-    
+    var where = {
+      content: input
+    };
+
     this.setData({
-      queryWhere:where,
-      contentList:[],
-      pageIndex:0
+      queryWhere: where,
+      contentList: [],
+      pageIndex: 0
     });
     this.loadContent();
     // var db = wx.cloud.database();
@@ -377,7 +404,7 @@ Page({
   bindChannelTap(event) {
     var channel = event.currentTarget.dataset.fun;
     //  navigation to fun detial list
-   contentTools.tapFun(channel._id);
+    contentTools.tapFun(channel._id);
   },
   bindTypeTap: function(event) {
     var tap = event.currentTarget.dataset.type;
@@ -454,38 +481,60 @@ Page({
 
     wx.showLoading({
       title: '请稍后',
-      mask: false
+      mask: true
     });
 
     contentTools.tapZan(event)
       .then(res => {
-        console.log(res);
         wx.hideLoading();
-        that.data.contentList[index].agree_num = record.agree_num + 1;
-        if (res.result.stats.updated != 0) {
-          that.setData({
-            contentList: that.data.contentList
-          });
-          contentTools.updateContentUserAgreeNum(record.user_id);
+        console.log('点赞成功');
+        if (record.agree) {
+          that.data.contentList[index].agree_num = record.agree_num - 1;
+          that.data.contentList[index].agree = false;
         } else {
-          wx.showToast({
-            title: '操作超时',
-            icon: 'none'
-          });
+          that.data.contentList[index].agree_num = record.agree_num + 1;
+          that.data.contentList[index].agree = true;
         }
 
-      }).catch(err => {
-        console.log(err);
+        that.setData({
+          contentList: that.data.contentList
+        });
+      }).catch(error => {
         wx.hideLoading();
+        console.log(error);
         wx.showToast({
-          title: err.message,
+          title: '网络异常',
           icon: 'none'
         })
       });
+    // .then(res => {
+    //   console.log(res);
+    //   wx.hideLoading();
+    //   that.data.contentList[index].agree_num = record.agree_num + 1;
+    //   if (res.result.stats.updated != 0) {
+    //     that.setData({
+    //       contentList: that.data.contentList
+    //     });
+    //     contentTools.updateContentUserAgreeNum(record.user_id);
+    //   } else {
+    //     wx.showToast({
+    //       title: '操作超时',
+    //       icon: 'none'
+    //     });
+    //   }
+
+    // }).catch(err => {
+    //   console.log(err);
+    //   wx.hideLoading();
+    //   wx.showToast({
+    //     title: err.message,
+    //     icon: 'none'
+    //   })
+    // });
 
 
 
-    
+
   },
   tapContentShare: function(event) { //分享被点击
     var record = event.currentTarget.dataset.record;
@@ -496,11 +545,11 @@ Page({
     var fun_id = record.fun_id;
     var channel = record.channel_name;
 
-    contentTools.tapChannel(fun_id,channel);
+    contentTools.tapChannel(fun_id, channel);
   },
   tapRecordFunction: function(event) { //功能被点击
-   var _id= event.currentTarget.dataset.fun;
-   contentTools.tapFun(_id);
+    var _id = event.currentTarget.dataset.fun;
+    contentTools.tapFun(_id);
   },
   /**
    * 图片被 点击 预览图片
@@ -516,11 +565,11 @@ Page({
     }
 
   },
-  count:function(){
+  count: function() {
     var db = wx.cloud.database();
     var that = this;
     db.collection('user').where({
-      _openid:app.globalData.openid
+      _openid: app.globalData.openid
     }).get().then(res => {
 
       if (res.data.length == 0) {
@@ -537,9 +586,9 @@ Page({
   /**
    * 
    */
-  addUser:function(){
+  addUser: function() {
     var db = wx.cloud.database();
-    var user = {  
+    var user = {
       user: app.globalData.userInfo,
       publishNum: 0,
       beReadedNum: 0,
@@ -547,25 +596,25 @@ Page({
       beReportNum: 0
     };
     db.collection('user').add({
-      data:user
-    }).then(res=>{
+      data: user
+    }).then(res => {
       console.log(res);
       app.globalData._id = res._id;
-    }).catch(err=>{
+    }).catch(err => {
       console.log(err);
     })
   },
-  updateUser:function(user){
+  updateUser: function(user) {
     // console.log(user);
     app.globalData._id = user._id;
     var db = wx.cloud.database();
     db.collection('user').doc(user._id).update({
-      data:{
+      data: {
         user: app.globalData.userInfo
       }
-    }).then(res=>{
+    }).then(res => {
       // console.log(res);
-    }).catch(err=>{
+    }).catch(err => {
       console.log(err)
     })
   }
