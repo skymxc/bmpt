@@ -231,13 +231,13 @@ Page({
   controlAddImageVisible: function(page) {
     //  增加图片的按钮
     var classAdd = 'hide';
-    if (page.data.imageList.length < 6) {
+    if (this.data.imageList.length < 6) {
       classAdd = '';
     }
-    page.setData({
+    this.setData({
       classAddImage: classAdd
     })
-    console.log(page.data.classAddImage);
+    console.log(this.data.classAddImage);
   },
   // 图片的 点击事件
   tapImage: function(event) {
@@ -290,6 +290,20 @@ Page({
     if (content.length == 0) {
       wx.showToast({
         title: '发布内容没有输入',
+        icon: 'none'
+      })
+      return;
+    }
+    if(phone.length==0){
+      wx.showToast({
+        title: '联系电话没有输入',
+        icon: 'none'
+      })
+      return;
+    }
+    if (phone.length!= 11) {
+      wx.showToast({
+        title: '联系电话格式不正确',
         icon: 'none'
       })
       return;

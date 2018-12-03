@@ -1,0 +1,58 @@
+<view id='container'>
+  <view id='container-type'>
+    <view class="handle-type {{selectIndex==0 ? 'select-type' : ''}}" data-index='0' bindtap='tapType'>未处理</view>
+    <view class="handle-type {{selectIndex==1 ? 'select-type' : ''}}" data-index='1' bindtap='tapType'>已处理</view>
+  </view>
+  <view wx:if='{{reportList.length>0}}' id='container-report'>
+
+    <block wx:for="{{reportList}}" wx:key='_id'>
+      <view class='container-report'>
+      
+        <view class='container-report-result' wx:if='{{item.deal}}'>
+          处理结果：{{item.result}}
+        </view>
+
+        <view class='container-report-wrap'>
+
+          <view class='container-report-user' data-report='{{item}}' bindtap='tapUser'>
+
+                <image class='image-report-user' style='background-image:url({{item.user.avatarUrl}});'></image>
+
+                <view class='container-report-user-right'>
+                  <text class='text-report-user-name'>{{item.user.nickName}}</text>
+                  <text class='text-report-time'>{{item.create_date_str}}</text>
+                </view>
+
+          </view>
+
+          <view class='container-report-content' data-report='{{item}}' bindtap='tapContent'>
+               举报理由： {{item.reason}}
+          </view>
+          <view class='container-report-content' data-report='{{item}}' bindtap='tapContent'>
+               
+               
+               被举报的内容：{{item.content}}...
+          </view>
+
+        </view>
+
+        <view class='container-report-operate' wx:if="{{!item.deal}}">
+
+          <view class='report-oprate' bindtap='tapIgnore' data-report='{{item}}' data-index='{{index}}'>
+                忽略举报
+          </view>
+
+          <view class='report-oprate' bindtap='tapDel' data-report='{{item}}' data-index='{{index}}'>
+                删除内容
+          </view> 
+
+        </view>
+
+      </view>
+    </block>
+  </view>
+  <view wx:if='{{reportList.length==0}}' class='container-empty'>
+
+      {{emptyMsg}}
+  </view>
+</view>

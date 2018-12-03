@@ -7,9 +7,10 @@ Page({
    */
   data: {
     enable: false,
-    user:{},
-    avatarUrl:'',
-    classGetUser:'hide'
+    user: {},
+    avatarUrl: '',
+    classGetUser: 'hide',
+    manager: false
   },
 
   /**
@@ -32,18 +33,25 @@ Page({
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
-         // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
           wx.getUserInfo({
             success: res => {
               wx.hideLoading()
               that.setData({
                 avatarUrl: res.userInfo.avatarUrl,
                 user: res.userInfo,
-                classGetUser:'hide'
+                classGetUser: 'hide'
               })
               console.log(res)
+              if (app.globalData.user) {
+                if (app.globalData.user.manager) {
+                  that.setData({
+                    manager: app.globalData.user.manager
+                  })
+                }
+              }
             },
-            fail:err=>{
+            fail: err => {
               wx.hideLoading()
               wx.showToast({
                 title: '用户信息获取失败',
@@ -53,14 +61,14 @@ Page({
               })
             }
           })
-        }else{
+        } else {
           wx.hideLoading()
           that.setData({
-            classGetUser:''
+            classGetUser: ''
           })
         }
       }
-      
+
     })
   },
 
@@ -120,23 +128,60 @@ Page({
    * 我的发布
    */
   tapPublish: function() {
-    
+
     wx.navigateTo({
-      url: '../userProfile/userProfile?openid='+app.globalData.openid,
+      url: '../userProfile/userProfile?openid=' + app.globalData.openid,
     })
   },
   /**
    * 用户信息 获取回掉
    */
-  onGetUserInfo: function(event){
-   
+  onGetUserInfo: function(event) {
+
     this.setData({
-      classGetUser:'hide',
+      classGetUser: 'hide',
       avatarUrl: event.detail.userInfo.avatarUrl,
-      userInfo:event.detail.userInfo
+      userInfo: event.detail.userInfo
     })
     wx.hideLoading();
     console.log(event)
+
+    if (app.globalData.user) {
+      if (app.globalData.user.manager) {
+        that.setData({
+          manager: app.globalData.user.manager
+        })
+      }
+    }
+  },
+  tapManagerReport:function(){
+    wx.showLoading({
+      title: '请稍后'
+    });
+    wx.navigateTo({
+      url: '../manger/report/report',
+      success: function () {
+        wx.hideLoading();
+      },
+      fail: function () {
+        wx.hideLoading();
+      }
+    })
+  },
+  tpaManagerAD:function(){
+    wx.showLoading({
+      title: '请稍后'
+    });
+
+    wx.navigateTo({
+      url: '../manger/ad/ad',
+      success:function(){
+        wx.hideLoading();
+      },
+      fail:function(){
+        wx.hideLoading();
+      }
+    });
   }
 
 })

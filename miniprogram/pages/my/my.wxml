@@ -23,6 +23,20 @@
     </view>
   </view>
   <!-- 管理员设置 -->
+  <view class='container-bm' wx:if='{{manager}}'>
+    <view class='container-bmmy container-my'>
+      <image class='image-icon-more image-my-icon' src='../../images/city.png'></image>
+      <text class='text-bmxx'>管理</text>
+    </view>
+    <view class='container-bmmy' bindtap='tapManagerReport'>
+      <image class='image-icon-more' src='../../images/more.png'> </image>
+      <text>举报管理</text>
+    </view>
+    <!-- <view class='container-bmmy' bindtap='tpaManagerAD'>
+      <image class='image-icon-more' src='../../images/more.png'> </image>
+      <text>广告管理</text>
+    </view> -->
+  </view>
 
   <!-- 获取用户信息 -->
   <view class='container-getuser {{classGetUser}}'>

@@ -231,7 +231,7 @@ page {
 }
 
 .selected-text {
-  color: #06d8b5ad;
+  color: green;
 }
 
 /* 内容 */

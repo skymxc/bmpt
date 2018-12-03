@@ -6,8 +6,6 @@ const contentTools = require('../template/contentRecord/contentRecordTemplate.js
  * class_search：搜索输入框的 类名
  * class_search_label：搜索输入框没有获取到焦点时的 类名
  * queryInput：搜索输入框输入的文本
-
-
  * 
  * 
  */
@@ -39,7 +37,10 @@ Page({
     pageIndex: 0,
     pageSize: 20,
     orderBy: 'create_date',
-    queryWhere: {}
+    queryWhere: {
+      conceal: false
+    },
+    selectTypeIndex:0
 
   },
 
@@ -70,8 +71,8 @@ Page({
               })
 
               app.globalData.userInfo = response.userInfo;
-              // console.log(app.globalData.userInfo);
-              app.globalData.logged = true;
+
+
               wx.hideLoading()
               that.login()
             },
@@ -123,7 +124,7 @@ Page({
       wx.hideLoading()
       // 获取数据
       that.getData();
-
+      app.globalData.logged = true;
       that.count();
 
 
@@ -159,11 +160,11 @@ Page({
 
     })
 
-    this.loadContent();
+    this.loadContent(true);
 
 
   },
-  loadContent: function() {
+  loadContent: function(refresh) {
     const db = wx.cloud.database();
     var that = this;
     wx.showLoading({
@@ -175,18 +176,15 @@ Page({
     db.collection('content').where(that.data.queryWhere).orderBy(this.data.orderBy, 'desc').skip(this.data.pageIndex).limit(this.data.pageSize).get().then(res => {
       wx.hideLoading();
       wx.stopPullDownRefresh();
-      // console.log(res.data.length);
-      var length = that.data.contentList.length;
+      if(refresh){
+        that.data.contentList = res.data;
+      }else{
+        that.data.contentList = that.data.contentList.concat(res.data);
+      }
       that.setData({
-        contentList: that.data.contentList.concat(res.data),
+        contentList: that.data.contentList,
         pageIndex: that.data.pageIndex + res.data.length
       })
-      if (res.data.length > 0) {
-        for (var i = 0; i < res.data.length; i++) {
-          that.loadAgree(length+i,res.data[i]);
-        }
-      }
-
 
     }).catch(err => {
       wx.hideLoading();
@@ -197,29 +195,8 @@ Page({
         showCancel: false
       })
     })
-
-
   },
-  /**
-   * 当前登录用户是否给这个记录点了赞
-   */
-  loadAgree:function(index,content){
-    console.log(content);
-    var that = this;
-    var db = wx.cloud.database();
-    db.collection('agree').where({
-      content_id:content._id,
-      _openid:app.globalData.openid
-    }).count().then(res=>{
-      console.log(res);
-      that.data.contentList[index].agree= res.total>0;
-      that.setData({
-        contentList:that.data.contentList
-      })
-    }).catch(error=>{
-      console.error(error);
-    });
-  },
+
   onShow: function() {
     if (app.globalData.refresh) {
       app.globalData.refresh = false;
@@ -227,10 +204,12 @@ Page({
         pageIndex: 0,
         orderBy: 'create_date',
         contentList: [],
-        queryWhere: {}
+        queryWhere: {
+          conceal: false
+        }
       });
 
-      this.loadContent();
+      this.loadContent(true);
     }
   },
   /**
@@ -294,14 +273,13 @@ Page({
   onPullDownRefresh: function() { //触发 刷新事件
     console.log('refresh ');
     this.setData({
-      pageIndex: 0,
-      contentList: []
+      pageIndex: 0
     });
-    this.loadContent();
+    this.loadContent(true);
 
   },
   onReachBottom: function(obj) { //拉到底部了，触发了 加载更多事件
-    this.loadContent();
+    this.loadContent(false);
 
   },
   onPageScroll: function(obj) { //页面滑动事件
@@ -349,11 +327,13 @@ Page({
       class_search_label: '',
       queryFoucs: false,
       queryInput: '',
-      queryWhere: {},
+      queryWhere: {
+        conceal: false
+      },
       pageIndex: 0,
       contentList: []
     })
-    this.loadContent();
+    this.loadContent(true);
 
   },
 
@@ -376,7 +356,8 @@ Page({
 
     // input = '/'+input+'/';
     var where = {
-      content: input
+      content: input,
+      conceal: false
     };
 
     this.setData({
@@ -384,7 +365,7 @@ Page({
       contentList: [],
       pageIndex: 0
     });
-    this.loadContent();
+    this.loadContent(true);
     // var db = wx.cloud.database();
     // db.collection('content').where({
     //   content:input
@@ -408,52 +389,15 @@ Page({
   },
   bindTypeTap: function(event) {
     var tap = event.currentTarget.dataset.type;
+    var index = event.currentTarget.dataset.index;
     this.setData({
-      orderBy: tap
+      orderBy: tap,
+      selectTypeIndex:index
     });
     wx.startPullDownRefresh({
 
     });
-    var name = "最新发布"
-    switch (tap) {
-      case 'create_date':
-        name = "最新发布";
-        this.setData({
-          contenTypeNewestPublish: 'selected-text',
-          contentTypeNewestReply: '',
-          contentTypeMostZan: '',
-          contentTypeMostShare: '',
-        });
-        break;
-      case 'view_num':
-        name = '最新回复';
-        this.setData({
-          contenTypeNewestPublish: '',
-          contentTypeNewestReply: 'selected-text',
-          contentTypeMostZan: '',
-          contentTypeMostShare: '',
-        });
-        break;
-      case 'agree_num':
-        name = '最多点赞';
-        this.setData({
-          contenTypeNewestPublish: '',
-          contentTypeNewestReply: '',
-          contentTypeMostZan: 'selected-text',
-          contentTypeMostShare: '',
-        });
-        break;
-      case 'share_num':
-        name = '最多分享';
-        this.setData({
-          contenTypeNewestPublish: '',
-          contentTypeNewestReply: '',
-          contentTypeMostZan: '',
-          contentTypeMostShare: 'selected-text',
-        });
-        break;
-    }
-    console.log(name);
+   
   },
   tapUser: function(event) { // 发布人被点击
     contentTools.tapUser(event);
@@ -486,19 +430,21 @@ Page({
 
     contentTools.tapZan(event)
       .then(res => {
+        console.log(res);
         wx.hideLoading();
         console.log('点赞成功');
-        if (record.agree) {
-          that.data.contentList[index].agree_num = record.agree_num - 1;
-          that.data.contentList[index].agree = false;
-        } else {
-          that.data.contentList[index].agree_num = record.agree_num + 1;
-          that.data.contentList[index].agree = true;
-        }
-
+        if(res.result.stats.updated!=0){
+        that.data.contentList[index].agree_num = record.agree_num + 1;
         that.setData({
           contentList: that.data.contentList
         });
+          contentTools.updateContentUserAgreeNum(record.user_id);
+        }else{
+          wx.showToast({
+            title: '点赞失败',
+            icon:'none'
+          })
+        }
       }).catch(error => {
         wx.hideLoading();
         console.log(error);
@@ -507,6 +453,7 @@ Page({
           icon: 'none'
         })
       });
+
     // .then(res => {
     //   console.log(res);
     //   wx.hideLoading();
@@ -607,6 +554,7 @@ Page({
   updateUser: function(user) {
     // console.log(user);
     app.globalData._id = user._id;
+    app.globalData.user = user;
     var db = wx.cloud.database();
     db.collection('user').doc(user._id).update({
       data: {

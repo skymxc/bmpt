@@ -10,6 +10,7 @@ Page({
   data: {
     content: {},
     _id: '',
+    self:false,
     commentList: [],
     pageIndex: 0,
     pageSize: 20,
@@ -26,6 +27,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    console.log(options);
     if (options._id) {
       this.setData({
         _id: options._id
@@ -81,18 +83,22 @@ Page({
   loadContent: function() {
     wx.showLoading({
       title: '加载中',
-      mask: false
+      mask: true
     });
 
     var db = wx.cloud.database();
     var that = this;
+    console.log(this.data._id);
     db.collection('content').doc(this.data._id)
       .get().then(res => {
         console.log(res);
         wx.stopPullDownRefresh();
+        that.data.self = res.data._openid != app.globalData.openid;
+        console.log(app.globalData.openid);
         that.setData({
           content: res.data,
-          commentPlaceHolder: '评论 ' + res.data.user.nickName
+          commentPlaceHolder: '评论 ' + res.data.user.nickName,
+          self: that.data.self
         });
         that.addReadNum();
         wx.hideLoading();
@@ -105,8 +111,8 @@ Page({
         console.log(err);
         wx.hideLoading();
         wx.showModal({
-          title: '网路超时',
-          content: err.errMsg,
+          title: '内容不在了',
+          content: '内容可能已经被删除了！',
           showCancel: false,
           success: function(res) {
             wx.navigateBack({
@@ -350,21 +356,31 @@ Page({
       });
       return;
     }
+    
     wx.showLoading({
       title: '请稍后',
-      mask: false
+      mask: true
     });
+    var contentTitle= this.data.content.content;
+    if(contentTitle.length>10){
+      contentTitle = contentTitle.substring(0,10);
+    }
+    var db = wx.cloud.database();
     var record = {
       user: app.globalData.userInfo,
-      contnet_id: this.data._id,
+      content_id: this.data._id,
       deal: false,
       result: '未处理',
       create_date:new Date(),
       create_date_str: app.formatDate("yyyy-MM-dd hh:mm",new Date()),
-      content_user: this.data.content.user
+      content_user: this.data.content.user,
+      reason:this.data.report,
+      content:contentTitle,
+      deal_user:app.globalData.userInfo,
+      deal_time:db.serverDate()
     };
     var that = this;
-    var db = wx.cloud.database();
+    
     const _ = db.command;
     db.collection('report').add({
       data: record
@@ -373,7 +389,7 @@ Page({
 
         wx.hideLoading();
         wx.showToast({
-          title: '举报成功',
+          title: '已通知管理员',
         });
         that.setData({
           classReport: 'hide',

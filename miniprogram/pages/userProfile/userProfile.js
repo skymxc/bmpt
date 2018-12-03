@@ -135,11 +135,12 @@ Page({
   loadContent:function(){
     wx.showLoading({
       title: '加载中',
-      mask:false
+      mask:true
     });
     var that  = this;
       db.collection('content').where({
-        _openid:that.data.openid
+        _openid:that.data.openid,
+        conceal: false
       }).skip(this.data.pageIndex).limit(this.data.pageSize).orderBy('create_date','desc').get()
       .then(res=>{
         wx.stopPullDownRefresh();
@@ -225,18 +226,20 @@ Page({
 
     contentTools.tapZan(event)
       .then(res => {
+        console.log(res);
         wx.hideLoading();
-        that.data.contentList[index].agree_num = record.agree_num + 1;
+        console.log('点赞成功');
         if (res.result.stats.updated != 0) {
+          that.data.contentList[index].agree_num = record.agree_num + 1;
           that.setData({
             contentList: that.data.contentList
           });
           contentTools.updateContentUserAgreeNum(record.user_id);
         } else {
           wx.showToast({
-            title: '操作超时',
+            title: '点赞失败',
             icon: 'none'
-          });
+          })
         }
 
       }).catch(err => {

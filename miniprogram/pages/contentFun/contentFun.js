@@ -13,7 +13,9 @@ Page({
     fun_id: '',
     pageIndex: 0,
     pageSize: 20,
-    where: {},
+    where: {
+      conceal: false
+    },
     channelArray: [],
     contentList: [],
     selectIndex:0,
@@ -31,14 +33,16 @@ Page({
         channel:options.channel,
         where: {
           fun_id: options._id,
-          channel_name:options.channel
+          channel_name:options.channel,
+          conceal: false
         }
       });
     }else{
       this.setData({
         fun_id: options._id,
         where:{
-          fun_id:options._id
+          fun_id:options._id,
+          conceal: false
         }
       });
     }
@@ -151,12 +155,14 @@ Page({
     var index=  event.currentTarget.dataset.index;
     var channel = event.currentTarget.dataset.channel;
     var where={
-      fun_id :this.data.fun_id
+      fun_id :this.data.fun_id,
+      conceal: false
     };
     if(index!=0){
       where={
         fun_id: this.data.fun_id,
-        channel_name: channel
+        channel_name: channel,
+        conceal: false
       };
     }
     this.setData({
@@ -201,17 +207,18 @@ Page({
       .then(res => {
         console.log(res);
         wx.hideLoading();
-        that.data.contentList[index].agree_num = record.agree_num + 1;
+        console.log('点赞成功');
         if (res.result.stats.updated != 0) {
+          that.data.contentList[index].agree_num = record.agree_num + 1;
           that.setData({
             contentList: that.data.contentList
           });
           contentTools.updateContentUserAgreeNum(record.user_id);
         } else {
           wx.showToast({
-            title: '操作超时',
+            title: '点赞失败',
             icon: 'none'
-          });
+          })
         }
 
       }).catch(err => {

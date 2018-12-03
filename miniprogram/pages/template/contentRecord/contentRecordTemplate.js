@@ -62,7 +62,7 @@ var tapDelContent = function(event, publishNum, totalBeAgreeNum, totalBeReadNum)
           reject(err)
         } else {
           resolve(true);
-
+          //更新用户表里的数据
           db.collection('user').doc(getApp().globalData._id).update({
             data: {
               publishNum: publishNum - 1,
@@ -99,6 +99,23 @@ var tapDelContent = function(event, publishNum, totalBeAgreeNum, totalBeReadNum)
               console.log(res);
             }).catch(console.error);
           }
+          //删除点赞
+          wx.cloud.callFunction({
+            name:'delete',
+            data:{
+              collection:'comment',
+              where:where
+            }
+          }).then(console.log).catch(console.error);
+
+          //删除 report
+          // wx.cloud.callFunction({
+          //   name: 'delete',
+          //   data: {
+          //     collection: 'report',
+          //     where: where
+          //   }
+          // }).then(console.log).catch(console.error);
         }
       }).catch(err => {
         reject(err);
@@ -123,7 +140,7 @@ var addAgree = function(content) {
       //更改自身记录
       //更改 user 记录
       incContentNum('agree_num', content._id).then(console.log).catch(console.error);
-      updateContentUserAgreeNum(user_id);
+      updateContentUserAgreeNum(content.user_id);
     }).catch(error => {
       console.log(error);
       reject(error.errMsg);
@@ -186,19 +203,19 @@ var reduceAgree = function(content) {
 }
 var tapZan = function(event) {
   var record = event.currentTarget.dataset.record;
-  var openid = getApp().globalData.openid;
-  var user_id = getApp().globalData._id;
-  var db = wx.cloud.database();
+  // var openid = getApp().globalData.openid;
+  // var user_id = getApp().globalData._id;
+  // var db = wx.cloud.database();
 
-  if (record.agree) {
-    return reduceAgree(record);
-  } else { //没有点过赞
+  // if (record.agree) {
+  //   return reduceAgree(record);
+  // } else { //没有点过赞
 
-    return addAgree(record);
-  }
+  //   return addAgree(record);
+  // }
 
 
-  // return incContentNum('agree_num', record._id);
+  return incContentNum('agree_num', record._id);
 }
 
 var incContentNum = function(field, _id) {

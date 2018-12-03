@@ -1,0 +1,139 @@
+/* miniprogram/pages/manger/report/report.wxss */
+page{
+ background-color: #f2f2f2;
+}
+#container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+ 
+}
+
+#container-type{
+  width: 100%;
+  height: 99rpx;
+  background-color: white;
+  border-bottom: 1rpx gainsboro solid;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0rpx;
+}
+
+#container-report{
+  width: 100%;
+  margin-top: 100rpx;
+}
+
+.handle-type{
+  height: 80%;
+  flex: 1;
+  /* min-width: 100rpx; */
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.select-type{
+  color: green;
+  border-bottom: 5rpx green solid;
+  
+}
+.container-empty{
+  width: 100%;
+  margin-top: 100rpx;
+  min-height: 300rpx;
+  color: gainsboro;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-report{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: white;
+  margin-bottom: 20rpx;
+}
+
+.container-report-result{
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 10rpx;
+  border-bottom: 1rpx gainsboro solid;
+}
+
+.container-report-wrap{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.container-report-user{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 120rpx;
+}
+
+.image-report-user{
+  width: 100rpx;
+  height: 100rpx;
+  margin: 5rpx;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 50rpx;
+}
+
+.container-report-user-right{
+  flex: 1;
+  height: 100rpx;
+  display: flex;
+  flex-direction: column;
+  padding-left: 20rpx;
+  color: grey;
+}
+
+.text-report-time{
+  color: gainsboro;
+  font-size: 25rpx;
+}
+
+.container-report-content{
+  display: flex;
+  flex-direction: row;
+  padding: 10rpx;
+  min-height: 100rpx;
+  width: 100%;
+
+}
+
+.container-report-operate{
+  width: 100%;
+  height: 100rpx;
+ 
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.report-oprate{
+  flex: 1;
+  height: 99%;
+  border: 1rpx gainsboro solid;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}

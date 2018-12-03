@@ -5,7 +5,7 @@
     <text wx:if='{{content.fun_name}}' bindtap='tapFun'>{{content.fun_name}}</text>
     <text wx:if='{{content.channel_name}}' bindtap='tapChannel'>@{{content.channel_name}}</text>#
     <!-- </view> -->
-    <button class='button-report' bindtap='tapReport' size='mini'>举报</button>
+    <button wx:if='{{self}}' class='button-report' bindtap='tapReport' size='mini'>举报</button>
   </view>
 
   <view class='container-user' bindtap='tapUser' data-user='{{content.user}}'>
