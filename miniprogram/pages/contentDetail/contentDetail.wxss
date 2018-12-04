@@ -310,3 +310,44 @@
   color: black;
   font-size: 29rpx;
 }
+/* 授权 遮罩 */
+.container-authorize{
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height:100%;
+  background-color: rgba(0, 0, 0, 0.404);
+ 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrap-authorize{
+  height: 300rpx;
+  width: 500rpx; 
+  background-color: white;
+  border: 1rpx white white;
+  border-radius: 15rpx;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-text-authorize{
+  padding: 10rpx;
+  color: #000;
+  flex: 1;
+  text-align: center;
+  font-size: 30rpx;
+}
+
+.button-authorize{
+  margin: 5%;
+  width: 90%;
+}
+
+.hide{
+  display: none;
+}

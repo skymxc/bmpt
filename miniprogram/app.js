@@ -48,5 +48,62 @@ App({
       if (new RegExp("(" + k + ")").test(fmt))
         fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
+  },
+  countUser: function () {
+    console.log('count user')
+    var db = wx.cloud.database();
+    var that = this;
+    db.collection('user').where({
+      _openid:this.globalData.openid
+    }).get().then(res => {
+
+      if (res.data.length == 0) {
+        that.addUser();
+      } else {
+        that.updateUser(res.data[0]);
+      }
+    }).catch(err => {
+      console.log(err);
+      that.addUser();
+    });
+
+  },
+  /**
+   * 
+   */
+  addUser: function () {
+    console.log('add user')
+    var db = wx.cloud.database();
+    var user = {
+      user: this.globalData.userInfo,
+      publishNum: 0,
+      beReadedNum: 0,
+      beAgreeNum: 0,
+      beReportNum: 0
+    };
+    db.collection('user').add({
+      data: user
+    }).then(res => {
+      console.log(res);
+      this.globalData._id = res._id;
+    }).catch(err => {
+      console.log(err);
+    })
+  },
+  updateUser: function (user) {
+    
+    console.log(user);
+    this.globalData._id = user._id;
+    this.globalData.user = user;
+    var db = wx.cloud.database();
+    db.collection('user').doc(user._id).update({
+      data: {
+        user: this.globalData.userInfo
+      }
+    }).then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err)
+    })
   }
 })

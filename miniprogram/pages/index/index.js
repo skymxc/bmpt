@@ -46,7 +46,10 @@ Page({
 
   onLoad: function(query) {
 
-
+    if(app.globalData.logged){
+      this.getData();
+      return;
+    }
     var that = this;
     wx.showLoading({
       title: '拉取授权信息',
@@ -125,8 +128,8 @@ Page({
       // 获取数据
       that.getData();
       app.globalData.logged = true;
-      that.count();
-
+      // that.count();
+      app.countUser();
 
     }).catch(err => {
       wx.hideLoading()

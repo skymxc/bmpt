@@ -10,7 +10,7 @@ Page({
   data: {
     content: {},
     _id: '',
-    self:false,
+    self: false,
     commentList: [],
     pageIndex: 0,
     pageSize: 20,
@@ -18,9 +18,10 @@ Page({
     classReport: 'hide',
     classComment: 'hide',
     classCover: 'hide',
+    classAuthorize: 'hide',
     commentPlaceHolder: '',
     focusWriteComment: false,
-    focusWriteReport:false
+    focusWriteReport: false
   },
 
   /**
@@ -32,7 +33,7 @@ Page({
       this.setData({
         _id: options._id
       });
-      this.loadContent();
+      this.getUser();
     } else {
       wx.showModal({
         title: '_id 错误！',
@@ -55,7 +56,7 @@ Page({
   onPullDownRefresh: function() {
     this.setData({
       pageIndex: 0,
-      commentList:[]
+      commentList: []
     })
     this.loadContent();
   },
@@ -157,14 +158,28 @@ Page({
     this.setData({
       classReport: '',
       classCover: '',
-      focusWriteReport:true
+      focusWriteReport: true
     });
   },
   /**
    * 用户
    */
-  tapUser: function() {
+  tapUser: function(event) {
+    wx.showLoading({
+      title: '请稍后',
 
+    })
+    wx.navigateTo({
+      url: '../userProfile/userProfile?openid=' + this.data.content._openid,
+      success: function() {
+        wx.hideLoading();
+      },
+      fail: function(error) {
+
+        console.log(error)
+        wx.hideLoading();
+      }
+    });
   },
   /**
    * 点击图片
@@ -181,9 +196,24 @@ Page({
    * 首页
    */
   tapHome: function() {
-    wx.navigateBack({
-
-    });
+    wx.showLoading({
+      title: '请稍后',
+      mask:true
+    })
+    wx.switchTab({
+      url: '../index/index',
+      fail: err => {
+        wx.hideLoading();
+        wx.showModal({
+          title: '微信出问题了',
+          content: err.errMsg,
+          showCancel:false
+        })
+      },
+      success:res=>{
+        wx.hideLoading();
+      }
+    })
   },
   /**
    * 评论
@@ -356,14 +386,14 @@ Page({
       });
       return;
     }
-    
+
     wx.showLoading({
       title: '请稍后',
       mask: true
     });
-    var contentTitle= this.data.content.content;
-    if(contentTitle.length>10){
-      contentTitle = contentTitle.substring(0,10);
+    var contentTitle = this.data.content.content;
+    if (contentTitle.length > 10) {
+      contentTitle = contentTitle.substring(0, 10);
     }
     var db = wx.cloud.database();
     var record = {
@@ -371,16 +401,16 @@ Page({
       content_id: this.data._id,
       deal: false,
       result: '未处理',
-      create_date:new Date(),
-      create_date_str: app.formatDate("yyyy-MM-dd hh:mm",new Date()),
+      create_date: new Date(),
+      create_date_str: app.formatDate("yyyy-MM-dd hh:mm", new Date()),
       content_user: this.data.content.user,
-      reason:this.data.report,
-      content:contentTitle,
-      deal_user:app.globalData.userInfo,
-      deal_time:db.serverDate()
+      reason: this.data.report,
+      content: contentTitle,
+      deal_user: app.globalData.userInfo,
+      deal_time: db.serverDate()
     };
     var that = this;
-    
+
     const _ = db.command;
     db.collection('report').add({
       data: record
@@ -436,7 +466,7 @@ Page({
     this.setData({
       classReport: 'hide',
       classCover: 'hide',
-      focusWriteReport:false
+      focusWriteReport: false
     })
   },
   tapCommentCancel: function() {
@@ -460,10 +490,111 @@ Page({
   addReadNum: function() {
     contentTools.viewContentIncViewNum(this.data.content);
   },
-  tapFun:function(){
+  tapFun: function() {
     contentTools.tapFun(this.data.content.fun_id);
   },
-  tapChannel:function(){
-    contentTools.tapChannel(this.data.content.fun_id,this.data.content.channel_name);
+  tapChannel: function() {
+    contentTools.tapChannel(this.data.content.fun_id, this.data.content.channel_name);
+  },
+  getUser: function() {
+    if (app.globalData.logged) {
+      this.loadContent();
+      return;
+    }
+    //是否授权
+
+    var that = this;
+    wx.showLoading({
+      title: '拉去授权信息',
+      mask: true
+    });
+    wx.getSetting({
+      success: res => {
+        wx.hideLoading();
+        var pass = res.authSetting['scope.userInfo'];
+        if (pass) { //已经授权过了
+          wx.showLoading({
+            title: '获取用户信息',
+            mask: true
+          });
+          wx.getUserInfo({ //获取用户信
+            success: response => {
+
+              app.globalData.userInfo = response.userInfo;
+
+
+              wx.hideLoading()
+              that.login()
+            },
+            fail: err => {
+              wx.hideLoading()
+              wx.showModal({
+                title: '用户信息获取失败！',
+                content: err.errMsg,
+                showCancel: false
+              })
+            }
+
+          })
+        } else {
+          that.setData({
+            classCover: '',
+            classAuthorize: ''
+          })
+        }
+
+      }
+    })
+
+  },
+  /**
+   * 在拿到授权之后 去 登陆获取 open ID 再去 获取数据
+   */
+  login: function () {
+    // 登陆 获取 openID
+    var that = this;
+    wx.showLoading({
+      title: '正在登录',
+      mask: true
+    })
+    wx.cloud.callFunction({
+      name: 'login',
+      data: {
+        user: app.globalData.userInfo
+      }
+    }).then(res => {
+
+      app.globalData.openid = res.result.openid
+      //
+      wx.hideLoading()
+      // 获取数据
+      app.globalData.logged = true;
+      that.loadContent();
+    
+      app.countUser();
+
+
+    }).catch(err => {
+      wx.hideLoading()
+      console.log(err);
+      wx.showModal({
+        title: '登陆失败！',
+        content: err.errMsg,
+      })
+    })
+  },
+  /**
+   * 在用户授权之后 会自动回掉 此方法
+   */
+  onGetUserInfo: function (e) {
+    console.log(e);
+    app.globalData.userInfo = e.detail.userInfo;
+   
+    this.login();
+    this.setData({
+      classCover: 'hide',
+      classAuthorize: 'hide'
+    })
+
   }
 })

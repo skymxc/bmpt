@@ -8,7 +8,7 @@
     <button wx:if='{{self}}' class='button-report' bindtap='tapReport' size='mini'>举报</button>
   </view>
 
-  <view class='container-user' bindtap='tapUser' data-user='{{content.user}}'>
+  <view class='container-user' bindtap='tapUser'>
     <image src='' style='background-image:url({{content.user.avatarUrl}})' class='image-user-avatar'></image>
     <view class='container-user-profile'>
       <view style='display:flex;flex-direction:row;align-items: center;'>
@@ -42,20 +42,20 @@
     <view wx:if='{{commentList.length>0}}' class='container-comment-list'>
       <block wx:for='{{commentList}}' wx:for-item='comment' wx:key='_id'>
         <view class='container-comment-single'>
-            <image mode="center" style='background-image:url({{comment.user.avatarUrl}});' class='image-comment-user'></image>
-            <view class='container-comment-content'>
-              <view class='text-commnet-user-name text-comment'>{{comment.user.nickName}}</view>
-              <view class='text-comment-text text-comment'>{{comment.text}}</view>
-              <view class='text-comment-create-date text-comment'>{{comment.create_date_str}}</view>
-              
-            </view>
+          <image mode="center" style='background-image:url({{comment.user.avatarUrl}});' class='image-comment-user'></image>
+          <view class='container-comment-content'>
+            <view class='text-commnet-user-name text-comment'>{{comment.user.nickName}}</view>
+            <view class='text-comment-text text-comment'>{{comment.text}}</view>
+            <view class='text-comment-create-date text-comment'>{{comment.create_date_str}}</view>
+
+          </view>
         </view>
       </block>
     </view>
   </view>
 
   <view class='container-tool'>
-    <view class='container-tool-single'  bindtap='tapHome'>
+    <view class='container-tool-single' bindtap='tapHome'>
       <image class='image-tool' src='../../images/home.png'></image>
       <text class='text-tool'>首页</text>
     </view>
@@ -84,10 +84,10 @@
   </view>
 
   <view class='container-report {{classReport}}'>
-  
+
     <view class='container-report-label'>
       <text class='text-report'> 举报</text>
-      <icon class='icon-report-cancel'  color='black' type='cancel' bindtap='tapReportCancel'></icon>
+      <icon class='icon-report-cancel' color='black' type='cancel' bindtap='tapReportCancel'></icon>
     </view>
     <textarea name='{{report}}' bindinput='inputReport' class='textarea-report' focus='{{focusWriteReport}}' cursor-spacing="260rpx" placeholder='这里输入举报的原因'>
 
@@ -99,14 +99,24 @@
   </view>
 
   <form class='container-comment-write {{classComment}}' bindsubmit='submitComment'>
-<view class='container-comment-label'>
+    <view class='container-comment-label'>
       <text class='text-comment'> 评论</text>
-      <icon class='icon-comment-cancel'  color='black' bindtap='tapCommentCancel' type='cancel'></icon>
+      <icon class='icon-comment-cancel' color='black' bindtap='tapCommentCancel' type='cancel'></icon>
     </view>
 
-     <textarea name='comment' class='textarea-comment' focus='{{focusWriteComment}}' cursor-spacing="260rpx" placeholder='{{commentPlaceHolder}}'>
+    <textarea name='comment' class='textarea-comment' focus='{{focusWriteComment}}' cursor-spacing="260rpx" placeholder='{{commentPlaceHolder}}'>
 
     </textarea>
     <button class='button-comment' form-type='submit'>评论</button>
   </form>
+
+  <view class='container-authorize {{classAuthorize}}'>
+    <view class='wrap-authorize'>
+      <view class='container-text-authorize'>
+      <text >便民平台需要获取您的用户信息以方便您的使用,务必在稍后授权</text>
+      </view>
+      
+      <button class='button-authorize' open-type='getUserInfo' bindgetuserinfo='onGetUserInfo' type='primary' >确定</button>
+    </view>
+  </view>
 </view>
