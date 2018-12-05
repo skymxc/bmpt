@@ -82,13 +82,6 @@ Page({
   onReachBottom: function() {
 
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
-  },
   tapFun: function(event) { //功能被点击
     var fun = event.currentTarget.dataset.fun;
     

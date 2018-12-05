@@ -72,6 +72,8 @@ Page({
       console.log(event.target);
       var content = event.target.dataset.content;
       return contentTools.tapShare(content);
+    }else{
+      return { path: '/pages/index/index' }
     }
   },
   /**

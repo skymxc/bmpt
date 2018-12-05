@@ -261,7 +261,7 @@ Page({
       var content = event.target.dataset.content;
      return contentTools.tapShare(content);
     }else{
-      return {}
+      return { path: '/pages/index/index'}
     }
 
   }
