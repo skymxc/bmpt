@@ -4,7 +4,7 @@
 
 ## 贴图
 
----啦啦
+/screen/WechatIMG1.jpeg
 
 
 
