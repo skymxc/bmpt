@@ -4,7 +4,7 @@
 
 ## 贴图
 
-/screen/WechatIMG1.jpeg
+![截图](/screen/WechatIMG1.jpeg)
 
 
 
