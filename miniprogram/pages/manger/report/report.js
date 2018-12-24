@@ -178,11 +178,51 @@ Page({
         title: '该记录已损坏',
         icon:'none'
       })
+      //处理掉举报记录
+      this.execReportResult(report,index,'举报内容ID不对')
       return;
     }
 
     wx.showLoading({
       title: '请稍后',
+      mask: true
+    });
+
+    db.collection('content').doc(report.content_id).get()
+    .then(res=>{
+      wx.hideLoading();
+      if(res.data){
+          var content = res.data;
+        if (content.conceal){ //本来就是隐藏的//无需再次处理了
+          that.execReportResult(report,index,'删除');
+        }else{
+          //修改举报内容为 隐藏
+          that.handleReportDel(report,index);
+        }
+      }else{
+        wx.hideLoading();
+        wx.showToast({
+          title: '该记录已经被删除了！',
+          icon:'none'
+        });
+        //删除举报内容
+        that.execReportResult(report, index, '该记录已经被删除了！')
+      }
+    }).catch(error=>{
+        wx.hideLoading();
+        wx.showToast({
+          title: '举报内容获取出错',
+        })
+      that.execReportResult(report, index,'举报内容获取出错')
+    });
+
+
+
+  },
+  handleReportDel:function(report,index){
+    var that = this;
+    wx.showLoading({
+      title: '处理举报内容',
       mask: true
     });
 
@@ -196,56 +236,71 @@ Page({
     console.log(where);
     console.log(data);
     wx.cloud.callFunction({
-      name:'update',
-      data:{
-        where:where,
-        collection:'content',
+      name: 'update',
+      data: {
+        where: where,
+        collection: 'content',
         data: data
       }
-    }).then(res=>{
+    }).then(res => {
       console.log(res);
-      if(res.result.stats.updated==0){
+      if (res.result.stats.updated == 0) {
         wx.hideLoading();
         wx.showToast({
           title: '操作失败',
-          icon:'none'
+          icon: 'none'
         })
+        that.execReportResult(report, index, '操作失败');
         return;
       }
-      db.collection('report').doc(report._id).update({
-        data: {
-          deal: true,
-          result: '删除',
-          deal_user: app.globalData.userInfo,
-          deal_time: db.serverDate
-        }
-      }).then(res => {
-        console.log(res);
-        wx.hideLoading();
-        if (res.stats.updated != 0) {
-          that.data.reportList.splice(index, 1);
-          that.setData({
-            reportList: that.data.reportList,
-            pageIndex: that.data.pageIndex - 1
-          })
-        } else {
-          wx.showToast({
-            title: '操作失败'
-          });
-        }
-      }).catch(error => {
-        console.error(error);
-        wx.hideLoading()
-        wx.showModal({
-          title: '服务器又调皮了',
-          content: error.errMsg,
-          showCancel: false
-        });
-      });
-    }).catch(error=>{
+      wx.hideLoading();
+      that.execReportResult(report,index,'删除');
+    }).catch(error => {
       console.error(error);
+      wx.showToast({
+        title: '处理失败',
+      })
+      that.execReportResult(report, index, '处理失败');
     });
 
-
+  },
+  execReportResult:function(report,index,resul){
+    wx.showLoading({
+      title: '修改处理结果',
+    })
+    var that =this;
+    db.collection('report').doc(report._id).update({
+      data: {
+        deal: true,
+        result: resul,
+        deal_user: app.globalData.userInfo,
+        deal_time: db.serverDate
+      }
+    }).then(res => {
+      console.log(res);
+      wx.hideLoading();
+      if (res.stats.updated != 0) {
+        that.handleReportSucc(index);
+      } else {
+        wx.showToast({
+          title: '操作失败'
+        });
+      }
+    }).catch(error => {
+      console.error(error);
+      wx.hideLoading()
+      wx.showModal({
+        title: '服务器又调皮了',
+        content: error.errMsg,
+        showCancel: false
+      });
+    });
+  },
+  handleReportSucc:function(index){
+    this.data.reportList.splice(index, 1);
+    this.setData({
+      reportList: this.data.reportList,
+      pageIndex: this.data.pageIndex - 1
+    })
   }
 })
